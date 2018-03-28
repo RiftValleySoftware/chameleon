@@ -1,0 +1,3 @@
+[submodule "badger"]
+	path = badger
+	url = git@github.com:LittleGreenViper/badger.git
