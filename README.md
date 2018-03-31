@@ -1,4 +1,4 @@
-![Honey Badger Don't Care](icon.png)
+![I See You!](icon.png)
 
 INTRODUCTION
 ============
