@@ -1,31 +1,26 @@
+/***************************************************************************************************************************/
+/**
+    Chameleon Object Abstraction Layer
+    
+    © Copyright 2018, Little Green Viper Software Development LLC.
+    
+    This code is proprietary and confidential code, 
+    It is NOT to be reused or combined into any application,
+    unless done so, specifically under written license from Little Green Viper Software Development LLC.
+
+    Little Green Viper Software Development: https://littlegreenviper.com
+*/
 ajaxLoader = function() {
 };
 
 ajaxLoader.prototype.m_current_task = null;
-
-/********************************************************************************************//**
-*	\brief                                                                                      *
-************************************************************************************************/
-ajaxLoader.prototype.loadDatabase = function() {
-    var uri = 'index.php?loadDB';
-    this.m_current_task = this.ajaxRequest(uri, this.loadDBCallback, 'GET', this);
-};
-
-/********************************************************************************************//**
-*	\brief                                                                                      *
-************************************************************************************************/
-ajaxLoader.prototype.loadDBCallback = function (    in_response_object, ///< The HTTPRequest response object.
-                                                    in_context
-                                                ) {
-    this.m_current_task = null;
-};
 
 /****************************************************************************************//**
 *   \brief A simple, generic AJAX request function.                                         *
 *                                                                                           *
 *   \returns a new XMLHTTPRequest object.                                                   *
 ********************************************************************************************/
-ajaxLoader.prototype.ajaxRequest = function(   url,        ///< The URI to be called
+ajaxLoader.prototype.ajaxRequest = function(    url,        ///< The URI to be called
                                                 callback,   ///< The success callback
                                                 method,     ///< The method ('get' or 'post')
                                                 extra_data  ///< If supplied, extra data to be delivered to the callback.
@@ -103,6 +98,8 @@ ajaxLoader.prototype.ajaxRequest = function(   url,        ///< The URI to be ca
         req = null;
         };
     req.send ( sVars );
+    
+    this.m_current_task = req;
     
     return req;
 };

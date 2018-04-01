@@ -101,12 +101,8 @@
                 echo("<p>Distance: $distance"."Km</p>");
             }
             
-            for ($tagid = 0; $tagid < 10; $tagid++ ) {
-                $tag = NULL;
-                if (isset($in_record_object->tags[$tagid])) {
-                    $tag = trim($in_record_object->tags[$tagid]);
-                    echo("<p>Tag $tagid: \"$tag\"</p>");
-                }
+            foreach ($in_record_object->tags as $key => $value) {
+                echo("<p>Tag $key: \"$value\"</p>");
             }
             
             if ( $in_record_object instanceof CO_Security_Login) {
