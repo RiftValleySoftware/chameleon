@@ -11,7 +11,7 @@
 
     Little Green Viper Software Development: https://littlegreenviper.com
 */
-    $config_file_path = dirname(__FILE__).'/config/s_badger_config.class.php';
+    $config_file_path = dirname(__FILE__).'/config/s_config.class.php';
     $data_sql_file_path = dirname(__FILE__).'/sql/badger_test_data.sql';
     $security_sql_file_path = dirname(__FILE__).'/sql/badger_test_security.sql';
     
@@ -34,7 +34,7 @@
             define('LGV_ERROR_CATCHER', 1);
         }
 
-        require_once(CO_Config::shared_class_dir().'/error.class.php');
+        require_once(CO_Config::badger_shared_class_dir().'/error.class.php');
         
         $pdo_data_db = NULL;
         try {
@@ -256,7 +256,7 @@
                         define('LGV_ACCESS_CATCHER', 1);
                     }
         
-                    require_once(CO_Config::main_class_dir().'/co_access.class.php');
+                    require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
             ?>
                 <img src="../icon.png" style="display:block;margin:auto;width:80px" alt="A Lump of COAL" />
                 <h1 class="header">MAIN ENVIRONMENT SETUP</h1>

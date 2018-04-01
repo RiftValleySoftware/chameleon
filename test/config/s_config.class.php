@@ -40,29 +40,34 @@ class CO_Config {
     
     /***********************/
     /**
-    \returns the POSIX path to the main badger directory.
+    \returns the POSIX path to the main CHAMELEON directory.
      */
     static function base_dir() {
-        return dirname(dirname(dirname(__FILE__))).'/badger';
+        return dirname(dirname(dirname(__FILE__)));
     }
     
     /***********************************************************************************************************************/
     /*                                                  DON'T CHANGE THIS                                                  */
     /***********************************************************************************************************************/
+    
+    /***********************************************************************************************************************/
+    /*                                                  CHAMELEON STUFF                                                    */
+    /***********************************************************************************************************************/
+    
     /***********************/
     /**
-    \returns the POSIX path to the main database base classes.
+    \returns the POSIX path to the CHAMELEON localization directory.
      */
-    static function db_class_dir() {
-        return self::base_dir().'/db';
+    static function chameleon_lang_class_dir() {
+        return self::base_dir().'/lang';
     }
     
     /***********************/
     /**
-    \returns the POSIX path to the extended database row classes.
+    \returns the POSIX path to the CHAMELEON testing directory.
      */
-    static function db_classes_class_dir() {
-        return self::base_dir().'/db_classes';
+    static function test_class_dir() {
+        return self::base_dir().'/test';
     }
     
     /***********************/
@@ -70,38 +75,50 @@ class CO_Config {
     \returns the POSIX path to the user-defined extended database row classes.
      */
     static function db_classes_extension_class_dir() {
-        return dirname(self::base_dir()).'/badger_extension_classes';
+        return self::base_dir().'/badger_extension_classes';
+    }
+    
+    /***********************************************************************************************************************/
+    /*                                                    BADGER STUFF                                                     */
+    /***********************************************************************************************************************/
+
+    /***********************/
+    /**
+    \returns the POSIX path to the main BADGER database base classes.
+     */
+    static function db_class_dir() {
+        return self::base_dir().'/badger/db';
     }
     
     /***********************/
     /**
-    \returns the POSIX path to the main access class directory.
+    \returns the POSIX path to the BADGER extended database row classes.
      */
-    static function main_class_dir() {
-        return self::base_dir().'/main';
+    static function db_classes_class_dir() {
+        return self::base_dir().'/badger/db_classes';
     }
     
     /***********************/
     /**
-    \returns the POSIX path to the main access class directory.
+    \returns the POSIX path to the BADGER main access class directory.
      */
-    static function shared_class_dir() {
-        return self::base_dir().'/shared';
+    static function badger_main_class_dir() {
+        return self::base_dir().'/badger/main';
     }
     
     /***********************/
     /**
-    \returns the POSIX path to the localization directory.
+    \returns the POSIX path to the BADGER main access class directory.
      */
-    static function lang_class_dir() {
-        return self::base_dir().'/lang';
+    static function badger_shared_class_dir() {
+        return self::base_dir().'/badger/shared';
     }
     
     /***********************/
     /**
-    \returns the POSIX path to the testing directory.
+    \returns the POSIX path to the BADGER localization directory.
      */
-    static function test_class_dir() {
-        return self::base_dir().'/test';
+    static function badger_lang_class_dir() {
+        return self::base_dir().'/badger/lang';
     }
 }
