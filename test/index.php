@@ -96,6 +96,7 @@ require_once(dirname(__FILE__).'/functions.php');
             
         </style>
         
+        <script type="text/javascript"src="ajaxLoader.js"></script>
         <script type="text/javascript">
             function toggle_main_state(in_id) {
                 var item = document.getElementById(in_id);
@@ -132,6 +133,7 @@ require_once(dirname(__FILE__).'/functions.php');
                 };
             };
             
+            var window.ajaxLoader = new ajaxLoader();
             window.onload = expose_tests;
         </script>
     </head>
@@ -179,7 +181,7 @@ require_once(dirname(__FILE__).'/functions.php');
             ?>
                 <div id="throbber-container" style="text-align:center"><img src="images/throbber.gif" alt="throbber" style="position:absolute;width:190px;top:50%;left:50%;margin-top:-95px;margin-left:-95px" /></div>
                 <div id="tests-wrapped-up" style="display:none">
-                    <img src="../icon.png" style="display:block;margin:auto;width:80px" alt="A Lump Of COAL" />
+                    <img src="../icon.png" style="display:block;margin:auto;width:80px" alt="A Lump of COAL" />
                     <div id="basic_tests" class="test-wrapper">
                         <h2>BASIC TESTS</h2>
                         <?php
