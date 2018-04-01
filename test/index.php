@@ -38,12 +38,6 @@ require_once($config_file_path);
                 padding: 0.5em;
             }
             
-            div.inner_div {
-                margin-top:0.25em;
-                margin-left:1em;
-                padding: 0.25em;
-            }
-            
             .explain {
                 font-style: italic;
             }
@@ -52,51 +46,6 @@ require_once($config_file_path);
                 font-size: large;
                 margin-top: 1em;
                 text-align:center;
-            }
-            
-            div.open h1.header {
-            }
-            
-            div.closed h1.header {
-            }
-            
-            div.open div.container {
-                margin-left:1em;
-                display: block;
-            }
-            
-            div.closed div.container {
-                display: none;
-            }
-            
-            h2.inner_header {
-                font-size: medium;
-            }
-            
-            div.inner_open h2.inner_header {
-            }
-            
-            div.inner_closed h2.inner_header {
-            }
-            
-            div.inner_open div.inner_container {
-                margin-left:1em;
-                display: block;
-                border:1px dashed #555;
-            }
-            
-            div.inner_closed div.inner_container {
-                display: none;
-            }
-            
-            div.test-wrapper {
-                display: table;
-                margin:auto;
-                padding: 0.25em;
-                margin-top:1em;
-                border-radius:0.5em;
-                border:2px solid #999;
-                min-width:30em;
             }
             
         </style>

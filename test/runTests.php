@@ -17,7 +17,7 @@ require_once(dirname(__FILE__).'/functions.php');
 $test_name_array = Array();
 
 foreach (new DirectoryIterator(dirname(__FILE__).'/test_scripts') as $fileInfo) {
-    if($fileInfo->getExtension() === 'php') {
+    if (($fileInfo->getExtension() === 'php') && ('index.php' != $fileInfo->getBasename())) {
         array_push($test_name_array, $fileInfo->getBasename('.php'));
     }
 }
