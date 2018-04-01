@@ -56,6 +56,14 @@ class CO_Config {
     
     /***********************/
     /**
+    \returns the POSIX path to the BADGER main access class directory.
+     */
+    static function chameleon_main_class_dir() {
+        return self::base_dir().'/main';
+    }
+    
+    /***********************/
+    /**
     \returns the POSIX path to the CHAMELEON localization directory.
      */
     static function chameleon_lang_class_dir() {
@@ -78,6 +86,14 @@ class CO_Config {
         return self::base_dir().'/badger_extension_classes';
     }
     
+    /***********************/
+    /**
+    \returns the POSIX path to the BADGER main access class directory.
+     */
+    static function badger_base_dir() {
+        return self::base_dir().'/badger';
+    }
+    
     /***********************************************************************************************************************/
     /*                                                    BADGER STUFF                                                     */
     /***********************************************************************************************************************/
@@ -87,7 +103,7 @@ class CO_Config {
     \returns the POSIX path to the main BADGER database base classes.
      */
     static function db_class_dir() {
-        return self::base_dir().'/badger/db';
+        return self::badger_base_dir().'/db';
     }
     
     /***********************/
@@ -95,7 +111,7 @@ class CO_Config {
     \returns the POSIX path to the BADGER extended database row classes.
      */
     static function db_classes_class_dir() {
-        return self::base_dir().'/badger/db_classes';
+        return self::badger_base_dir().'/db_classes';
     }
     
     /***********************/
@@ -103,7 +119,7 @@ class CO_Config {
     \returns the POSIX path to the BADGER main access class directory.
      */
     static function badger_main_class_dir() {
-        return self::base_dir().'/badger/main';
+        return self::badger_base_dir().'/main';
     }
     
     /***********************/
@@ -111,7 +127,7 @@ class CO_Config {
     \returns the POSIX path to the BADGER main access class directory.
      */
     static function badger_shared_class_dir() {
-        return self::base_dir().'/badger/shared';
+        return self::badger_base_dir().'/shared';
     }
     
     /***********************/
@@ -119,6 +135,6 @@ class CO_Config {
     \returns the POSIX path to the BADGER localization directory.
      */
     static function badger_lang_class_dir() {
-        return self::base_dir().'/badger/lang';
+        return self::badger_base_dir().'/lang';
     }
 }

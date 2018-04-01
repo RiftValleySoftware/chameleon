@@ -18,7 +18,7 @@
             echo('<h1 class="header"><a href="javascript:toggle_main_state(\'basic-login-tests\')">READ PLACES</a></h1>');
             echo('<div class="container">');
                 echo('<div id="test-001" class="inner_closed">');
-                    echo('<h2 class="inner_header"><a href="javascript:toggle_inner_state(\'test-001\')">TEST 1: Log IN as "Teriary", and Read The Entries.</a></h2>');
+                    echo('<h2 class="inner_header"><a href="javascript:toggle_inner_state(\'test-001\')">TEST 1: Log In as "Tertiary", and Read The Entries.</a></h2>');
                     echo('<div class="main_div inner_container">');
                         ?>
                         <div class="main_div" style="margin-right:2em">
@@ -42,9 +42,9 @@
             define('LGV_ACCESS_CATCHER', 1);
         }
         
-        require_once(CO_Config::main_class_dir().'/co_access.class.php');
+        require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
         
-        $access_instance = new CO_Access($in_login, $in_hashed_password, $in_password);
+        $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
         
         if ($access_instance->valid) {
             echo("<h2>The access instance is valid!</h2>");
