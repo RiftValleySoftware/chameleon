@@ -157,18 +157,20 @@ if (isset($test_name_array) && is_array($test_name_array) && count($test_name_ar
     <body>
         <h1 style="text-align:center">CHAMELEON OBJECT ABSTRACTION LAYER</h1>
         <div style="text-align:center;padding:1em;">
-            <div id="throbber-container" style="text-align:center"><img src="images/throbber.gif" alt="throbber" style="position:absolute;width:190px;top:50%;left:50%;margin-top:-95px;margin-left:-95px" /></div>
-                <?php
-                $start_time = microtime(TRUE);
-                ?>
-                <div id="tests-wrapped-up" style="display:none">
-                    <div id="tests-displayed"></div>
-                    <h3 style="margin-top:1em"><a href="./">RETURN TO MAIN ENVIRONMENT SETUP</a></h3>
-                </div>
-                <script type="text/javascript">
-                    runTests(<?php echo($test_name_array) ?>);
-                </script>
+            <div id="throbber-container" style="text-align:center">
+                <h3 id="progress-report" style="margin-top:1em"></h3>
+                <img src="images/throbber.gif" alt="throbber" style="position:absolute;width:190px;top:50%;left:50%;margin-top:-95px;margin-left:-95px" />
             </div>
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <div id="tests-wrapped-up" style="display:none">
+                <div id="tests-displayed"></div>
+                <h3 style="margin-top:1em"><a href="./">RETURN TO MAIN ENVIRONMENT SETUP</a></h3>
+            </div>
+            <script type="text/javascript">
+                runTests(<?php echo($test_name_array) ?>);
+            </script>
         </div>
     </body>
 </html>

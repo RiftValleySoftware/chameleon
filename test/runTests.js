@@ -27,10 +27,20 @@ function runTests(inTestNameArray) {
 };
 
 function nextTest() {
+    var progress_report = document.getElementById('progress-report');
+            
     if(testsToRun.length) {
         var testName = testsToRun.shift();
+        
+        if (progress_report) {
+            progress_report.innerHTML = 'Running ' + testName.toString() + '.';
+        };
+        
         ajaxLoader.ajaxRequest('test_scripts/' + testName.toString() + '.php', runTestCallback, 'GET');
     } else {
+        if (progress_report) {
+            progress_report.innerHTML = '';
+        };
         showTests();
     };
 };
