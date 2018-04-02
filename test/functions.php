@@ -101,8 +101,18 @@
                 echo("<p>Distance: $distance"."Km</p>");
             }
             
-            foreach ($in_record_object->tags as $key => $value) {
-                echo("<p>Tag $key: \"$value\"</p>");
+            if ($in_record_object instanceof CO_Place) {
+                foreach ($in_record_object->address_elements as $key => $value) {
+                    if (trim($value)) {
+                        echo("<p>$key: \"$value\"</p>");
+                    }
+                }
+                echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
+                echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
+            } else {
+                foreach ($in_record_object->tags as $key => $value) {
+                    echo("<p>Tag $key: \"$value\"</p>");
+                }
             }
             
             if ( $in_record_object instanceof CO_Security_Login) {

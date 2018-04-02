@@ -14,6 +14,12 @@
 require_once(dirname(dirname(__FILE__)).'/functions.php');
 
 function basic_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $function_name = sprintf('basic_test_%02d', $in_test_number);
+    
+    $function_name($in_login, $in_hashed_password, $in_password);
+}
+    
+function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $access_instance = NULL;
     
     if ( !defined('LGV_ACCESS_CATCHER') ) {
@@ -26,6 +32,22 @@ function basic_test_relay($in_test_number, $in_login = NULL, $in_hashed_password
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
+        $st1 = microtime(TRUE);
+        $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -115.2435726, 'latitude' => 36.1356661, 'radius' => 50.0)));
+        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($test_item) ) {
+                if (is_array($test_item)) {
+                    if (count($test_item)) {
+                        echo("<h4>We got ".count($test_item)." records in $fetchTime seconds.</h4>");
+                        $count = 0;
+                        foreach ( $test_item as $item ) {
+                            display_record($item);
+                        }
+                    }
+                }
+            }
+        echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
@@ -46,7 +68,7 @@ ob_start();
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
-                            <p class="explain"></p>
+                            <p class="explain">This test will dump a subset of the "places" that have been instantiated in the database.</p>
                             <?php
                         echo('</div>');
                         basic_test_relay(1, 'tertiary', 'CodYOzPtwxb4A');
