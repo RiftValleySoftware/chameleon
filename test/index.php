@@ -86,7 +86,7 @@ require_once($config_file_path);
                 </div>
             </div>
             <h3><a href="./runTests.php">RUN THE FUNCTIONAL TESTS</a></h3>
-            <h3 style="margin-top:1em"><a href="./mapDemo.php">RUN THE MAP DEMO TEST</a></h3>
+            <h3 style="margin-top:1em"><a href="./simpleMapDemo.php">RUN THE MAP DEMO TEST</a></h3>
         </div>
     </body>
 </html>
