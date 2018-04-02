@@ -82,57 +82,63 @@
     
     function display_record($in_record_object) {
         echo("<h5 style=\"margin-top:0.5em\">ITEM ".$in_record_object->id().":</h5>");
-        echo('<div class="inner_div">');
-            echo("<p>$in_record_object->class_description</p>");
-            echo("<p>$in_record_object->instance_description</p>");
-            echo("<p>Read: $in_record_object->read_security_id</p>");
-            echo("<p>Write: $in_record_object->write_security_id</p>");
+        if (isset($in_record_object) && $in_record_object) {
+            echo('<div class="inner_div">');
+                echo("<p>$in_record_object->class_description</p>");
+                echo("<p>$in_record_object->instance_description</p>");
+                echo("<p>Read: $in_record_object->read_security_id</p>");
+                echo("<p>Write: $in_record_object->write_security_id</p>");
             
-            if (intval($in_record_object->owner_id)) {
-                echo("<p>Owner: ".intval($in_record_object->owner_id)."</p>");
-            }
+                if (isset($in_record_object->owner_id) && intval($in_record_object->owner_id)) {
+                    echo("<p>Owner: ".intval($in_record_object->owner_id)."</p>");
+                }
             
-            if (isset($in_record_object->last_access)) {
-                echo("<p>Last access: ".date('g:i:s A, F j, Y', $in_record_object->last_access)."</p>");
-            }
+                if (isset($in_record_object->last_access)) {
+                    echo("<p>Last access: ".date('g:i:s A, F j, Y', $in_record_object->last_access)."</p>");
+                }
             
-            if (isset($in_record_object->distance)) {
-                $distance = sprintf('%01.3f', $in_record_object->distance);
-                echo("<p>Distance: $distance"."Km</p>");
-            }
-            
-            if ($in_record_object instanceof CO_Place) {
-                foreach ($in_record_object->address_elements as $key => $value) {
-                    if (trim($value)) {
-                        echo("<p>$key: \"$value\"</p>");
+                if (isset($in_record_object->distance)) {
+                    $distance = sprintf('%01.3f', $in_record_object->distance);
+                    echo("<p>Distance: $distance"."Km</p>");
+                }
+                
+                if (isset($in_record_object->tags)) {
+                    if ($in_record_object instanceof CO_Place) {
+                        foreach ($in_record_object->address_elements as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p>$key: \"$value\"</p>");
+                            }
+                        }
+                        echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
+                        echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
+                    } else {
+                        foreach ($in_record_object->tags as $key => $value) {
+                            echo("<p>Tag $key: \"$value\"</p>");
+                        }
                     }
                 }
-                echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
-                echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
-            } else {
-                foreach ($in_record_object->tags as $key => $value) {
-                    echo("<p>Tag $key: \"$value\"</p>");
-                }
-            }
             
-            if ( $in_record_object instanceof CO_Security_Login) {
-                if ( isset($in_record_object->ids) && is_array($in_record_object->ids) && count($in_record_object->ids)) {
-                    echo("<p>IDs: ");
-                        $first = TRUE;
-                        foreach ( $in_record_object->ids as $id ) {
-                            if (!$first) {
-                                echo(", ");
-                            } else {
-                                $first = FALSE;
+                if ( $in_record_object instanceof CO_Security_Login) {
+                    if ( isset($in_record_object->ids) && is_array($in_record_object->ids) && count($in_record_object->ids)) {
+                        echo("<p>IDs: ");
+                            $first = TRUE;
+                            foreach ( $in_record_object->ids as $id ) {
+                                if (!$first) {
+                                    echo(", ");
+                                } else {
+                                    $first = FALSE;
+                                }
+                                echo($id);
                             }
-                            echo($id);
-                        }
-                    echo("</p>");
-                } else {
-                    echo("<h4>NO IDS!</h4>");
+                        echo("</p>");
+                    } else {
+                        echo("<h4>NO IDS!</h4>");
+                    }
                 }
-            }
-        echo('</div>');
+            echo('</div>');
+        } else {
+            echo("<h4>Invalid Object!</h4>");
+        }
     }
         
 ?>

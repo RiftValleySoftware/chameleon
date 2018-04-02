@@ -34,7 +34,7 @@ if (isset($_GET['resolve_query'])) {
     echo(']');
     exit();
 } elseif (isset($_GET['loadDB'])) {
-    prepare_databases('stress_test');    
+    prepare_databases('basic_tests');
     exit();
 } else {
 ?><!DOCTYPE html>
