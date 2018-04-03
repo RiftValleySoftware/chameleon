@@ -88,6 +88,7 @@ require_once($config_file_path);
             <h3><a href="./runTests.php">RUN THE FUNCTIONAL TESTS</a></h3>
             <h3 style="margin-top:1em"><a href="./simpleMapDemo.php">RUN THE "BIG" MAP DEMO TEST</a></h3>
             <h3 style="margin-top:1em"><a href="./dcAreaMapDemo.php">RUN THE DC AREA MAP DEMO TEST</a></h3>
+            <h3 style="margin-top:1em"><a href="../badger/test/">BADGER TESTS</a></h3>
         </div>
     </body>
 </html>

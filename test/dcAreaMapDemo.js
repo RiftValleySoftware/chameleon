@@ -8,6 +8,12 @@ loadTestMap.prototype.m_icon_shadow = null;
 loadTestMap.prototype.m_main_map = null;
 loadTestMap.prototype.m_meeting_array = null;
 loadTestMap.prototype.m_current_task = null;
+loadTestMap.prototype.m_display_all_radio = null;
+loadTestMap.prototype.m_display_md_radio = null;
+loadTestMap.prototype.m_display_va_radio = null;
+loadTestMap.prototype.m_display_dc_radio = null;
+loadTestMap.prototype.m_display_wv_radio = null;
+loadTestMap.prototype.m_display_de_radio = null;
 
 loadTestMap.prototype.loadMap = function() {
 	this.m_icon_image_single = new google.maps.MarkerImage ( "images/MarkerB.png", new google.maps.Size(22, 32), new google.maps.Point(0,0), new google.maps.Point(12, 32) );
@@ -19,8 +25,8 @@ loadTestMap.prototype.loadMap = function() {
     if ( !this.m_main_map )
         {
         var myOptions = {
-                        'center': new google.maps.LatLng(38.8893, -77.0502),
-                        'zoom': 10,
+                        'center': new google.maps.LatLng(38.3, -78.6),
+                        'zoom': 8,
                         'mapTypeId': google.maps.MapTypeId.ROADMAP,
                         'mapTypeControlOptions': { 'style': google.maps.MapTypeControlStyle.DROPDOWN_MENU },
                         'zoomControl': true,
@@ -44,6 +50,7 @@ loadTestMap.prototype.loadMap = function() {
     
             google.maps.event.addListener(this.m_main_map, 'click', this.mapClicked);
             google.maps.event.addListenerOnce(this.m_main_map, 'tilesloaded', this.mapLoaded);
+            this.setUpRadiobuttonBox();
         };
     };
 };
@@ -75,6 +82,100 @@ loadTestMap.prototype.setUpMarkers = function() {
         this.m_main_map.m_ru_paul = false;
         this.getNewMarkers();
     };
+};
+
+loadTestMap.prototype.setUpRadiobutton = function( inButtonValue,
+                                        inName,
+                                        inSelected,
+                                        inButtonText,
+                                        inCallback
+                                        ) {
+    var containerElement = document.createElement ( 'div' );
+    if ( containerElement ) {
+        var radiobuttonElement = document.createElement ( 'input' );
+        if ( radiobuttonElement ) {
+            radiobuttonElement.type = 'radio';
+            radiobuttonElement.name = inName;
+            radiobuttonElement.value = inButtonValue;
+            radiobuttonElement.baseClassName = 'state_select'
+            radiobuttonElement.className = radiobuttonElement.baseClassName + '_radiobutton' + (inSelected ? '_selected' : '' );
+            radiobuttonElement.id = inName + '_' + inButtonValue + '_' + radiobuttonElement.baseClassName + '_radiobutton';
+            radiobuttonElement.checked = inSelected;
+            radiobuttonElement.context = this;
+
+            var handler = function ( radiobuttonElement ) {
+                    radiobuttonElement.className = radiobuttonElement.baseClassName + '_radiobutton' + (inSelected ? '_selected' : '' );
+                    inCallback(radiobuttonElement);
+                };
+
+            radiobuttonElement.addEventListener ( 'click', function () { handler(this); } );
+            
+            containerElement.appendChild ( radiobuttonElement );
+            
+            var labelElement = document.createElement ( 'label' );
+            if ( labelElement ) {
+                labelElement.htmlFor = radiobuttonElement.id;
+                labelElement.innerHTML = inButtonText;
+                containerElement.appendChild ( labelElement );
+                containerElement.radiobutton = radiobuttonElement;
+                return containerElement;
+            };
+        };
+    };
+    
+    return null;
+};
+
+loadTestMap.prototype.setUpRadiobuttonBox = function() {
+    var centerControlDiv = document.createElement ( 'div' );
+    if (centerControlDiv) {
+        this.m_display_all_radio = this.setUpRadiobutton('all', 'admin', true, 'All Admins', this.radioSelected);
+        this.m_display_md_radio = this.setUpRadiobutton('md', 'admin', false, 'Maryland', this.radioSelected);
+        this.m_display_va_radio = this.setUpRadiobutton('va', 'admin', false, 'Virginia', this.radioSelected);
+        this.m_display_dc_radio = this.setUpRadiobutton('dc', 'admin', false, 'DC', this.radioSelected);
+        this.m_display_wv_radio = this.setUpRadiobutton('wv', 'admin', false, 'West Virginia', this.radioSelected);
+        this.m_display_de_radio = this.setUpRadiobutton('de', 'admin', false, 'Delaware', this.radioSelected);
+        
+        centerControlDiv.id = "centerControlDiv";
+        centerControlDiv.className = "centerControlDiv";
+        var radioDiv = document.createElement ( 'div' );
+        if (radioDiv) {
+            radioDiv.id = "radioDiv";
+            radioDiv.className = "radioDiv";
+            radioDiv.appendChild ( this.m_display_all_radio );
+            radioDiv.appendChild ( this.m_display_md_radio );
+            radioDiv.appendChild ( this.m_display_va_radio );
+            radioDiv.appendChild ( this.m_display_dc_radio );
+            radioDiv.appendChild ( this.m_display_wv_radio );
+            radioDiv.appendChild ( this.m_display_de_radio );
+            
+            centerControlDiv.appendChild ( radioDiv );
+        
+            var buttonDiv = document.createElement ( 'div' );
+            if (buttonDiv) {
+                buttonDiv.id = "buttonDiv";
+                buttonDiv.className = "buttonDiv";
+                var toggleButton = document.createElement ( 'input' );
+                toggleButton.type = 'button';
+                toggleButton.value = "Return to Main Test Page";
+                toggleButton.className = "returnTestPageButton";
+                toggleButton.addEventListener ( 'click', this.returnToTest );
+                buttonDiv.appendChild ( toggleButton );
+                centerControlDiv.appendChild ( buttonDiv );
+            };
+        };
+
+        this.m_main_map.controls[google.maps.ControlPosition.TOP_CENTER].push ( centerControlDiv );
+    };
+};
+
+loadTestMap.prototype.returnToTest = function() {
+    window.location.href = './';
+};
+
+loadTestMap.prototype.radioSelected = function(inRadioButton
+                                    ) {
+    inRadioButton.context.getNewMarkers();
 };
 
 loadTestMap.prototype.mapDragStart = function() {
@@ -282,6 +383,12 @@ loadTestMap.prototype.displayMeetingMarkerInResults = function(   in_mtg_obj_arr
 		            marker_html += '<dd><em>';
 		            marker_html += weekdays[parseInt(in_mtg_obj_array[c]['weekday'])];
 		            marker_html += '</em></dd>';
+		            marker_html += '<dd>';
+		            marker_html += in_mtg_obj_array[c]['address'];
+		            marker_html += '</dd>';
+		            marker_html += '<dd>Admin: ';
+		            marker_html += in_mtg_obj_array[c]['admin'];
+		            marker_html += '</dd>';
                 };
                 
                 new_marker.meeting_id_array[c] = in_mtg_obj_array[c]['id'];
@@ -304,6 +411,21 @@ loadTestMap.prototype.displayMeetingMarkerInResults = function(   in_mtg_obj_arr
 
 loadTestMap.prototype.makeRequest = function(in_long, in_lat, in_radius_in_m) {
     var uri = 'dcAreaMapDemo.php?resolve_query=' + in_long.toString() + ',' + in_lat.toString() + ',' + (in_radius_in_m / 1000.0);
+    
+    if (this.m_display_md_radio.radiobutton.checked) {
+        uri += '&select=MDAdmin';
+    } else if (this.m_display_va_radio.radiobutton.checked) {
+        uri += '&select=VAAdmin';
+    } else if (this.m_display_dc_radio.radiobutton.checked) {
+        uri += '&select=DCAdmin';
+    } else if (this.m_display_wv_radio.radiobutton.checked) {
+        uri += '&select=WVAdmin';
+    } else if (this.m_display_de_radio.radiobutton.checked) {
+        uri += '&select=DEAdmin';
+    } else {
+        uri += '&select=admin';
+    }
+    
     this.removeMeetingMarkers();
     
     if (this.m_current_task) {

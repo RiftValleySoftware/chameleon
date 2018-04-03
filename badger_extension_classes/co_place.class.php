@@ -20,8 +20,6 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
 class CO_Place extends CO_LL_Location {
-    protected $_tag_key_array = Array();
-    
     var $address_elements = Array();
     
     /***********************************************************************************************************************/
@@ -97,6 +95,71 @@ class CO_Place extends CO_LL_Location {
         }
     }
 
+    /***********************/
+    /**
+    \returns the address, in a "readable" format.
+     */
+    public function get_readable_address($with_venue = TRUE) {
+        $ret = '';
+        
+        $tag_key_array = $this->_get_address_element_labels();
+        
+        if (isset($tag_key_array) && is_array($tag_key_array) && ( 6 < count($tag_key_array))) {
+            if ($with_venue && isset($this->address_elements[$tag_key_array[0]])) {
+                $ret = $this->address_elements[$tag_key_array[0]];
+            }
+        
+            if ($with_venue && isset($this->address_elements[$tag_key_array[2]]) && $this->address_elements[$tag_key_array[2]]) {
+                $open_paren = FALSE;
+            
+                if ($ret) {
+                    $ret .= ' (';
+                    $open_paren = TRUE;
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[2]];
+            
+                if ($open_paren) {
+                    $ret .= ')';
+                }
+            }
+        
+            if (isset($this->address_elements[$tag_key_array[1]]) && $this->address_elements[$tag_key_array[1]]) {
+                if ($ret) {
+                    $ret .= ', ';
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[1]];
+            }
+        
+            if (isset($this->address_elements[$tag_key_array[3]]) && $this->address_elements[$tag_key_array[3]]) {
+                if ($ret) {
+                    $ret .= ', ';
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[3]];
+            }
+        
+            if (isset($this->address_elements[$tag_key_array[5]]) && $this->address_elements[$tag_key_array[5]]) {
+                if ($ret) {
+                    $ret .= ', ';
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[5]];
+            }
+        
+            if (isset($this->address_elements[$tag_key_array[6]]) && $this->address_elements[$tag_key_array[6]]) {
+                if ($ret) {
+                    $ret .= ' ';
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[6]];
+            }
+        }
+        
+        return $ret;
+    }
+    
     /***********************/
     /**
     This updates the tags (and saves them to the DB) as per our internal address_elements property.

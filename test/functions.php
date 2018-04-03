@@ -111,6 +111,10 @@
                         }
                         echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
                         echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
+                        $address = $in_record_object->get_readable_address();
+                        if ($address) {
+                            echo("<p>Address: \"$address.\"</p>");
+                        }
                     } else {
                         foreach ($in_record_object->tags as $key => $value) {
                             echo("<p>Tag $key: \"$value\"</p>");

@@ -41,6 +41,8 @@ loadTestMap.prototype.loadMap = function() {
             this.m_main_map.m_calculated_markers_array = new Array();
             this.m_main_map.m_ru_paul = false;
             this.m_main_map.m_info_window_opening = false;
+            
+            this.setUpButtonBox();
     
             google.maps.event.addListener(this.m_main_map, 'click', this.mapClicked);
             google.maps.event.addListenerOnce(this.m_main_map, 'tilesloaded', this.mapLoaded);
@@ -102,6 +104,27 @@ loadTestMap.prototype.getNewMarkers = function() {
     throbberContainer.style.display = 'block';
     var position = this.m_main_map.getCenter();
     this.makeRequest(position.lng(), position.lat(), this.m_main_map.radius);
+};
+
+loadTestMap.prototype.setUpButtonBox = function() {
+    var centerControlDiv = document.createElement ( 'div' );
+    if (centerControlDiv) {
+        centerControlDiv.id = "centerControlDiv";
+        centerControlDiv.className = "centerControlDiv";
+
+        var toggleButton = document.createElement ( 'input' );
+        toggleButton.type = 'button';
+        toggleButton.value = "Return to Main Test Page";
+        toggleButton.className = "returnTestPageButton";
+        toggleButton.addEventListener ( 'click', this.returnToTest );
+        centerControlDiv.appendChild ( toggleButton );
+
+        this.m_main_map.controls[google.maps.ControlPosition.TOP_CENTER].push ( centerControlDiv );
+    };
+};
+
+loadTestMap.prototype.returnToTest = function() {
+    window.location.href = './';
 };
 
 /********************************************************************************************//**
@@ -282,6 +305,9 @@ loadTestMap.prototype.displayMeetingMarkerInResults = function(   in_mtg_obj_arr
 		            marker_html += '<dd><em>';
 		            marker_html += weekdays[parseInt(in_mtg_obj_array[c]['weekday'])];
 		            marker_html += '</em></dd>';
+		            marker_html += '<dd>';
+		            marker_html += in_mtg_obj_array[c]['address'];
+		            marker_html += '</dd>';
                 };
                 
                 new_marker.meeting_id_array[c] = in_mtg_obj_array[c]['id'];

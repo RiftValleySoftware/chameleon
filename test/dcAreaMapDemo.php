@@ -19,15 +19,25 @@ if ( !defined('LGV_ACCESS_CATCHER') ) {
 
 require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
 
+global $admin_map;
+
+$admin_map = Array(7 => 'Maryland Admin', 8 => 'Virginia Admin', 9 => 'DC Admin', 10 => 'West Virginia Admin', 11 => 'Delaware Admin');
+
 if (isset($_GET['resolve_query'])) {
-    $access_instance = new CO_Chameleon();
+    if (isset($_GET['select']) && $_GET['select']) {
+        $login_id = trim($_GET['select']);
+        $password = 'admin' == $login_id ? CO_Config::$god_mode_password : 'CoreysGoryStory';
+        $access_instance = new CO_Chameleon($login_id, NULL, $password);
+    } else {
+        $access_instance = new CO_Chameleon();
+    }
 
     echo('[');
     if ($access_instance->valid) {
         list($long, $lat, $radius) = array_map(function($in){ return floatval($in); }, explode(',', trim($_GET['resolve_query'])));
-        $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => $long, 'latitude' => $lat, 'radius' => $radius)));
+        $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => $long, 'latitude' => $lat, 'radius' => $radius)), FALSE, 0, 0, TRUE);
         if (isset($test_item) && is_array($test_item) && count($test_item)) {
-            $test = array_map(function($item){return '{"id":'.intval($item->id()).',"name":'.json_encode($item->name).',"longitude":'.floatval($item->longitude).',"latitude":'.floatval($item->latitude).',"distance":'.floatval($item->distance).',"weekday":'.intval($item->tags[8]).'}';}, $test_item);
+            $test = array_map(function($item){global $admin_map; return '{"admin":"'.$admin_map[intval($item->write_security_id)].'","id":'.intval($item->id()).',"name":'.json_encode($item->name).',"longitude":'.floatval($item->longitude).',"latitude":'.floatval($item->latitude).',"distance":'.floatval($item->distance).',"weekday":'.intval($item->tags[8]).',"address":"'.addslashes($item->get_readable_address()).'"}';}, $test_item);
             echo(implode(',',$test));
         }
     }
@@ -51,12 +61,47 @@ if (isset($_GET['resolve_query'])) {
                 width: 100%;
                 height: 100%;
             }
+            
             body {
                 font-family: Arial, San-serif;
             }
+            
             div.centerControlDiv {
                 background-color: white;
+                border: 1px solid black;
                 padding: 0.25em;
+                width: 30em;
+                display: table;
+                text-align:center;
+            }
+            
+            div.centerControlDiv div.buttonDiv {
+                float: none;
+                clear: both;
+                padding-top: 0.5em;
+            }
+            
+            div.centerControlDiv div.radioDiv {
+                text-align:left;
+                padding: 0.25em;
+                width: 30em;
+            }
+            
+            div.centerControlDiv div.radioDiv div {
+                width: 30%;
+                float:left;
+                padding-top: 0.125em;
+                padding-bottom: 0.125em;
+            }
+            
+            div.centerControlDiv div.radioDiv div input {
+                float:left;
+            }
+            
+            div.centerControlDiv div.radioDiv div label {
+                display: block;
+                float:left;
+                padding-left: 0.5em;
             }
         </style>
     </head>

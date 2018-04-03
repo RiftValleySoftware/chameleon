@@ -20,8 +20,6 @@ require_once(dirname(__FILE__).'/co_place.class.php');
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
 class CO_US_Place extends CO_Place {
-    protected $_tag_key_array = Array();
-
     /***********************************************************************************************************************/
     /***********************/
     /**
