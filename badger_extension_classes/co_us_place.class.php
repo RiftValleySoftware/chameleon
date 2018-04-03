@@ -32,8 +32,7 @@ class CO_US_Place extends CO_Place {
                         CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_3,
                         CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_4,
                         CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_5,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_6,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_7
+                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_6
                     );
 	}
     
@@ -45,7 +44,7 @@ class CO_US_Place extends CO_Place {
 	public function __construct(    $in_db_object = NULL,   ///< The database object for this instance.
 	                                $in_db_result = NULL,   ///< The database row for this instance (associative array, with database keys).
 	                                $in_owner_id = NULL,    ///< The ID of the object (in the database) that "owns" this instance.
-                                    $in_tags_array = NULL,  /**< An array of up to 10 strings, with address information. Order is important:
+                                    $in_tags_array = NULL,  /**< An array of up to 10 strings, with address information in the first 7. Order is important:
                                                                 - 0: Venue
                                                                 - 1: Street Address
                                                                 - 2: Extra Information
@@ -53,7 +52,8 @@ class CO_US_Place extends CO_Place {
                                                                 - 4: County
                                                                 - 5: State
                                                                 - 6: ZIP Code
-                                                                - 7: Nation
+                                                              
+                                                                Associative keys are not used. The array should be in that exact order.
 	                                                        */
 	                                $in_longitude = NULL,   ///< An initial longitude value.
 	                                $in_latitude = NULL     ///< An initial latitude value.

@@ -47,7 +47,7 @@ class CO_Place extends CO_LL_Location {
 	public function __construct(    $in_db_object = NULL,   ///< The database object for this instance.
 	                                $in_db_result = NULL,   ///< The database row for this instance (associative array, with database keys).
 	                                $in_owner_id = NULL,    ///< The ID of the object (in the database) that "owns" this instance.
-                                    $in_tags_array = NULL,  /**< An array of up to 10 strings, with address information. Order is important:
+                                    $in_tags_array = NULL,  /**< An array of up to 10 strings, with address information in the first 8. Order is important:
                                                                 - 0: Venue
                                                                 - 1: Street Address
                                                                 - 2: Extra Information
@@ -56,6 +56,8 @@ class CO_Place extends CO_LL_Location {
                                                                 - 5: State
                                                                 - 6: ZIP Code
                                                                 - 7: Nation
+                                                              
+                                                                Associative keys are not used. The array should be in that exact order.
 	                                                        */
 	                                $in_longitude = NULL,   ///< An initial longitude value.
 	                                $in_latitude = NULL     ///< An initial latitude value.
@@ -104,12 +106,12 @@ class CO_Place extends CO_LL_Location {
         
         $tag_key_array = $this->_get_address_element_labels();
         
-        if (isset($tag_key_array) && is_array($tag_key_array) && ( 6 < count($tag_key_array))) {
-            if ($with_venue && isset($this->address_elements[$tag_key_array[0]])) {
+        if (isset($tag_key_array) && is_array($tag_key_array) && count($tag_key_array)) {
+            if ($with_venue && isset($tag_key_array[0]) && isset($this->address_elements[$tag_key_array[0]])) {
                 $ret = $this->address_elements[$tag_key_array[0]];
             }
         
-            if ($with_venue && isset($this->address_elements[$tag_key_array[2]]) && $this->address_elements[$tag_key_array[2]]) {
+            if ($with_venue && isset($tag_key_array[2]) && isset($this->address_elements[$tag_key_array[2]]) && $this->address_elements[$tag_key_array[2]]) {
                 $open_paren = FALSE;
             
                 if ($ret) {
@@ -124,7 +126,7 @@ class CO_Place extends CO_LL_Location {
                 }
             }
         
-            if (isset($this->address_elements[$tag_key_array[1]]) && $this->address_elements[$tag_key_array[1]]) {
+            if (isset($tag_key_array[1]) && isset($this->address_elements[$tag_key_array[1]]) && $this->address_elements[$tag_key_array[1]]) {
                 if ($ret) {
                     $ret .= ', ';
                 }
@@ -132,7 +134,7 @@ class CO_Place extends CO_LL_Location {
                 $ret .= $this->address_elements[$tag_key_array[1]];
             }
         
-            if (isset($this->address_elements[$tag_key_array[3]]) && $this->address_elements[$tag_key_array[3]]) {
+            if (isset($tag_key_array[3]) && isset($this->address_elements[$tag_key_array[3]]) && $this->address_elements[$tag_key_array[3]]) {
                 if ($ret) {
                     $ret .= ', ';
                 }
@@ -140,7 +142,7 @@ class CO_Place extends CO_LL_Location {
                 $ret .= $this->address_elements[$tag_key_array[3]];
             }
         
-            if (isset($this->address_elements[$tag_key_array[5]]) && $this->address_elements[$tag_key_array[5]]) {
+            if (isset($tag_key_array[5]) && isset($this->address_elements[$tag_key_array[5]]) && $this->address_elements[$tag_key_array[5]]) {
                 if ($ret) {
                     $ret .= ', ';
                 }
@@ -148,12 +150,20 @@ class CO_Place extends CO_LL_Location {
                 $ret .= $this->address_elements[$tag_key_array[5]];
             }
         
-            if (isset($this->address_elements[$tag_key_array[6]]) && $this->address_elements[$tag_key_array[6]]) {
+            if (isset($tag_key_array[6]) && isset($this->address_elements[$tag_key_array[6]]) && $this->address_elements[$tag_key_array[6]]) {
                 if ($ret) {
                     $ret .= ' ';
                 }
             
                 $ret .= $this->address_elements[$tag_key_array[6]];
+            }
+        
+            if (isset($tag_key_array[7]) && isset($this->address_elements[$tag_key_array[7]]) && $this->address_elements[$tag_key_array[7]]) {
+                if ($ret) {
+                    $ret .= ' ';
+                }
+            
+                $ret .= $this->address_elements[$tag_key_array[7]];
             }
         }
         
