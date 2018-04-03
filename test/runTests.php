@@ -165,6 +165,7 @@ if (isset($test_name_array) && is_array($test_name_array) && count($test_name_ar
             $start_time = microtime(TRUE);
             ?>
             <div id="tests-wrapped-up" style="display:none">
+                <img src="../icon.png" style="display:block;margin:auto;width:80px" alt="A Lump of COAL" />
                 <div id="tests-displayed"></div>
                 <h3 style="margin-top:1em"><a href="./">RETURN TO MAIN ENVIRONMENT SETUP</a></h3>
             </div>
