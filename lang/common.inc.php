@@ -17,5 +17,7 @@ defined( 'LGV_LANG_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sur
 /**
  */
 class CO_CHAMELEON_Lang_Common {
+    static  $co_place_error_code_failed_to_geocode = 300;
+    static  $co_place_error_code_failed_to_lookup = 301;
 }
 ?>

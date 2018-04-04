@@ -22,6 +22,7 @@ This is a specialization of the location class. It adds support for US addresses
 class CO_Place extends CO_LL_Location {
     var $address_elements = Array();
     var $google_geocode_uri_prefix = NULL;
+    var $google_lookup_uri_prefix = NULL;
     
     /***********************************************************************************************************************/
     /***********************/
@@ -72,6 +73,7 @@ class CO_Place extends CO_LL_Location {
         $this->set_address_elements($this->tags, TRUE);
         
         $this->google_geocode_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&address=';
+        $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&ll=';
     }
     
     /***********************/
@@ -95,12 +97,14 @@ class CO_Place extends CO_LL_Location {
 	                                        $dont_save = FALSE  ///< If TRUE, then the DB update will not be called.
                                 ) {
         $ret = FALSE;
-        
+
         $this->address_elements = Array();
         $labels = $this->_get_address_element_labels();
         
         for ($i = 0; $i < count($labels); $i++) {
-            $this->set_address_element($i, isset($in_tags[$i]) ? $in_tags[$i] : '', TRUE);
+            $tag_value = isset($in_tags[$i]) ? $in_tags[$i] : '';
+            
+            $this->set_address_element($i, $tag_value, TRUE);
         }
         
         if (!$dont_save) {
@@ -127,7 +131,8 @@ class CO_Place extends CO_LL_Location {
         
         if ((0 <= $in_index) && ($in_index < count($labels))) {
             $key = $labels[$in_index];
-            $in_value = intval($in_value);
+
+            $in_value = strval($in_value);
         
             $this->address_elements[$key] = $in_value;
             $this->tags[$in_index] = $in_value;
@@ -185,19 +190,109 @@ class CO_Place extends CO_LL_Location {
 	
     /***********************/
     /**
-    This will do a geocode, using the Google Geocode API, of the long/lat, and will use the returned placemark
-    information to populate the various address fields, which will replace the current information (unless the geocode fails).
+    This will do a reverse geocode, using the Google Geocode API, of the object's address, and will return the long/lat (in an associative array).
     This requires that CO_Config::$google_api_key be set to a valid API key with the Google Geocode service enabled.
     
-    \returns TRUE, if successful.
+    \returns 
+     */
+    public function lookup_address() {
+        $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(FALSE));
+        $http_status = '';
+        $error_catcher = '';
+        
+        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
+        if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
+            if (isset($resulting_json->results[0]->geometry) && isset($resulting_json->results[0]->geometry->location) && isset($resulting_json->results[0]->geometry->location->lng) && isset($resulting_json->results[0]->geometry->location->lat)) {
+                return Array( 'longitude' => floatval($resulting_json->results[0]->geometry->location->lng), 'latitude' => floatval($resulting_json->results[0]->geometry->location->lat));
+            }
+        }
+            
+        $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_place_error_code_failed_to_geocode,
+                                        CO_CHAMELEON_Lang::$co_place_error_name_failed_to_geocode,
+                                        CO_CHAMELEON_Lang::$co_place_error_desc_failed_to_geocode);
+
+        return NULL;
+    }
+	
+    /***********************/
+    /**
+    This will do a geocode, using the Google Geocode API, of the object's long/lat, and will return the address (in an associative array).
+    This requires that CO_Config::$google_api_key be set to a valid API key with the Google Geocode service enabled.
+    
+    \returns 
      */
     public function geocode_long_lat() {
         $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(FALSE));
         $http_status = '';
         $error_catcher = '';
         
-        $resulting_json = CO_Chameleon_Utils::call_curl($uri, TRUE, $http_status, $error_catcher);
-echo('<pre>'.htmlspecialchars(print_r($resulting_json, true)).'</pre>');
+        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
+        
+        if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
+            if (isset($resulting_json->results[0]->address_components) && is_array($resulting_json->results[0]->address_components) && count($resulting_json->results[0]->address_components)) {
+                $address_components = $resulting_json->results[0]->address_components;
+                
+                $labels = $this->_get_address_element_labels();
+                $ret = Array($labels[1] => '', $labels[3] => '', $labels[4] => '', $labels[5] => '', $labels[6] => '');
+                
+                if (isset($labels[7])) {
+                    $ret[$labels[7]] = '';
+                }
+                
+                foreach ($address_components as $component) {
+                    $int_key = $component->types[0];
+                    
+                    switch ($int_key) {
+                        case 'street_number':
+                            if ($ret[$labels[1]]) {
+                                $ret[$labels[1]] = ' '.$ret[$labels[1]];
+                            }
+                            $ret[$labels[1]] = strval($component->short_name).$ret[$labels[1]];
+                        break;
+                        case 'route':
+                            if ($ret[$labels[1]]) {
+                                $ret[$labels[1]] .= ' ';
+                            }
+                            $ret[$labels[1]] .= strval($component->long_name);
+                        break;
+                        case 'locality':
+                            $ret[$labels[3]] = strval($component->long_name);
+                        break;
+                        case 'administrative_area_level_1':
+                            $ret[$labels[5]] = strval($component->short_name);
+                        break;
+                        case 'administrative_area_level_2':
+                            $ret[$labels[4]] = strval($component->short_name);
+                        break;
+                        case 'postal_code':
+                            if ($ret[$labels[6]]) {
+                                $ret[$labels[6]] = '-'.$ret[$labels[6]];
+                            }
+                            $ret[$labels[6]] = strval($component->short_name).$ret[$labels[6]];
+                        break;
+                        case 'postal_code_suffix':
+                            if ($ret[$labels[6]]) {
+                                $ret[$labels[6]] .= '-';
+                            }
+                            $ret[$labels[6]] .= strval($component->short_name);
+                        break;
+                        case 'country':
+                            if (isset($labels[7])) {
+                                $ret[$labels[7]] = strval($component->short_name);
+                            }
+                        break;
+                    }
+                }
+                
+                return $ret;
+            }
+        }
+            
+        $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_place_error_code_failed_to_geocode,
+                                        CO_CHAMELEON_Lang::$co_place_error_name_failed_to_geocode,
+                                        CO_CHAMELEON_Lang::$co_place_error_desc_failed_to_geocode);
+
+        return NULL;
     }
     
     /***********************/

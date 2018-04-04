@@ -27,6 +27,12 @@ class CO_CHAMELEON_Lang {
     static  $chameleon_co_place_tag_6 = 'ZIP Code';
     static  $chameleon_co_place_tag_7 = 'Nation';
     
+    static  $co_place_error_name_failed_to_geocode = 'Failed to determine an address from the longitude and latitude';
+    static  $co_place_error_desc_failed_to_geocode = 'The Google Maps Geocoding API was unable to determine an address from the given longitude and latitude.';
+    
+    static  $co_place_error_name_failed_to_lookup = 'Failed to determine a longitude and latitude from the address';
+    static  $co_place_error_desc_failed_to_lookup = 'The Google Maps Geocoding API was unable to determine a longitude and latitude from the given address information.';
+    
     /// These apply to the CO_Place class. The first eight tags are used for US location information.
     static  $chameleon_co_us_place_tag_0 = 'Venue';
     static  $chameleon_co_us_place_tag_1 = 'Street Address';

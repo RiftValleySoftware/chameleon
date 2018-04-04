@@ -28,19 +28,157 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     
-    $access_instance = new CO_Chameleon();
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        echo("<h2>The access instance is valid!</h2>");
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(21131);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(11236);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(10872);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(7562);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(1302);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(20764);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
+    
+function basic_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
         $st1 = microtime(TRUE);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -77.0502, 'latitude' => 38.8893, 'radius' => 50.0)));
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
                     if (count($test_item)) {
                         echo("<h4>We got ".count($test_item)." records in $fetchTime seconds.</h4>");
-                        $count = 0;
                         foreach ( $test_item as $item ) {
                             display_record($item);
                         }
@@ -63,8 +201,21 @@ ob_start();
         echo('<div id="basic-login-tests" class="closed">');
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'basic-login-tests\')">READ PLACES</a></h2>');
             echo('<div class="container">');
+            
                 echo('<div id="test-011" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-011\')">TEST 11: Select a location and radius, and Read The Entries.</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-011\')">TEST 11: Test Geocode.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            ?>
+                            <p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>
+                            <?php
+                        echo('</div>');
+                        basic_test_relay(1);
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-012" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-012\')">TEST 12: Select a location and radius, and Read The Entries.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -72,11 +223,10 @@ ob_start();
                             <p class="explain">It works by choosing a location in Washington DC, and searching for meetings within a 50Km radius.</p>
                             <?php
                         echo('</div>');
-                        basic_test_relay(1, 'tertiary', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        basic_test_relay(2);
                     echo('</div>');
                 echo('</div>');
+                
             echo('</div>');
         echo('</div>');
     echo('</div>');

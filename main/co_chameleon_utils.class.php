@@ -25,11 +25,11 @@ class CO_Chameleon_Utils {
     
         \returns a string, containing the response. Null if the call fails to get any data.
     */
-    function call_curl (	$in_uri,				        ///< A string. The URI to call.
-                            $in_post = TRUE,		        ///< If false, the transaction is a GET, not a POST. Default is true.
-                            &$http_status = NULL,           ///< Optional reference to a string. Returns the HTTP call status.
-                            &$content_failure_note = NULL   ///< If there's a content failure, instead of throwing an exception, we will put it in here (if provided).
-                            ) {
+    static function call_curl (	$in_uri,				        ///< A string. The URI to call.
+                                $in_post = FALSE,		        ///< If TRUE, the transaction is a POST, not a GET. Default is FALSE.
+                                &$http_status = NULL,           ///< Optional reference to a string. Returns the HTTP call status.
+                                &$content_failure_note = NULL   ///< If there's a content failure, instead of throwing an exception, we will put it in here (if provided).
+                                ) {
         $ret = null;
     
         // If the curl extension isn't loaded, we're screwed.
