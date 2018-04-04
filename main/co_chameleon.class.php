@@ -15,10 +15,6 @@ defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes s
 
 define('__CHAMELEON_VERSION__', '1.0.0.0000');
 
-if ( !defined('LGV_ACCESS_CATCHER') ) {
-    define('LGV_ACCESS_CATCHER', 1);
-}
-
 require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
 
 $lang = CO_Config::$lang;
@@ -38,6 +34,13 @@ if ( !defined('LGV_LANG_CATCHER') ) {
 
 require_once($lang_file);
 require_once($lang_common_file);
+
+if ( !defined('LGV_CHAMELEON_UTILS_CATCHER') ) {
+    define('LGV_CHAMELEON_UTILS_CATCHER', 1);
+}
+
+$utils_file = CO_Config::chameleon_main_class_dir().'/co_chameleon_utils.class.php';
+require_once($utils_file);
 
 /***************************************************************************************************************************/
 /**

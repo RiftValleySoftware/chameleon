@@ -21,8 +21,9 @@ foreach (new DirectoryIterator(dirname(__FILE__).'/test_scripts') as $fileInfo) 
         array_push($test_name_array, $fileInfo->getBasename('.php'));
     }
 }
-    
+
 if (isset($test_name_array) && is_array($test_name_array) && count($test_name_array)) {
+    sort($test_name_array);
     $test_name_array = "Array('".implode("','", $test_name_array)."')";
 } else {
     $test_name_array = "Array('')";

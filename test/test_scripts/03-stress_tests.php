@@ -13,13 +13,13 @@
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
 
-function basic_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $function_name = sprintf('basic_test_%02d', $in_test_number);
+function stress_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $function_name = sprintf('stress_test_%02d', $in_test_number);
     
     $function_name($in_login, $in_hashed_password, $in_password);
 }
     
-function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+function stress_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $access_instance = NULL;
     
     if ( !defined('LGV_ACCESS_CATCHER') ) {
@@ -56,22 +56,22 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
 
 ob_start();
 
-    prepare_databases('basic_tests');
+    prepare_databases('stress_tests');
     
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
-        echo('<h1 class="header">BASIC TESTS</h1>');
-        echo('<div id="basic-login-tests" class="closed">');
-            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'basic-login-tests\')">READ PLACES</a></h2>');
+        echo('<h1 class="header">STRESS TESTS</h1>');
+        echo('<div id="stress-login-tests" class="closed">');
+            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'stress-login-tests\')">READ PLACES</a></h2>');
             echo('<div class="container">');
-                echo('<div id="test-001" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-001\')">TEST 1: Log In as "Tertiary", and Read The Entries.</a></h3>');
+                echo('<div id="test-013" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Log In as "Tertiary", and Read The Entries.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
                             <p class="explain">This test will dump a subset of the "places" that have been instantiated in the database.</p>
                             <?php
                         echo('</div>');
-                        basic_test_relay(1, 'tertiary', 'CodYOzPtwxb4A');
+                        stress_test_relay(1, 'tertiary', 'CodYOzPtwxb4A');
                         $start = microtime(TRUE);
                         echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
                     echo('</div>');

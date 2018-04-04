@@ -21,35 +21,35 @@ class CO_Config {
     /*                                                     CHANGE THIS                                                     */
     /***********************************************************************************************************************/
     
-    static $lang = 'en';
+    static $lang = 'en';                                        // Default is English
     
-    static $god_mode_id = 2;
-    static $god_mode_password = 'BWU-HA-HAAAA-HA!';
+    static $god_mode_id = 2;                                    // Default is 2 (First security item created).
+    static $god_mode_password = '<ENTER YOUR PASSWORD HERE>';
     
-    static $data_db_name = 'littlegr_badger_data';
-    static $data_db_host = 'localhost';
-    static $data_db_type = 'mysql';
-    static $data_db_login = 'littlegr_badg';
-    static $data_db_password = 'pnpbxI1aU0L(';
+    static $data_db_name = '<DATA DB NAME>';
+    static $data_db_host = 'localhost';                         // Or other server URI
+    static $data_db_type = 'mysql';                             // Or other server PDO driver
+    static $data_db_login = '<DB LOGIN>';
+    static $data_db_password = '<DB PASSWORD>';
 
-    static $sec_db_name = 'littlegr_badger_security';
-    static $sec_db_host = 'localhost';
-    static $sec_db_type = 'mysql';
-    static $sec_db_login = 'littlegr_badg';
-    static $sec_db_password = 'pnpbxI1aU0L(';
+    static $sec_db_name = '<SECURITY DB NAME>';
+    static $sec_db_host = 'localhost';                          // Or other server URI
+    static $sec_db_type = 'mysql';                              // Or other Server PDO driver
+    static $sec_db_login = '<DB LOGIN>';
+    static $sec_db_password = '<DB PASSWORD>';
     
     /**
     This is the Google API key. It's required for CHAMELEON to do address lookups and other geocoding tasks.
     CHAMELEON requires this to have at least the Google Geocoding API enabled.
     */
-    static $google_api_key = 'AIzaSyC5meofXldluts0UPGp6Zg234-U989u1pY';
+    static $google_api_key = '<GOOGLE API KEY>';
     
     /***********************/
     /**
     \returns the POSIX path to the main CHAMELEON directory.
      */
     static function base_dir() {
-        return dirname(dirname(dirname(__FILE__)));
+        return '<THE ABSOLUTE POSIX PATH TO THE MAIN CHAMELEON DIRECTORY>';
     }
     
     /***********************************************************************************************************************/
