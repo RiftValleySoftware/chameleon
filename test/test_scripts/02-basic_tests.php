@@ -259,23 +259,11 @@ ob_start();
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
         echo('<h1 class="header">BASIC TESTS</h1>');
         echo('<div id="basic-login-tests" class="closed">');
-            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'basic-login-tests\')">READ PLACES</a></h2>');
+            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'basic-login-tests\')">TEST PLACES</a></h2>');
             echo('<div class="container">');
             
                 echo('<div id="test-011" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-011\')">TEST 11: Test Geocode.</a></h3>');
-                    echo('<div class="main_div inner_container">');
-                        echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>
-                            <?php
-                        echo('</div>');
-//                         basic_test_relay(1);
-                    echo('</div>');
-                echo('</div>');
-            
-                echo('<div id="test-012" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-012\')">TEST 12: Select a location and radius, and Read The Entries.</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-011\')">TEST 11: Select a location and radius, and Read The Entries.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -283,16 +271,28 @@ ob_start();
                             <p class="explain">It works by choosing a location in Washington DC, and searching for meetings within a 50Km radius.</p>
                             <?php
                         echo('</div>');
-//                         basic_test_relay(2);
+                        basic_test_relay(2);
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-012" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-012\')">TEST 12: Test Geocode.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            ?>
+                            <p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>
+                            <?php
+                        echo('</div>');
+                        basic_test_relay(1);
                     echo('</div>');
                 echo('</div>');
             
                 echo('<div id="test-013" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Test the Collection Class.</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Basic Collection Class Tests.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
-                            <p class="explain"></p>
+                            <p class="explain">This will access the collection classes we inserted into the dataset, and display their data.</p>
                             <?php
                         echo('</div>');
                         basic_test_relay(3);
