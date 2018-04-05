@@ -211,17 +211,6 @@ function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
-                echo ('<h4>Address:</h4>');
-                    echo('<div class="inner_div">');
-                    $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
-                        }
-                    }
-                echo('</div>');
-                $ll = $item->lookup_address();
-                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
@@ -232,17 +221,33 @@ function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
-                echo ('<h4>Address:</h4>');
-                    echo('<div class="inner_div">');
-                    $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
-                        }
-                    }
-                echo('</div>');
-                $ll = $item->lookup_address();
-                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
+    
+function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(2);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
@@ -286,6 +291,13 @@ ob_start();
                         basic_test_relay(1);
                     echo('</div>');
                 echo('</div>');
+                
+            echo('</div>');
+        echo('</div>');
+            
+        echo('<div id="basic-collection-tests" class="closed">');
+            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'basic-collection-tests\')">TEST COLLECTIONS</a></h2>');
+            echo('<div class="container">');
             
                 echo('<div id="test-013" class="inner_closed">');
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Basic Collection Class Tests.</a></h3>');
@@ -296,6 +308,18 @@ ob_start();
                             <?php
                         echo('</div>');
                         basic_test_relay(3);
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-014" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Put A Collection Through Its Paces.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            ?>
+                            <p class="explain"></p>
+                            <?php
+                        echo('</div>');
+                        basic_test_relay(4, 'DCAdmin', '', 'CoreysGoryStory');
                     echo('</div>');
                 echo('</div>');
                 

@@ -20,7 +20,7 @@ require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place.class.php
 /**
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
-class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
+class CO_US_Place_Collection extends CO_US_Place {
     var $container;
     var $position;
 	

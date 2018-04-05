@@ -46,8 +46,8 @@ ALTER TABLE `co_data_nodes`
   
 INSERT INTO `co_data_nodes` (`id`, `access_class`, `last_access`, `read_security_id`, `write_security_id`, `object_name`, `access_class_context`, `owner`, `longitude`, `latitude`, `tag0`, `tag1`, `tag2`, `tag3`, `tag4`, `tag5`, `tag6`, `tag7`, `tag8`, `tag9`, `payload`) VALUES
 (1, 'CO_Main_DB_Record', '1970-01-02 00:00:00', -1, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 7, 'Lincoln Memorial Collection', NULL, 7, -77.0502, 38.8893, 'Lincoln Memorial', '2 Lincoln Memorial Circle NW', '', 'Washington', 'DC', 'DC', '20037', NULL, NULL, NULL, NULL),
-(3, 'CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 8, 'Arlington Cemetery Collection', NULL, 7, -77.0735889, 38.8792787, 'Arlington National Cemetery', 'Arlington National Cemetery', '', 'Arlington', 'Arlington', 'VA', '22211', NULL, NULL, NULL, NULL),
+(2, 'CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 9, 'Lincoln Memorial Collection', NULL, 9, -77.0502, 38.8893, 'Lincoln Memorial', '2 Lincoln Memorial Circle NW', '', 'Washington', 'DC', 'DC', '20037', NULL, NULL, NULL, NULL),
+(3, 'CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 8, 'Arlington Cemetery Collection', NULL, 8, -77.0735889, 38.8792787, 'Arlington National Cemetery', 'Arlington National Cemetery', '', 'Arlington', 'Arlington', 'VA', '22211', NULL, NULL, NULL, NULL),
 (42, 'CO_US_Place', '1970-01-02 00:00:00', 0, 7, 'New Start', NULL, 7, -76.87700701, 39.05928327, 'Queens Chapel United Methodist Church', '7410 Old Muirkirk Road', '', 'Beltsville', '', 'MD', '20705', NULL, '6', '20:00:00', NULL),
 (94, 'CO_US_Place', '1970-01-02 00:00:00', 0, 7, 'Dealing With Feelings', NULL, 7, -76.0783243, 38.5643758, 'New Way of Life Club', '742 Race St.', '', 'Cambridge', 'Dorchester', 'MD', '21613', NULL, '2', '12:00:00', NULL),
 (95, 'CO_US_Place', '1970-01-02 00:00:00', 0, 7, 'Hamilton Noon', NULL, 7, -76.562445, 39.350807, 'Faith Community UMC', '5315 Harford Rd.', '', 'Baltimore', 'Baltimore City', 'MD', '21214', NULL, '2', '12:00:00', NULL),

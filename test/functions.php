@@ -84,6 +84,17 @@
         echo("<h5 style=\"margin-top:0.5em\">ITEM ".$in_record_object->id().":</h5>");
         if (isset($in_record_object) && $in_record_object) {
             echo('<div class="inner_div">');
+                $access_object = $in_record_object->get_access_object();
+                if ($access_object) {
+                    $login_item = $access_object->get_login_item();
+                    if ($login_item) {
+                        echo('<p style="font-style:italic;margin-top:0.25em;margin-bottom:0.25em">'.'This user ("'.$login_item->login_id.'"), is logged in as "'.$login_item->login_id.'" ('.implode(', ', $login_item->ids).').</p>');
+                        if ($in_record_object->user_can_write()) {
+                            echo('<p style="color: green;font-weight:bold;font-size:large;font-style:italic;margin-bottom:0.25em">This user can modify this record.</p>');
+                        }
+                    }
+                }
+                
                 echo("<p>$in_record_object->class_description</p>");
                 echo("<p>$in_record_object->instance_description</p>");
                 echo("<p>Read: $in_record_object->read_security_id</p>");
@@ -101,13 +112,16 @@
                     $distance = sprintf('%01.3f', $in_record_object->distance);
                     echo("<p>Distance: $distance"."Km</p>");
                 }
-                
+            
                 if (isset($in_record_object->tags)) {
                     if ($in_record_object instanceof CO_Place) {
                         foreach ($in_record_object->address_elements as $key => $value) {
                             if (trim($value)) {
                                 echo("<p>$key: \"$value\"</p>");
                             }
+                        }
+                        if ($in_record_object instanceof CO_US_Place) {
+                            echo("<p>Tag 7: \"".$in_record_object->tags[7]."\"</p>");
                         }
                         echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
                         echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
