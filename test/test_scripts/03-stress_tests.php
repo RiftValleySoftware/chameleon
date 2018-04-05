@@ -177,8 +177,8 @@ ob_start();
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'stress-login-tests\')">READ PLACES</a></h2>');
             echo('<div class="container">');
             
-                echo('<div id="test-013" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Log In as "Tertiary", and Read The Entries for the Las Vegas Area.</a></h3>');
+                echo('<div id="test-014" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Log In as "Tertiary", and Read The Entries for the Las Vegas Area.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -191,8 +191,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-014" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Check the DC Area with No Login</a></h3>');
+                echo('<div id="test-015" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-015\')">TEST 15: Check the DC Area with No Login</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -205,8 +205,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-015" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-015\')">TEST 15: Check the Dublin, Ireland Area with No Login</a></h3>');
+                echo('<div id="test-016" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-016\')">TEST 16: Check the Dublin, Ireland Area with No Login</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -219,8 +219,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-016" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-016\')">TEST 16: Check the Sydney, Australia Area with No Login</a></h3>');
+                echo('<div id="test-017" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-017\')">TEST 17: Check the Sydney, Australia Area with No Login</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>

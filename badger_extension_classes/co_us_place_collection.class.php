@@ -23,47 +23,74 @@ This is a specialization of the location class. It adds support for US addresses
 class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
     var $container;
     var $position;
-    
+	
     /// CO_US_Place_Collection Methods
-    public function __construct() {
+    /***********************************************************************************************************************/
+    /***********************/
+    /**
+    Constructor (Initializer)
+     */
+	public function __construct(    $in_db_object = NULL,   ///< The database object for this instance.
+	                                $in_db_result = NULL,   ///< The database row for this instance (associative array, with database keys).
+	                                $in_owner_id = NULL,    ///< The ID of the object (in the database) that "owns" this instance.
+                                    $in_tags_array = NULL,  /**< An array of up to 10 strings, with address information in the first 8. Order is important:
+                                                                - 0: Venue
+                                                                - 1: Street Address
+                                                                - 2: Extra Information
+                                                                - 3: Town
+                                                                - 4: County
+                                                                - 5: State
+                                                                - 6: ZIP Code
+                                                                - 7: Nation
+                                                              
+                                                                Associative keys are not used. The array should be in that exact order.
+	                                                        */
+	                                $in_longitude = NULL,   ///< An initial longitude value.
+	                                $in_latitude = NULL     ///< An initial latitude value.
+                                ) {
+        
+        parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
+        
+        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
+        
         $this->container = Array();
-        $this->rewind() = 0;
+        $this->rewind();
     }
     
     /// Iterator Methods
-    public mixed current() {
+    public function current() {
         return $this->offsetExists($this->key()) ? $this->container[$this->key()] : NULL;
     }
     
-    public scalar key() {
+    public function key() {
         return $this->position;
     }
     
-    public void next() {
+    public function next() {
         if ($this->position < (count($this->container) + 1)) {
             ++$this->position;
         }
     }
     
-    public void rewind() {
+    public function rewind() {
         $this->position = 0;
     }
     
-    public bool valid () {
+    public function valid () {
         return isset($this->container[$this->position]);
     }
     
     
     /// ArrayAccess Methods
-    public bool offsetExists(mixed $offset) {
+    public function offsetExists($offset) {
         return isset($this->container[$offset]);
     }
     
-    public mixed offsetGet(mixed $offset) {
+    public function offsetGet($offset) {
         return isset($this->container[$offset]) ? $this->container[$offset] : NULL;
     }
     
-    public void offsetSet(mixed $offset , mixed $value) {
+    public function offsetSet($offset , $value) {
         if (!$this->isElementInHierarchy($value)) {
             if (is_null($offset)) {
                 $this->container[] = $value;
@@ -73,22 +100,22 @@ class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
         }
     }
     
-    public void offsetUnset(mixed $offset) {
+    public function offsetUnset($offset) {
         if ($this->offsetExists($offset)) {
             unset($this->container[$offset]);
         }
     }
     
     /// iCO_Collection Methods
-    public bool appendElement(mixed $in_element) {
+    public function appendElement($in_element) {
     }
     
-    public bool appendElements([mixed $in_element]) {
+    public function appendElements($in_element_array) {
     }
     
-    public bool isElementInHierarchy(mixed $in_element) {
+    public function whosYourDaddy($in_element) {
     }
     
-    public [mixed] getHierarchy(mixed $in_element) {
+    public function getHierarchy() {
     }
 };

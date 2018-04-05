@@ -27,6 +27,7 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     }
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place_collection.class.php');
     
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
@@ -191,10 +192,69 @@ function basic_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
 }
+    
+function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(2);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        
+        $st1 = microtime(TRUE);
+        $item = $access_instance->get_single_data_record_by_id(3);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($item) ) {
+                display_record($item);
+                echo ('<h4>Address:</h4>');
+                    echo('<div class="inner_div">');
+                    $address = $item->geocode_long_lat();
+                    foreach ($address as $key => $value) {
+                        if (trim($value)) {
+                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                        }
+                    }
+                echo('</div>');
+                $ll = $item->lookup_address();
+                echo ("<p><strong>Longitude and Latitude:</strong> <em>(".$ll['longitude'].", ".$ll['latitude'].")</em></p>");
+            }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
 
 ob_start();
 
-    prepare_databases('dc_area_tests');
+    prepare_databases('basic_tests');
     
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');
         echo('<h1 class="header">BASIC TESTS</h1>');
@@ -210,7 +270,7 @@ ob_start();
                             <p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>
                             <?php
                         echo('</div>');
-                        basic_test_relay(1);
+//                         basic_test_relay(1);
                     echo('</div>');
                 echo('</div>');
             
@@ -223,7 +283,19 @@ ob_start();
                             <p class="explain">It works by choosing a location in Washington DC, and searching for meetings within a 50Km radius.</p>
                             <?php
                         echo('</div>');
-                        basic_test_relay(2);
+//                         basic_test_relay(2);
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-013" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Test the Collection Class.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            ?>
+                            <p class="explain"></p>
+                            <?php
+                        echo('</div>');
+                        basic_test_relay(3);
                     echo('</div>');
                 echo('</div>');
                 
