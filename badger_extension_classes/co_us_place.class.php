@@ -13,7 +13,7 @@
 */
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-require_once(dirname(__FILE__).'/co_place.class.php');
+require_once(CO_Config::db_classes_extension_class_dir().'/co_place.class.php');
 	
 /***************************************************************************************************************************/
 /**
