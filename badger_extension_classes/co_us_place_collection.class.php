@@ -116,7 +116,42 @@ class CO_US_Place_Collection extends CO_US_Place {
     }
     
     public function whosYourDaddy($in_element) {
-        return FALSE;
+        $ret = FALSE;
+        
+        return $ret;
+    }
+    
+    public function map($in_function) {
+        $ret = Array();
+        
+        $children = $this->children();
+        
+        foreach ($children as $child) {
+            $result = $in_function($child);
+            array_push($ret, $result);
+        }
+        
+        return self::class;
+    }
+    
+    public function recursiveMap($in_function, $in_hierarchy_level = 0) {
+        $ret = Array();
+        $in_hierarchy_level = intval($in_hierarchy_level);
+        
+        $children = $this->children();
+        
+        foreach ($children as $child) {
+            $result = $in_function($child, $in_hierarchy_level);
+            array_push($ret, $result);
+            if ($child instanceof CO_US_Place_Collection) {
+                $in_hierarchy_level++;
+                $result = $child->recursiveMap($in_function, $in_hierarchy_level);
+                $in_hierarchy_level--;
+                array_merge($ret, $result);
+            }
+        }
+        
+        return $ret;
     }
     
     public function children() {
