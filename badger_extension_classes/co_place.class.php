@@ -68,9 +68,9 @@ class CO_Place extends CO_LL_Location {
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
         
         $this->class_description = "This is a 'Place' Class for General Addresses.";
-        $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->longitude, $this->latitude)" : "($this->longitude, $this->latitude)";
+        $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude)" : "($this->_longitude, $this->_latitude)";
         
-        $this->set_address_elements($this->tags, TRUE);
+        $this->set_address_elements($this->tags(), TRUE);
         
         $this->google_geocode_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&address=';
         $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&ll=';

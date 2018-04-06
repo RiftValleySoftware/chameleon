@@ -20,9 +20,8 @@ require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place.class.php
 /**
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
-class CO_US_Place_Collection extends CO_US_Place {
+class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
     protected $_container;
-    var $position;
 	
     /// CO_US_Place_Collection Methods
     /***********************************************************************************************************************/
@@ -49,74 +48,78 @@ class CO_US_Place_Collection extends CO_US_Place {
 	                                $in_latitude = NULL     ///< An initial latitude value.
                                 ) {
         
+        $this->_container = Array();
+
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
         
-        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
+        $children_ids = $this->context['children_ids'];
         
-        $this->_container = Array();
-        $this->rewind();
-    }
-    
-    /// Iterator Methods
-    public function current() {
-        return $this->offsetExists($this->key()) ? $this->_container[$this->key()] : NULL;
-    }
-    
-    public function key() {
-        return $this->position;
-    }
-    
-    public function next() {
-        if ($this->position < (count($this->_container) + 1)) {
-            ++$this->position;
-        }
-    }
-    
-    public function rewind() {
-        $this->position = 0;
-    }
-    
-    public function valid () {
-        return isset($this->_container[$this->position]);
-    }
-    
-    
-    /// ArrayAccess Methods
-    public function offsetExists($offset) {
-        return isset($this->_container[$offset]);
-    }
-    
-    public function offsetGet($offset) {
-        return isset($this->_container[$offset]) ? $this->_container[$offset] : NULL;
-    }
-    
-    public function offsetSet($offset , $value) {
-        if (!$this->whosYourDaddy($value)) {
-            if (is_null($offset)) {
-                $this->_container[] = $value;
-            } else {
-                $this->_container[$offset] = $value;
+        if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
+            foreach ($children_ids as $child_id) {
+                $instance = $this->_db_object->get_single_record_by_id($child_id);
+            
+                if (isset($instance) && ($instance instanceof CO_Main_DB_Record)) {
+                    array_push($this->_container, $instance);
+                }
             }
         }
-    }
-    
-    public function offsetUnset($offset) {
-        if ($this->offsetExists($offset)) {
-            unset($this->_container[$offset]);
-        }
+        
+        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
     }
     
     /// iCO_Collection Methods
-    public function appendElement($in_element) {
-        array_push($this->_container, $in_element);
+    public function appendElement($in_element, $dont_update = FALSE) {
+        $ret = FALSE;
+        
+        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
+            $id = intval($in_element->id());
+        
+            if (!$this->whosYourDaddy($in_element)) {
+                array_push($this->_container, $in_element);
+                $ret = TRUE;
+            
+                if (!isset($this->context['children_ids'])) {
+                    $this->context['children_ids'] = Array();
+                }
+            
+                if (!in_array($in_element->id(), $this->context['children_ids'])) {
+                    array_push($this->context['children_ids'], $id);
+                }
+            }
+        
+            if ($ret && !$dont_update) {
+                $ret = $this->update_db();
+            }
+        }
+        
+        return $ret;
     }
     
     public function appendElements($in_element_array) {
-        $this->_container = array_merge($this->_container, $in_element_array);
+        $ret = FALSE;
+        
+        foreach($in_element_array as $element) {
+            $ret |= $this->appendElement($element, TRUE);
+        }
+        
+        if ($ret) {
+            $ret = $this->update_db();
+        }
+        
+        return $ret;
     }
     
     public function whosYourDaddy($in_element) {
         $ret = FALSE;
+        $id = intval($in_element->id());
+        
+        $checkup = $this->recursiveMap(function($i){return intval($i->id());});
+        
+        if (isset($checkup) && is_array($checkup) && count($checkup)) {
+            $checkup = array_unique($checkup);
+            
+            $ret = in_array($id, $checkup);
+        }
         
         return $ret;
     }
@@ -134,18 +137,18 @@ class CO_US_Place_Collection extends CO_US_Place {
         return self::class;
     }
     
-    public function recursiveMap($in_function, $in_hierarchy_level = 0) {
+    public function recursiveMap($in_function, $in_hierarchy_level = 0, $in_parent_object = NULL) {
         $ret = Array();
         $in_hierarchy_level = intval($in_hierarchy_level);
         
         $children = $this->children();
         
         foreach ($children as $child) {
-            $result = $in_function($child, $in_hierarchy_level);
+            $result = $in_function($child, $in_hierarchy_level, $in_parent_object);
             array_push($ret, $result);
-            if ($child instanceof CO_US_Place_Collection) {
+            if (method_exists($child, 'children')) {
                 $in_hierarchy_level++;
-                $result = $child->recursiveMap($in_function, $in_hierarchy_level);
+                $result = $child->recursiveMap($in_function, $in_hierarchy_level, $child);
                 $in_hierarchy_level--;
                 array_merge($ret, $result);
             }
@@ -165,7 +168,7 @@ class CO_US_Place_Collection extends CO_US_Place {
         
         $instance = Array('object' => $in_instance);
         
-        if ($in_instance instanceof CO_US_Place_Collection) {
+        if (method_exists($in_instance, 'children')) {
             $children = $in_instance->children();
         
             foreach ($children as $child) {

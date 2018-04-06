@@ -18,9 +18,11 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 /***************************************************************************************************************************/
 /**
  */
-interface iCO_Collection extends Iterator, ArrayAccess {
+interface iCO_Collection {
     public function appendElement(mixed $in_element);
     public function appendElements(mixed $in_element_array);
     public function whosYourDaddy(mixed $in_element);
+    public function map(mixed $in_function);
+    public function recursiveMap(mixed $in_function, integer $in_hierarchy_level);
     public function getHierarchy();
 };

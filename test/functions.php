@@ -88,7 +88,7 @@
                 if ($access_object) {
                     $login_item = $access_object->get_login_item();
                     if ($login_item) {
-                        echo('<p style="font-style:italic;margin-top:0.25em;margin-bottom:0.25em">'.'This user ("'.$login_item->login_id.'"), is logged in as "'.$login_item->login_id.'" ('.implode(', ', $login_item->ids).').</p>');
+                        echo('<p style="font-style:italic;margin-top:0.25em;margin-bottom:0.25em">'.'This user ("'.$login_item->login_id.'"), is logged in as "'.$login_item->login_id.'" ('.implode(', ', $login_item->ids()).').</p>');
                         if ($in_record_object->user_can_write()) {
                             echo('<p style="color: green;font-weight:bold;font-size:large;font-style:italic;margin-bottom:0.25em">This user can modify this record.</p>');
                         }
@@ -100,8 +100,8 @@
                 echo("<p>Read: $in_record_object->read_security_id</p>");
                 echo("<p>Write: $in_record_object->write_security_id</p>");
             
-                if (isset($in_record_object->owner_id) && intval($in_record_object->owner_id)) {
-                    echo("<p>Owner: ".intval($in_record_object->owner_id)."</p>");
+                if (method_exists($in_record_object, 'owner_id') && intval($in_record_object->owner_id())) {
+                    echo("<p>Owner: ".intval($in_record_object->owner_id())."</p>");
                 }
             
                 if (isset($in_record_object->last_access)) {
@@ -113,7 +113,7 @@
                     echo("<p>Distance: $distance"."Km</p>");
                 }
             
-                if (isset($in_record_object->tags)) {
+                if (method_exists($in_record_object, 'tags')) {
                     if ($in_record_object instanceof CO_Place) {
                         foreach ($in_record_object->address_elements as $key => $value) {
                             if (trim($value)) {
@@ -121,26 +121,26 @@
                             }
                         }
                         if ($in_record_object instanceof CO_US_Place) {
-                            echo("<p>Tag 7: \"".$in_record_object->tags[7]."\"</p>");
+                            echo("<p>Tag 7: \"".$in_record_object->tags()[7]."\"</p>");
                         }
-                        echo("<p>Tag 8: \"".$in_record_object->tags[8]."\"</p>");
-                        echo("<p>Tag 9: \"".$in_record_object->tags[9]."\"</p>");
+                        echo("<p>Tag 8: \"".$in_record_object->tags()[8]."\"</p>");
+                        echo("<p>Tag 9: \"".$in_record_object->tags()[9]."\"</p>");
                         $address = $in_record_object->get_readable_address();
                         if ($address) {
                             echo("<p>Address: \"$address.\"</p>");
                         }
                     } else {
-                        foreach ($in_record_object->tags as $key => $value) {
+                        foreach ($in_record_object->tags() as $key => $value) {
                             echo("<p>Tag $key: \"$value\"</p>");
                         }
                     }
                 }
             
                 if ( $in_record_object instanceof CO_Security_Login) {
-                    if ( isset($in_record_object->ids) && is_array($in_record_object->ids) && count($in_record_object->ids)) {
+                    if (method_exists($in_record_object, 'ids')) {
                         echo("<p>IDs: ");
                             $first = TRUE;
-                            foreach ( $in_record_object->ids as $id ) {
+                            foreach ( $in_record_object->ids() as $id ) {
                                 if (!$first) {
                                     echo(", ");
                                 } else {
