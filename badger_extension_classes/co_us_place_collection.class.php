@@ -13,14 +13,14 @@
 */
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-require_once(CO_Config::db_classes_extension_class_dir().'/ico_collection.interface.php');
+require_once(CO_Config::db_classes_extension_class_dir().'/tco_collection.interface.php');
 require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place.class.php');
 
 /***************************************************************************************************************************/
 /**
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
-class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
+class CO_US_Place_Collection extends CO_US_Place {
     /// CO_US_Place_Collection Methods
     /***********************************************************************************************************************/
     /***********************/
@@ -54,6 +54,5 @@ class CO_US_Place_Collection extends CO_US_Place implements iCO_Collection {
         $this->_set_up_container();
     }
     
-    /// iCO_Collection Methods
-    use tCO_Collection;
+    use tCO_Collection; ///< These are the built-in collection methods.
 };

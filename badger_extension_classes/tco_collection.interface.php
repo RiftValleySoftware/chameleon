@@ -19,18 +19,6 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 /**
 This is an interface and trait combination for the basic "collection" aggregator functionality.
  */
-interface iCO_Collection {
-    public function appendElement(mixed $in_element);
-    public function appendElements(mixed $in_element_array);
-    public function whosYourDaddy(mixed $in_element);
-    public function map(mixed $in_function);
-    public function recursiveMap(mixed $in_function, integer $in_hierarchy_level);
-    public function getHierarchy();
-};
-
-/***************************************************************************************************************************/
-/**
- */
 trait tCO_Collection {
     protected $_container;
 	
