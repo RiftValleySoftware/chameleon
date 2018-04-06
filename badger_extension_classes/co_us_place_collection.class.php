@@ -21,7 +21,7 @@ require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place.class.php
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
 class CO_US_Place_Collection extends CO_US_Place {
-    var $container;
+    protected $_container;
     var $position;
 	
     /// CO_US_Place_Collection Methods
@@ -53,13 +53,13 @@ class CO_US_Place_Collection extends CO_US_Place {
         
         $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
         
-        $this->container = Array();
+        $this->_container = Array();
         $this->rewind();
     }
     
     /// Iterator Methods
     public function current() {
-        return $this->offsetExists($this->key()) ? $this->container[$this->key()] : NULL;
+        return $this->offsetExists($this->key()) ? $this->_container[$this->key()] : NULL;
     }
     
     public function key() {
@@ -67,7 +67,7 @@ class CO_US_Place_Collection extends CO_US_Place {
     }
     
     public function next() {
-        if ($this->position < (count($this->container) + 1)) {
+        if ($this->position < (count($this->_container) + 1)) {
             ++$this->position;
         }
     }
@@ -77,45 +77,75 @@ class CO_US_Place_Collection extends CO_US_Place {
     }
     
     public function valid () {
-        return isset($this->container[$this->position]);
+        return isset($this->_container[$this->position]);
     }
     
     
     /// ArrayAccess Methods
     public function offsetExists($offset) {
-        return isset($this->container[$offset]);
+        return isset($this->_container[$offset]);
     }
     
     public function offsetGet($offset) {
-        return isset($this->container[$offset]) ? $this->container[$offset] : NULL;
+        return isset($this->_container[$offset]) ? $this->_container[$offset] : NULL;
     }
     
     public function offsetSet($offset , $value) {
-        if (!$this->isElementInHierarchy($value)) {
+        if (!$this->whosYourDaddy($value)) {
             if (is_null($offset)) {
-                $this->container[] = $value;
+                $this->_container[] = $value;
             } else {
-                $this->container[$offset] = $value;
+                $this->_container[$offset] = $value;
             }
         }
     }
     
     public function offsetUnset($offset) {
         if ($this->offsetExists($offset)) {
-            unset($this->container[$offset]);
+            unset($this->_container[$offset]);
         }
     }
     
     /// iCO_Collection Methods
     public function appendElement($in_element) {
+        array_push($this->_container, $in_element);
     }
     
     public function appendElements($in_element_array) {
+        $this->_container = array_merge($this->_container, $in_element_array);
     }
     
     public function whosYourDaddy($in_element) {
+        return FALSE;
     }
     
-    public function getHierarchy() {
+    public function children() {
+        return $this->_container;
+    }
+    
+    public function getHierarchy($in_instance = NULL) {
+        if (NULL == $in_instance) {
+            $in_instance = $this;
+        }
+        
+        $instance = Array('object' => $in_instance);
+        
+        if ($in_instance instanceof CO_US_Place_Collection) {
+            $children = $in_instance->children();
+        
+            foreach ($children as $child) {
+                $result = $this->getHierarchy($child);
+            
+                if ($result) {
+                    if (!isset($instance['children'])) {
+                        $instance['children'] = Array();
+                    }
+            
+                    array_push($instance['children'], $result);
+                }
+            }
+        }
+        
+        return $instance;
     }
 };

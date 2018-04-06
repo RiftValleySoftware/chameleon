@@ -243,13 +243,51 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     
     if ($access_instance->valid) {
         $st1 = microtime(TRUE);
-        $item = $access_instance->get_single_data_record_by_id(2);
+        $collection_item = $access_instance->get_single_data_record_by_id(2);
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         echo('<div class="inner_div">');
-            if ( isset($item) ) {
-                display_record($item);
+            if ( isset($collection_item) ) {
+                display_record($collection_item);
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $test_item1 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DC')));
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            echo ("<h4>BEFORE:</h4>");
+            if ( isset($test_item1) ) {
+                if (is_array($test_item1)) {
+                    if (count($test_item1)) {
+                        echo("<h4>We got ".count($test_item1)." records in $fetchTime seconds.</h4>");
+                        for ($i = 0; $i < (count($test_item1) / 2); $i++) {
+                            $collection_item->appendElement(array_shift($test_item1));
+                        }
+                    }
+                }
+            }
+            
+            $collection_item2 = $access_instance->get_single_data_record_by_id(3);
+            $st1 = microtime(TRUE);
+            $test_item2 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DE')));
+            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            if ( isset($test_item2) ) {
+                if (is_array($test_item2)) {
+                    if (count($test_item2)) {
+                        echo("<h4>We got ".count($test_item2)." records in $fetchTime seconds.</h4>");
+                        for ($i = 0; $i < (count($test_item2) / 2); $i++) {
+                            $collection_item2->appendElement(array_shift($test_item2));
+                        }
+                    }
+                }
+            }
+            
+            $collection_item->appendElement($collection_item2);
+        
+            $collection_item->appendElements($test_item1);
+            
+            echo ("<h4>AFTER:</h4>");
+            $hierarchy = $collection_item->getHierarchy();
         echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
