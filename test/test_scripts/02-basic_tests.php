@@ -289,16 +289,72 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo ("<h4>AFTER:</h4>");
             $hierarchy = $collection_item->getHierarchy();
             
-            function hierarchicalDisplayRecord($in_record, $in_hierarchy_level, $in_parent_object) {
-                echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
-                    echo("<p>Indentation level: $in_hierarchy_level</p>");
-                    if (isset($in_parent_object) && method_exists($in_parent_object, 'id')) {
-                        $id_no = $in_parent_object->id();
-                        echo("<p>Parent Object ID: $id_no</p>");
-                    }
-                    display_record($in_record);
-                echo('</div>');
+            $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
+        echo('</div>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
+    
+function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $collection_item = $access_instance->get_single_data_record_by_id(2);
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            if ( isset($collection_item) ) {
+                display_record($collection_item);
             }
+            echo ("<p><em>This took $fetchTime seconds.</em></p>");
+        echo('</div>');
+        $st1 = microtime(TRUE);
+        $test_item1 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DC')));
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo('<div class="inner_div">');
+            echo ("<h4>BEFORE:</h4>");
+            if ( isset($test_item1) ) {
+                if (is_array($test_item1)) {
+                    if (count($test_item1)) {
+                        echo("<h4>We got ".count($test_item1)." records in $fetchTime seconds.</h4>");
+                        for ($i = 0; $i < (count($test_item1) / 2); $i++) {
+                            $collection_item->appendElement(array_shift($test_item1));
+                        }
+                    }
+                }
+            }
+            
+            $collection_item2 = $access_instance->get_single_data_record_by_id(3);
+            $st1 = microtime(TRUE);
+            $test_item2 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DE')));
+            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            if ( isset($test_item2) ) {
+                if (is_array($test_item2)) {
+                    if (count($test_item2)) {
+                        echo("<h4>We got ".count($test_item2)." records in $fetchTime seconds.</h4>");
+                        for ($i = 0; $i < (count($test_item2) / 2); $i++) {
+                            $collection_item2->appendElement(array_shift($test_item2));
+                        }
+                    }
+                }
+            }
+            
+            $collection_item->appendElement($collection_item2);
+        
+            $collection_item->appendElements($test_item1);
+            
+            echo ("<h4>AFTER:</h4>");
+            $hierarchy = $collection_item->getHierarchy();
             
             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
         echo('</div>');
@@ -306,6 +362,17 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
+}
+            
+function hierarchicalDisplayRecord($in_record, $in_hierarchy_level, $in_parent_object) {
+    echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
+        echo("<p>Indentation level: $in_hierarchy_level</p>");
+        if (isset($in_parent_object) && method_exists($in_parent_object, 'id')) {
+            $id_no = $in_parent_object->id();
+            echo("<p>Parent Object ID: $id_no</p>");
+        }
+        display_record($in_record);
+    echo('</div>');
 }
 
 ob_start();
@@ -363,7 +430,7 @@ ob_start();
                 echo('</div>');
             
                 echo('<div id="test-014" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Put A Collection Through Its Paces.</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Try Modifying A Collection We Don\'t Own.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             ?>
@@ -371,6 +438,18 @@ ob_start();
                             <?php
                         echo('</div>');
                         basic_test_relay(4, 'DCAdmin', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-015" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-015\')">TEST 14: Try Modifying A Collection We Own.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            ?>
+                            <p class="explain"></p>
+                            <?php
+                        echo('</div>');
+                        basic_test_relay(5, 'DCAdmin', '', 'CoreysGoryStory');
                     echo('</div>');
                 echo('</div>');
                 

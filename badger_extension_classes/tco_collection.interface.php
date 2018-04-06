@@ -17,16 +17,19 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 
 /***************************************************************************************************************************/
 /**
-This is an interface and trait combination for the basic "collection" aggregator functionality.
+This is a trait for the basic "collection" aggregator functionality.
  */
 trait tCO_Collection {
     protected $_container;
 	
     /***********************/
     /**
+    This method simply sets up the internal container from the object's tags.
+    The tags already need to be loaded when this is called, so it should be called towards the end of the
+    object's constructor.
      */
     protected function _set_up_container() {
-        $children_ids = $this->children;
+        $children_ids = $this->children();
         
         if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
             foreach ($children_ids as $child_id) {
@@ -41,8 +44,18 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This appends one record to the end of the collection.
+    The element cannot be already in the collection at any level, as that could
+    cause a loop.
+    The logged-in user must have write access to the collection object (not the data object)
+    in order to add the item.
+    You can opt out of the automatic database update.
+    
+    \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
      */
-    public function appendElement($in_element, $dont_update = FALSE) {
+    public function appendElement(  $in_element,            ///< The database record to add.
+                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+                                ) {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
@@ -71,8 +84,14 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This appends multiple elements (passed as an array).
+    The logged-in user must have write access to the collection object (not the data object)
+    in order to add the items.
+    
+    \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
      */
-    public function appendElements($in_element_array) {
+    public function appendElements( $in_element_array   ///< An array of database element instances to be appended.
+                                ) {
         $ret = FALSE;
         
         foreach($in_element_array as $element) {
@@ -88,8 +107,12 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This takes an element, and checks to see if it already exists in our hierarchy (anywhere).
+    
+    \returns TRUE, if this instance already has the presented object.
      */
-    public function whosYourDaddy($in_element) {
+    public function whosYourDaddy(  $in_element ///< The element to check.
+                                ) {
         $ret = FALSE;
         $id = intval($in_element->id());
         
@@ -106,8 +129,14 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This applies a given function to each of the elements in the child list.
+    
+    The function needs to have a signature of function mixed map_func(mixed $item);
+    
+    \returns a flat array of function results. The array maps to the children array.
      */
-    public function map($in_function) {
+    public function map(    $in_function    ///< The function to be applied to each element.
+                        ) {
         $ret = Array();
         
         $children = $this->children();
@@ -122,8 +151,16 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This applies a given function to each of the elements in the child list, and any embedded (recursive) ones.
+    
+    The function needs to have a signature of function mixed map_func(mixed $item, integer $hierarchy_level, mixed $parent_object);
+    
+    \returns a flat array of function results. The array maps to the children array.
      */
-    public function recursiveMap($in_function, $in_hierarchy_level = 0, $in_parent_object = NULL) {
+    public function recursiveMap(   $in_function,               ///< This is the function to be applied to all elements.
+                                    $in_hierarchy_level = 0,    ///< This is a 0-based integer that tells the callback how many "levels deep" the function is.
+                                    $in_parent_object = NULL    ///< This is the collection object that is the "parent" of the current array.
+                                ) {
         $ret = Array();
         $in_hierarchy_level = intval($in_hierarchy_level);
         
@@ -145,6 +182,11 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This is an accessor for the child object array (instances).
+    
+    It should be noted that this may not be the same as the 'children' context variable, because the user may not be allowed to see all of the items.
+    
+    \returns the child objects array.
      */
     public function children() {
         return $this->_container;
@@ -152,6 +194,10 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    \returns an instance "map" of the collection. It returns an array of associative arrays.
+    Each associative array has the following elements:
+        - 'object' (Required). This is the actual instance that maps to this object.
+        - 'children' (optional -may not be instantiated). This is an array of the same associative arrays for any "child objects" of the current object.
      */
     public function getHierarchy($in_instance = NULL) {
         if (NULL == $in_instance) {
