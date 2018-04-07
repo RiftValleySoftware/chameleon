@@ -44,6 +44,60 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This inserts one record to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the item will be appeneded.
+    The element cannot be already in the collection at any level, as that could cause a loop.
+    The logged-in user must have write access to the collection object (not the data object)
+    in order to add the item.
+    You can opt out of the automatic database update.
+    
+    \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
+     */
+    public function insertElement(  $in_element,            ///< The database record to add.
+                                    $in_before_index = -1,  ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
+                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+                                ) {
+        $ret = FALSE;
+        
+        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
+            $id = intval($in_element->id());
+        
+            if (!$this->whosYourDaddy($in_element)) {
+                if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
+                    $in_before_index = count($this->_container);
+                }
+                
+                $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                $after_array = Array();
+                
+                if ($in_before_index < count($this->_container)) {
+                    $after_array = array_slice($this->_container, (count($this->_container) - $in_before_index), FALSE);
+                }
+                
+                $this->_container = array_merge($before_array, Array($in_element), $after_array);
+                
+                $ret = TRUE;
+            
+                if (!isset($this->context['children_ids'])) {
+                    $this->context['children_ids'] = Array();
+                }
+                
+                if (!in_array($in_element->id(), $this->context['children_ids'])) {
+                    array_push($this->context['children_ids'], $id);
+                
+                    sort($this->context['children_ids']);
+                }
+            }
+        
+            if ($ret && !$dont_update) {
+                $ret = $this->update_db();
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This appends one record to the end of the collection.
     The element cannot be already in the collection at any level, as that could
     cause a loop.
@@ -56,30 +110,7 @@ trait tCO_Collection {
     public function appendElement(  $in_element,            ///< The database record to add.
                                     $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
                                 ) {
-        $ret = FALSE;
-        
-        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            $id = intval($in_element->id());
-        
-            if (!$this->whosYourDaddy($in_element)) {
-                array_push($this->_container, $in_element);
-                $ret = TRUE;
-            
-                if (!isset($this->context['children_ids'])) {
-                    $this->context['children_ids'] = Array();
-                }
-            
-                if (!in_array($in_element->id(), $this->context['children_ids'])) {
-                    array_push($this->context['children_ids'], $id);
-                }
-            }
-        
-            if ($ret && !$dont_update) {
-                $ret = $this->update_db();
-            }
-        }
-        
-        return $ret;
+        return $this->insertElement($in_element, -1, $dont_update);
     }
     
     /***********************/
@@ -111,12 +142,13 @@ trait tCO_Collection {
     
     \returns TRUE, if this instance already has the presented object.
      */
-    public function whosYourDaddy(  $in_element ///< The element to check.
+    public function whosYourDaddy(  $in_element,    ///< The element to check.
+                                    $full_hierachy = TRUE   ///< If FALSE, then only this level (not the full hierarchy) will be searched. Default is TRUE.
                                 ) {
         $ret = FALSE;
         $id = intval($in_element->id());
         
-        $checkup = $this->recursiveMap(function($i){return intval($i->id());});
+        $checkup = $full_hierachy ? $this->recursiveMap(function($i){return intval($i->id());}) : $this->map(function($i){return intval($i->id());});
         
         if (isset($checkup) && is_array($checkup) && count($checkup)) {
             $checkup = array_unique($checkup);

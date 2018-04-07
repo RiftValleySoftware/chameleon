@@ -18,8 +18,11 @@ INSERT INTO `co_security_nodes` (`id`, `login_id`, `access_class`, `last_access`
 (8, 'VAAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 8, 8, 'Virginia Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
 (9, 'DCAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 9, 9, 'Washington DC Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
 (10, 'WVAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 10, 10, 'West Virginia Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
-(11, 'DEAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 11, 11, 'Delaware Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '');
-(12, 'AllAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 12, 12, 'All Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '7,8,9,10,11');
+(11, 'DEAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 11, 11, 'Delaware Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
+(12, 'DMAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 12, 12, 'Delaware and Maryland Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '7,11'),
+(13, 'DVAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 13, 13, 'DC and Virginia Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '8,9'),
+(14, 'WVVAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 14, 14, 'West Virginia and Virginia Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '8,10'),
+(15, 'AllAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 15, 15, 'All Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '7,8,9,10,11');
 
 ALTER TABLE `co_security_nodes`
   ADD PRIMARY KEY (`id`),
@@ -31,4 +34,4 @@ ALTER TABLE `co_security_nodes`
   ADD KEY `object_name` (`object_name`);
 
 ALTER TABLE `co_security_nodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
