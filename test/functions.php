@@ -80,21 +80,29 @@
         echo('<h1 style="color:red">UNABLE TO OPEN DATABASE!</h1>');
     }
             
-    function hierarchicalDisplayRecord($in_record, $in_hierarchy_level, $in_parent_object) {
-        $daddy = $in_parent_object->whosYourDaddy($in_record);
+    function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_parent_object = NULL) {
+        $daddy = isset($in_parent_object) && $in_parent_object ? $in_parent_object->whosYourDaddy($in_record) : NULL;
     
-        echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
-            echo("<p>Ancestry is ".(($daddy == $in_parent_object) ? '' : 'un')."confirmed</p>");
+        if ($in_hierarchy_level) {
+            echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
+            if (NULL != $daddy) {
+                echo("<p>Ancestry is ".(($daddy == $in_parent_object) ? '' : 'un')."confirmed</p>");
+            }
             echo("<p>Indentation level: $in_hierarchy_level</p>");
             if (isset($in_parent_object) && method_exists($in_parent_object, 'id')) {
                 $id_no = $in_parent_object->id();
                 echo("<p>Parent Object ID: $id_no</p>");
             }
-            display_record($in_record);
+        } else {
+            echo("<div>");
+        }
+        
+        display_record($in_record, $in_hierarchy_level);
+        
         echo('</div>');
     }
     
-    function display_record($in_record_object) {
+    function display_record($in_record_object, $in_hierarchy_level = 0) {
         echo("<h5 style=\"margin-top:0.5em\">ITEM ".$in_record_object->id().":</h5>");
         if (isset($in_record_object) && $in_record_object) {
             echo('<div class="inner_div">');
@@ -126,7 +134,7 @@
                     $distance = sprintf('%01.3f', $in_record_object->distance);
                     echo("<p>Distance: $distance"."Km</p>");
                 }
-            
+                
                 if (method_exists($in_record_object, 'tags')) {
                     if ($in_record_object instanceof CO_Place) {
                         foreach ($in_record_object->address_elements as $key => $value) {
@@ -165,6 +173,14 @@
                         echo("</p>");
                     } else {
                         echo("<h4>NO IDS!</h4>");
+                    }
+                }
+            
+                if (method_exists($in_record_object, 'children')) {
+                    $children = $in_record_object->children();
+                    
+                    foreach ($children as $child) {
+                        hierarchicalDisplayRecord($child, $in_hierarchy_level + 1, $in_record_object);
                     }
                 }
             echo('</div>');

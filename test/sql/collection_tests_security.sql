@@ -28,7 +28,8 @@ INSERT INTO `co_security_nodes` (`id`, `login_id`, `access_class`, `last_access`
 (9, 'DCAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 9, 9, 'Washington DC Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
 (10, 'WVAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 10, 10, 'West Virginia Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
 (11, 'DEAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 11, 11, 'Delaware Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
-(12, 'AllAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 12, 12, 'All Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '7,8,9,10,11');
+(12, 'DEEAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 12, 12, 'Dee\'s Place Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', ''),
+(13, 'AllAdmin', 'CO_Security_Login', '1970-01-01 00:00:00', 13, 13, 'All Admin Login', 'a:1:{s:15:\"hashed_password\";s:13:\"CodYOzPtwxb4A\";}', '2,3,4,5,6,7,8,9,10,11,12,14,15');
 
 ALTER TABLE `co_security_nodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;

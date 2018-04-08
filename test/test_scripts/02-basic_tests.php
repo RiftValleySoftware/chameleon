@@ -298,8 +298,8 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             
             echo ("<h4>AFTER:</h4>");
             $hierarchy = $collection_item->getHierarchy();
-            
-            $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
+            hierarchicalDisplayRecord($collection_item);
+//             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
         echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
@@ -366,8 +366,9 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo ("<h4>AFTER:</h4>");
 
             $hierarchy = $collection_item->getHierarchy();
+            hierarchicalDisplayRecord($collection_item);
             
-            $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
+//             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
         echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");

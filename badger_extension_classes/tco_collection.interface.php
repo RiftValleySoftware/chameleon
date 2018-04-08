@@ -150,44 +150,106 @@ trait tCO_Collection {
     
     /***********************/
     /**
-     */
-    public function indexOfThisElement(  $in_element
-                                        ) {
-        return array_search($in_element, $this->children());
-    }
+    Deletes multiple elements from the collection.
+    It should be noted that this does not delete the elements from the database, and it is not recursive.
+    This is an atomic operation. If any of the elements can't be removed, then non of the elements can be removed.
+    The one exception is that the deletion length can extend past the boundaries of the collection. It will be truncated.
     
-    /***********************/
-    /**
+    \returns TRUE, if the elements were successfully removed from the collection.
      */
-    public function deleteElements( $in_first_index,
-                                    $in_deletion_length
+    public function deleteElements( $in_first_index,    ///< The starting 0-based index of the first element to be removed from the collection.
+                                    $in_deletion_length ///< The number of elements to remove (including the first one). If this is negative, then elements will be removed from the index, backwards (-1 is the same as 1).
                                 ) {
         $ret = FALSE;
+        
+        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
+            $element_ids = Array(); // We will keep track of which IDs we delete, so we can delete them from our context variable.
+            
+            // If negative, we're going backwards.
+            if (0 > $in_deletion_length) {
+                $in_deletion_length = abs($in_deletion_length);
+                $in_first_index -= ($in_deletion_length - 1);
+                $in_first_index = max(0, $in_first_index);  // Make sure we stay within the lane markers.
+            }
+            
+            $last_index_plus_one = min(count($self->_container), $in_first_index + $in_deletion_length);
+        
+            // We simply record the IDs of each of the elements we'll be deleting.
+            for ($i = $in_first_index; $i < $last_index_plus_one; $i++) {
+                $element = $self->_container[$i];
+                array_push($element_ids, $element->id());
+            }
+            
+            if ($in_deletion_length == count($element_ids)) {  // Belt and suspenders. Make sure we are actually deleting the requested elements.
+                $new_container = Array();
+                
+                // We build a new container that doesn't have the deleted elements.
+                foreach ($this->_container as $element) {
+                    $element_id = $element->id();
+                    
+                    if (!in_array($element_id, $element_ids)) {
+                        array_push($new_container, $element_id);
+                    }
+                }
+                
+                $this->_container = $new_container;
+                
+                $new_list = Array();
+                
+                // We build a new list that doesn't have the deleted element IDs.
+                while ($element_id = array_unshift($this->context['children_ids'])) {
+                    if (!in_array($element_id, $element_ids)) {
+                        array_push($new_list, $element_id);
+                    }
+                }
+                
+                $this->context['children_ids'] = $new_list;
+                
+                $ret = $this->update_db();
+            }
+        }
         
         return $ret;
     }
     
     /***********************/
     /**
+    Deletes a single element, by its 0-based index (not recursive).
+    It should be noted that this does not delete the element from the database, and it is not recursive.
+    
+    \returns TRUE, if the element was successfully removed from the collection.
      */
-    public function deleteElement(  $in_index
+    public function deleteElement(  $in_index   ///< The 0-based index of the element we want to delete.
                                 ) {
         return $this->deleteElements($in_index, 1);
     }
     
     /***********************/
     /**
+    Deletes a single element, by its actual object reference (not recursive).
+    It should be noted that this does not delete the element from the database, and it is not recursive.
+    
+    \returns TRUE, if the element was successfully removed from the collection.
      */
-    public function deleteThisElement(  $in_element
+    public function deleteThisElement(  $in_element ///< The element we want to delete.
                                     ) {
         $ret = FALSE;
         $index = $this->indexOfThisElement($in_element);
         
         if (FALSE !== $index) {
-            $ret = $this->deleteElements(intval($index), 1);
+            $ret = $this->deleteElement(intval($index));
         }
         
         return $ret;
+    }
+    
+    /***********************/
+    /**
+    \returns the 0-based index of the given element, or FALSE, if the element is not in the collection (This is not recursive).
+     */
+    public function indexOfThisElement(  $in_element    ///< The element we're looking for.
+                                        ) {
+        return array_search($in_element, $this->children());
     }
         
     /***********************/
