@@ -46,8 +46,7 @@ trait tCO_Collection {
     /**
     This inserts one record to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the item will be appeneded.
     The element cannot be already in the collection at any level, as that could cause a loop.
-    The logged-in user must have write access to the collection object (not the data object)
-    in order to add the item.
+    The logged-in user must have write access to the collection object (not the data object) in order to add the item.
     You can opt out of the automatic database update.
     
     \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
@@ -59,9 +58,7 @@ trait tCO_Collection {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            $id = intval($in_element->id());
-        
-            if (!$this->whosYourDaddy($in_element)) {
+            if (!$this->areYouMyDaddy($in_element)) {   // Make sure that we aren't already in the woodpile somewhere.
                 if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
                     $in_before_index = count($this->_container);
                 }
@@ -81,7 +78,8 @@ trait tCO_Collection {
                     $this->context['children_ids'] = Array();
                 }
                 
-                if (!in_array($in_element->id(), $this->context['children_ids'])) {
+                $id = $in_element->id();
+                if (!in_array($id, $this->context['children_ids'])) {
                     array_push($this->context['children_ids'], $id);
                 
                     sort($this->context['children_ids']);
@@ -96,6 +94,102 @@ trait tCO_Collection {
         return $ret;
     }
     
+    /***********************/
+    /**
+    This inserts multiple records to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the items will be appeneded.
+    The elements cannot be already in the collection at any level, as that could cause a loop.
+    The logged-in user must have write access to the collection object (not the data objects) in order to add the items.
+    You can opt out of the automatic database update.
+    
+    \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
+     */
+    public function insertElements( $in_element_array,      ///< An array of database element instances to be inserted.
+                                    $in_before_index = -1,  ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
+                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+                                ) {
+        $ret = FALSE;
+        
+        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
+            if (!$this->areYouMyDaddy($in_element_array)) { // DON'T CROSS THE STREAMS!
+                if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
+                    $in_before_index = count($this->_container);
+                }
+                
+                $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                $after_array = Array();
+                
+                if ($in_before_index < count($this->_container)) {
+                    $after_array = array_slice($this->_container, (count($this->_container) - $in_before_index), FALSE);
+                }
+                
+                $this->_container = array_merge($before_array, $in_element_array, $after_array);
+                
+                $ret = TRUE;
+            
+                if (!isset($this->context['children_ids'])) {
+                    $this->context['children_ids'] = Array();
+                }
+                
+                foreach ($in_element_array as $element) {
+                    $id = $element->id();
+                    if (!in_array($id, $this->context['children_ids'])) {
+                        array_push($this->context['children_ids'], $id);
+                
+                        sort($this->context['children_ids']);
+                    }
+                }
+            }
+        
+            if ($ret && !$dont_update) {
+                $ret = $this->update_db();
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+     */
+    public function indexOfThisElement(  $in_element
+                                        ) {
+        return array_search($in_element, $this->children());
+    }
+    
+    /***********************/
+    /**
+     */
+    public function deleteElements( $in_first_index,
+                                    $in_deletion_length
+                                ) {
+        $ret = FALSE;
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+     */
+    public function deleteElement(  $in_index
+                                ) {
+        return $this->deleteElements($in_index, 1);
+    }
+    
+    /***********************/
+    /**
+     */
+    public function deleteThisElement(  $in_element
+                                    ) {
+        $ret = FALSE;
+        $index = $this->indexOfThisElement($in_element);
+        
+        if (FALSE !== $index) {
+            $ret = $this->deleteElements(intval($index), 1);
+        }
+        
+        return $ret;
+    }
+        
     /***********************/
     /**
     This appends one record to the end of the collection.
@@ -121,16 +215,36 @@ trait tCO_Collection {
     
     \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
      */
-    public function appendElements( $in_element_array   ///< An array of database element instances to be appended.
+    public function appendElements( $in_element_array,      ///< An array of database element instances to be appended.
+                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
                                 ) {
-        $ret = FALSE;
+        return $this->insertElements($in_element_array, -1, $dont_update);
+    }
+    
+    /***********************/
+    /**
+    This takes an element, and returns its parent collection object (if available).
+    This only checks the current collection and (if requested) its "child" collection objects.
+    
+    \returns an instance of a collection class, if that instance is the "parent" of the presented object. It may be this instance, or a "child" instance of this class.
+     */
+    public function whosYourDaddy(  $in_element ///< The element to check.
+                                ) {
+        $ret = NULL;
+        $id = intval($in_element->id());
         
-        foreach($in_element_array as $element) {
-            $ret |= $this->appendElement($element, TRUE);
-        }
+        $ret_array = $this->recursiveMap(function($instance, $hierarchy_level, $parent){
+                $id = intval($instance->id());
+                return Array($id, $parent);
+            });
         
-        if ($ret) {
-            $ret = $this->update_db();
+        if (isset($ret_array) && is_array($ret_array) && count($ret_array)) {
+            foreach ($ret_array as $item) {
+                if ($item[0] == $id) {
+                    $ret = $item[1];
+                    break;
+                }
+            }
         }
         
         return $ret;
@@ -141,28 +255,40 @@ trait tCO_Collection {
     This takes an element, and checks to see if it already exists in our hierarchy (anywhere).
     
     \returns TRUE, if this instance already has the presented object.
-     */
-    public function whosYourDaddy(  $in_element,    ///< The element to check.
+     */    
+    public function areYouMyDaddy(  $in_element,            ///< The element to check. This can be an array, in which case, each element is checked.
                                     $full_hierachy = TRUE   ///< If FALSE, then only this level (not the full hierarchy) will be searched. Default is TRUE.
                                 ) {
         $ret = FALSE;
-        $id = intval($in_element->id());
         
-        $checkup = $full_hierachy ? $this->recursiveMap(function($i){return intval($i->id());}) : $this->map(function($i){return intval($i->id());});
+        if (is_array($in_element) && count($in_element)) {
+            foreach ($in_element as $element) {
+                if ($this->areYouMyDaddy($element, $full_hierachy)) {
+                    $ret = TRUE;
+                    break;
+                }
+            }
+        } else {
+            $id = intval($in_element->id());
         
-        if (isset($checkup) && is_array($checkup) && count($checkup)) {
-            $checkup = array_unique($checkup);
-            
-            $ret = in_array($id, $checkup);
+            $my_ids = $full_hierachy ? $this->recursiveMap(function($i){return intval($i->id());}) : $this->map(function($i){return intval($i->id());});
+            $their_ids = ($full_hierachy && method_exists($in_element, 'recursiveMap')) ? $in_element->recursiveMap(function($i){return intval($i->id());}) : Array($in_element->id());
+        
+            if (isset($my_ids) && is_array($my_ids) && count($my_ids)) {
+                $my_ids = array_unique($my_ids);
+                $their_ids = array_unique($their_ids);
+                $in_both = array_intersect($my_ids, $their_ids);
+                $ret = 0 < count($in_both);
+            }
         }
         
         return $ret;
     }
-    
+        
+
     /***********************/
     /**
     This applies a given function to each of the elements in the child list.
-    
     The function needs to have a signature of function mixed map_func(mixed $item);
     
     \returns a flat array of function results. The array maps to the children array.
@@ -184,10 +310,9 @@ trait tCO_Collection {
     /***********************/
     /**
     This applies a given function to each of the elements in the child list, and any embedded (recursive) ones.
-    
     The function needs to have a signature of function mixed map_func(mixed $item, integer $hierarchy_level, mixed $parent_object);
     
-    \returns a flat array of function results. The array maps to the children array.
+    \returns a flat array of function results. This array may be larger than the children array, as it will also contain any nested collections.
      */
     public function recursiveMap(   $in_function,               ///< This is the function to be applied to all elements.
                                     $in_hierarchy_level = 0,    ///< This is a 0-based integer that tells the callback how many "levels deep" the function is.
@@ -199,7 +324,7 @@ trait tCO_Collection {
         $children = $this->children();
         
         foreach ($children as $child) {
-            $result = $in_function($child, $in_hierarchy_level, $in_parent_object);
+            $result = $in_function($child, $in_hierarchy_level, $this);
             array_push($ret, $result);
             if (method_exists($child, 'children')) {
                 $in_hierarchy_level++;
@@ -215,7 +340,6 @@ trait tCO_Collection {
     /***********************/
     /**
     This is an accessor for the child object array (instances).
-    
     It should be noted that this may not be the same as the 'children' context variable, because the user may not be allowed to see all of the items.
     
     \returns the child objects array.

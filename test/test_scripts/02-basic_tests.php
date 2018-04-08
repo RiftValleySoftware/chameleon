@@ -364,6 +364,7 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             $collection_item->appendElements($test_item1);
             
             echo ("<h4>AFTER:</h4>");
+
             $hierarchy = $collection_item->getHierarchy();
             
             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
@@ -372,17 +373,6 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
-}
-            
-function hierarchicalDisplayRecord($in_record, $in_hierarchy_level, $in_parent_object) {
-    echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
-        echo("<p>Indentation level: $in_hierarchy_level</p>");
-        if (isset($in_parent_object) && method_exists($in_parent_object, 'id')) {
-            $id_no = $in_parent_object->id();
-            echo("<p>Parent Object ID: $id_no</p>");
-        }
-        display_record($in_record);
-    echo('</div>');
 }
 
 ob_start();
@@ -399,10 +389,8 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-011\')">TEST 11: Select a location and radius, and Read The Entries.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain">This test will dump a subset of the "places" that have been instantiated in the database.</p>
-                            <p class="explain">It works by choosing a location in Washington DC, and searching for meetings within a 50Km radius.</p>
-                            <?php
+                            echo('<p class="explain">This test will dump a subset of the "places" that have been instantiated in the database.</p>');
+                            echo('<p class="explain">It works by choosing a location in Washington DC, and searching for meetings within a 50Km radius.</p>');
                         echo('</div>');
                         basic_test_relay(2);
                     echo('</div>');
@@ -412,9 +400,7 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-012\')">TEST 12: Test Geocode.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>
-                            <?php
+                        echo('<p class="explain">This test will fetch six known records, and will ask the location object to do a geocode and address lookup.</p>');
                         echo('</div>');
                         basic_test_relay(1);
                     echo('</div>');
@@ -431,9 +417,7 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-013\')">TEST 13: Basic Collection Class Tests.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain">This will access the collection classes we inserted into the dataset, and display their data.</p>
-                            <?php
+                        echo('<p class="explain">This will access the collection classes we inserted into the dataset, and display their data.</p>');
                         echo('</div>');
                         basic_test_relay(3);
                     echo('</div>');
@@ -443,9 +427,6 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-014\')">TEST 14: Try Modifying A Collection We Don\'t Own.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain"></p>
-                            <?php
                         echo('</div>');
                         basic_test_relay(4, 'DCAdmin', '', 'CoreysGoryStory');
                     echo('</div>');
@@ -455,9 +436,6 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-015\')">TEST 15: Try Modifying A Collection We Own, but An Internal Collection We Don\'t.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain"></p>
-                            <?php
                         echo('</div>');
                         basic_test_relay(5, 'DCAdmin', '', 'CoreysGoryStory');
                     echo('</div>');
@@ -467,9 +445,6 @@ ob_start();
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-016\')">TEST 16: Try Modifying Multiple Collections We Own Outright.</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            ?>
-                            <p class="explain"></p>
-                            <?php
                         echo('</div>');
                         basic_test_relay(5, 'AllAdmin', 'CodYOzPtwxb4A');
                     echo('</div>');
