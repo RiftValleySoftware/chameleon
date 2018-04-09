@@ -237,11 +237,11 @@ function collection_test_10($in_login = NULL, $in_hashed_password = NULL, $in_pa
             }
         }
         
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
-            echo ("<p><em>The test took $fetchTime seconds.</em></p>");
             $main_collection_item->appendElement($de_collection_item);
+        
+            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            echo ("<p><em>The test took $fetchTime seconds.</em></p>");
     
             hierarchicalDisplayRecord($main_collection_item, 0, NULL);
         }
@@ -275,13 +275,93 @@ function collection_test_11($in_login = NULL, $in_hashed_password = NULL, $in_pa
     }
 }
 
+function collection_test_12($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $main_collection_item = $access_instance->get_single_data_record_by_id(11);
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'DC')));
+        if (isset($item_list) && is_array($item_list) && count($item_list)) {
+            echo("<h3>Trying to add a single element that is already deep in the hierarchy.</h3>");
+            if ($main_collection_item->appendElement($item_list[intval(count($item_list) / 2)])) {
+                echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE SUCCEEDED!</h3>");
+                $item_list = NULL;
+            } else {
+                echo("<h3>That worked.</h3>");
+                echo("<h3>Trying to add a whole bunch of elements that are already deep in the hierarchy.</h3>");
+                if ($main_collection_item->appendElements(array_splice($item_list, 6, 53))) {
+                    echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE SUCCEEDED!</h3>");
+                    $item_list = NULL;
+                } else {
+                    echo("<h3>That worked too!</h3>");
+                }
+            }
+        }
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo ("<p><em>The test took $fetchTime seconds.</em></p>");
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
+
+function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $main_collection_item = $access_instance->get_single_data_record_by_id(11);
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'WV')));
+        if (isset($item_list) && is_array($item_list) && count($item_list)) {
+            echo("<h3>Trying to add a single element that is not in the hierarchy.</h3>");
+            if (!$main_collection_item->appendElement($item_list[2])) {
+                echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE FAILED!</h3>");
+                $item_list = NULL;
+            } else {
+                echo("<h3>That worked.</h3>");
+                echo("<h3>Trying to add a whole bunch of elements that are not in the hierarchy.</h3>");
+                if (!$main_collection_item->appendElements(array_splice($item_list, 3, 22))) {
+                    echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE FAILED!</h3>");
+                    $item_list = NULL;
+                } else {
+                    echo("<h3>That worked too!</h3>");
+                }
+            }
+        }
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo ("<p><em>The test took $fetchTime seconds.</em></p>");
+    
+        hierarchicalDisplayRecord($main_collection_item, 0, NULL);
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
+
 ob_start();
 
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');            
         echo('<h1 class="header">COLLECTION TESTS</h1>');
-            prepare_databases('collection_tests');
     
         echo('<div id="taking-inventory" class="closed">');
+            prepare_databases('collection_tests');
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'taking-inventory\')">TAKING INVENTORY</a></h2>');
             echo('<div class="container">');
             
@@ -427,6 +507,28 @@ ob_start();
                             echo('<p class="explain">We expect this to succeed, and look exactly like the previous test.</p>');
                         echo('</div>');
                         collection_test_relay(11, 'AllAdmin', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-033" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-033\')">TEST 33: Try to Insert Items Already in the Hierarchy.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">In this test, we log in as the Main Admin, try to add elements that are already in the hierarchy.</p>');
+                            echo('<p class="explain">We expect this to fail.</p>');
+                        echo('</div>');
+                        collection_test_relay(12, 'AllAdmin', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-034" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-034\')">TEST 34: Try to Insert Items Not in the Hierarchy.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">In this test, we log in as the Main Admin, try to add elements that are not in the hierarchy.</p>');
+                            echo('<p class="explain">We expect this to succeed.</p>');
+                        echo('</div>');
+                        collection_test_relay(13, 'AllAdmin', '', 'CoreysGoryStory');
                     echo('</div>');
                 echo('</div>');
 

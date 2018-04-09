@@ -122,7 +122,16 @@ trait tCO_Collection {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            if (!$this->areYouMyDaddy($in_element_array)) { // DON'T CROSS THE STREAMS!
+            $i_have_a_daddy = FALSE;
+            
+            foreach ($in_element_array as $element) {
+                if ($this->areYouMyDaddy($element)) {
+                    $i_have_a_daddy = TRUE;
+                    break;
+                }
+            }
+            
+            if (!$i_have_a_daddy) { // DON'T CROSS THE STREAMS!
                 if (!isset($this->_container) || !is_array($this->_container)) {
                     $this->_container = Array();
                 }
@@ -347,25 +356,20 @@ trait tCO_Collection {
                                 ) {
         $ret = FALSE;
         
-        if (is_array($in_element) && count($in_element)) {
-            foreach ($in_element as $element) {
-                if ($this->areYouMyDaddy($element, $full_hierachy)) {
-                    $ret = TRUE;
-                    break;
-                }
-            }
-        } else {
-            $id = intval($in_element->id());
+        $id = intval($in_element->id());
         
-            $my_ids = $full_hierachy ? $this->recursiveMap(function($i){return intval($i->id());}) : $this->map(function($i){return intval($i->id());});
-            $their_ids = ($full_hierachy && method_exists($in_element, 'recursiveMap')) ? $in_element->recursiveMap(function($i){return intval($i->id());}) : Array($in_element->id());
+        $simple_map = function($i){
+                                    return intval($i->id());
+                                };
         
-            if (isset($my_ids) && is_array($my_ids) && count($my_ids)) {
-                $my_ids = array_unique($my_ids);
-                $their_ids = array_unique($their_ids);
-                $in_both = array_intersect($my_ids, $their_ids);
-                $ret = 0 < count($in_both);
-            }
+        $my_ids = $full_hierachy ? $this->recursiveMap($simple_map) : $this->map($simple_map);
+        $their_ids = ($full_hierachy && method_exists($in_element, 'recursiveMap')) ? $in_element->recursiveMap($simple_map) : Array($in_element->id());
+    
+        if (isset($my_ids) && is_array($my_ids) && count($my_ids)) {
+            $my_ids = array_unique($my_ids);
+            $their_ids = array_unique($their_ids);
+            $in_both = array_intersect($my_ids, $their_ids);
+            $ret = 0 < count($in_both);
         }
         
         return $ret;
@@ -404,20 +408,17 @@ trait tCO_Collection {
                                     $in_hierarchy_level = 0,    ///< This is a 0-based integer that tells the callback how many "levels deep" the function is.
                                     $in_parent_object = NULL    ///< This is the collection object that is the "parent" of the current array.
                                 ) {
-        $ret = Array();
         $in_hierarchy_level = intval($in_hierarchy_level);
-        
+        $ret = Array($in_function($this, $in_hierarchy_level, $in_parent_object));
         $children = $this->children();
         
         foreach ($children as $child) {
-            $result = $in_function($child, $in_hierarchy_level, $this);
-            array_push($ret, $result);
-            if (method_exists($child, 'children')) {
-                $in_hierarchy_level++;
-                $result = $child->recursiveMap($in_function, $in_hierarchy_level, $child);
-                $in_hierarchy_level--;
-                array_merge($ret, $result);
+            if (method_exists($child, 'recursiveMap')) {
+                $result = $child->recursiveMap($in_function, ++$in_hierarchy_level, $this);
+            } else {
+                $result = Array($in_function($child, ++$in_hierarchy_level, $this));
             }
+            $ret = array_merge($ret, $result);
         }
         
         return $ret;
