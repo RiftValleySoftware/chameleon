@@ -1781,5 +1781,5 @@ INSERT INTO `co_data_nodes` (`id`, `access_class`, `last_access`, `read_security
 (21138, 'CO_US_Place', '1970-01-02 00:00:00', 0, 11, 'Living Clean Group', NULL, 11, -75.608132, 39.3010606, 'Asbury Methodist Church', '20 West Mount Vernon Street', '', 'Smyrna', 'Kent', 'DE', '19977', NULL, '3', '12:30:00', NULL),
 (21148, 'CO_US_Place', '1970-01-02 00:00:00', 0, 11, 'Recovery Through the Step Working Guides', NULL, 11, -75.12929678, 38.72857679, 'Rehobeth Presbyterian', '4470 Highway 1', '', 'Rehobeth Beach', 'Sussex', 'DE', '19971', NULL, '3', '18:00:00', NULL);
 
-ALTER TABLE `co_security_nodes`
+ALTER TABLE `co_data_nodes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21201;

@@ -145,11 +145,15 @@
                                 echo("<p>$key: \"$value\"</p>");
                             }
                         }
-                        if ($in_record_object instanceof CO_US_Place) {
+                        if (($in_record_object instanceof CO_US_Place) && isset($in_record_object->tags()[7])) {
                             echo("<p>Tag 7: \"".$in_record_object->tags()[7]."\"</p>");
                         }
-                        echo("<p>Tag 8: \"".$in_record_object->tags()[8]."\"</p>");
-                        echo("<p>Tag 9: \"".$in_record_object->tags()[9]."\"</p>");
+                        if (isset($in_record_object->tags()[8])) {
+                            echo("<p>Tag 8: \"".$in_record_object->tags()[8]."\"</p>");
+                        }
+                        if (isset($in_record_object->tags()[9])) {
+                            echo("<p>Tag 9: \"".$in_record_object->tags()[9]."\"</p>");
+                        }
                         $address = $in_record_object->get_readable_address();
                         if ($address) {
                             echo("<p>Address: \"$address.\"</p>");
