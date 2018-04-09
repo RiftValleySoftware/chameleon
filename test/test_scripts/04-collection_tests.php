@@ -12,6 +12,7 @@
     Little Green Viper Software Development: https://littlegreenviper.com
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
+set_time_limit ( 120 );
 
 function collection_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $function_name = sprintf('collection_test_%02d', $in_test_number);
@@ -181,6 +182,7 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
         $main_collection_item = $access_instance->get_single_data_record_by_id(11);
 
         $dc_collection_item = $access_instance->get_single_data_record_by_id(2);
@@ -192,6 +194,8 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
         $main_collection_item->appendElement($dc_collection_item);
 
         $main_collection_item->appendElements(Array($de_collection_item, $md_collection_item, $va_collection_item, $wv_collection_item));
+        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        echo ("<p><em>The test took $fetchTime seconds.</em></p>");
         
         hierarchicalDisplayRecord($main_collection_item, 0, NULL);
     } else {
