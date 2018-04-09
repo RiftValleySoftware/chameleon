@@ -69,6 +69,7 @@ class CO_US_Place_Collection extends CO_US_Place {
         $this->_container = Array();
 
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
+        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
     }
     
     use tCO_Collection; ///< These are the built-in collection methods.
