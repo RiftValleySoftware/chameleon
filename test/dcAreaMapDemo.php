@@ -34,7 +34,7 @@ if (isset($_GET['resolve_query'])) {
 
     echo('[');
     if ($access_instance->valid) {
-        list($long, $lat, $radius) = array_map(function($in){ return floatval($in); }, explode(',', trim($_GET['resolve_query'])));
+        list($long, $lat, $radius) = array_map('floatval', explode(',', trim($_GET['resolve_query'])));
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => $long, 'latitude' => $lat, 'radius' => $radius)), FALSE, 0, 0, TRUE);
         if (isset($test_item) && is_array($test_item) && count($test_item)) {
             $test = array_map(function($item){global $admin_map; return '{"admin":"'.$admin_map[intval($item->write_security_id)].'","id":'.intval($item->id()).',"name":'.json_encode($item->name).',"longitude":'.floatval($item->longitude()).',"latitude":'.floatval($item->latitude()).',"distance":'.floatval($item->distance).',"weekday":'.intval($item->tags()[8]).',"address":"'.addslashes($item->get_readable_address()).'"}';}, $test_item);

@@ -182,12 +182,13 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
     
     if ($access_instance->valid) {
         $st1 = microtime(TRUE);
+        $main_collection_item = $access_instance->get_single_data_record_by_id(11);
+
         $dc_collection_item = $access_instance->get_single_data_record_by_id(2);
         $va_collection_item = $access_instance->get_single_data_record_by_id(3);
         $md_collection_item = $access_instance->get_single_data_record_by_id(4);
         $wv_collection_item = $access_instance->get_single_data_record_by_id(5);
         $de_collection_item = $access_instance->get_single_data_record_by_id(6);
-        $main_collection_item = $access_instance->get_single_data_record_by_id(11);
                         
         $main_collection_item->appendElement($dc_collection_item);
 

@@ -29,12 +29,12 @@ trait tCO_Collection {
     object's constructor.
      */
     protected function _set_up_container() {
-        $children_ids = $this->children();
+        $children_ids = $this->context['children_ids'];
+        $this->_container = Array();
         
         if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
             foreach ($children_ids as $child_id) {
-                $instance = $this->_db_object->get_single_record_by_id($child_id);
-            
+                $instance = $this->_db_object->get_single_record_by_id(intval($child_id));
                 if (isset($instance) && ($instance instanceof CO_Main_DB_Record)) {
                     array_push($this->_container, $instance);
                 }
@@ -59,30 +59,43 @@ trait tCO_Collection {
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
             if (!$this->areYouMyDaddy($in_element)) {   // Make sure that we aren't already in the woodpile somewhere.
+                if (!isset($this->_container) || !is_array($this->_container)) {
+                    $this->_container = Array();
+                }
+                
                 if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
                     $in_before_index = count($this->_container);
                 }
                 
-                $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                $before_array = Array();
+                
+                if ($in_before_index) {
+                    $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                }
+                
                 $after_array = Array();
                 
                 if ($in_before_index < count($this->_container)) {
-                    $after_array = array_slice($this->_container, (count($this->_container) - $in_before_index), FALSE);
+                    $end_count = count($this->_container) - $in_before_index;
+                    $after_array = array_slice($this->_container, $end_count, FALSE);
                 }
                 
-                $this->_container = array_merge($before_array, Array($in_element), $after_array);
+                $element_array = Array($in_element);
+                
+                $this->_container = array_merge($before_array, $element_array, $after_array);
                 
                 $ret = TRUE;
-            
                 if (!isset($this->context['children_ids'])) {
                     $this->context['children_ids'] = Array();
                 }
                 
-                $id = $in_element->id();
-                if (!in_array($id, $this->context['children_ids'])) {
-                    array_push($this->context['children_ids'], $id);
-                
-                    sort($this->context['children_ids']);
+                $id = intval($in_element->id());
+                $ids = array_map('intval', $this->context['children_ids']);
+                if (!in_array($id, $ids)) {
+                    array_push($ids, $id);
+                    $ids = array_unique($ids);
+                    sort($ids);
+                    $this->context['children_ids'] = $ids;
                 }
             }
         
@@ -104,22 +117,31 @@ trait tCO_Collection {
     \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
      */
     public function insertElements( $in_element_array,      ///< An array of database element instances to be inserted.
-                                    $in_before_index = -1,  ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
-                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+                                    $in_before_index = -1   ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
                                 ) {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
             if (!$this->areYouMyDaddy($in_element_array)) { // DON'T CROSS THE STREAMS!
+                if (!isset($this->_container) || !is_array($this->_container)) {
+                    $this->_container = Array();
+                }
+                
                 if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
                     $in_before_index = count($this->_container);
                 }
                 
-                $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                $before_array = Array();
+                
+                if ($in_before_index) {
+                    $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                }
+                
                 $after_array = Array();
                 
                 if ($in_before_index < count($this->_container)) {
-                    $after_array = array_slice($this->_container, (count($this->_container) - $in_before_index), FALSE);
+                    $end_count = count($this->_container) - $in_before_index;
+                    $after_array = array_slice($this->_container, $end_count, FALSE);
                 }
                 
                 $this->_container = array_merge($before_array, $in_element_array, $after_array);
@@ -131,16 +153,18 @@ trait tCO_Collection {
                 }
                 
                 foreach ($in_element_array as $element) {
-                    $id = $element->id();
-                    if (!in_array($id, $this->context['children_ids'])) {
-                        array_push($this->context['children_ids'], $id);
-                
-                        sort($this->context['children_ids']);
+                    $id = intval($element->id());
+                    $ids = array_map('intval', $this->context['children_ids']);
+                    if (!in_array($id, $ids)) {
+                        array_push($ids, $id);
+                        $ids = array_unique($ids);
+                        sort($ids);
+                        $this->context['children_ids'] = $ids;
                     }
                 }
             }
         
-            if ($ret && !$dont_update) {
+            if ($ret) {
                 $ret = $this->update_db();
             }
         }
@@ -203,6 +227,8 @@ trait tCO_Collection {
                     }
                 }
                 
+                $new_list = array_unique($new_list);
+                sort($new_list);
                 $this->context['children_ids'] = $new_list;
                 
                 $ret = $this->update_db();
@@ -263,10 +289,9 @@ trait tCO_Collection {
     
     \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
      */
-    public function appendElement(  $in_element,            ///< The database record to add.
-                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+    public function appendElement(  $in_element             ///< The database record to add.
                                 ) {
-        return $this->insertElement($in_element, -1, $dont_update);
+        return $this->insertElement($in_element, -1);
     }
     
     /***********************/
@@ -277,10 +302,9 @@ trait tCO_Collection {
     
     \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
      */
-    public function appendElements( $in_element_array,      ///< An array of database element instances to be appended.
-                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+    public function appendElements( $in_element_array       ///< An array of database element instances to be appended.
                                 ) {
-        return $this->insertElements($in_element_array, -1, $dont_update);
+        return $this->insertElements($in_element_array, -1);
     }
     
     /***********************/

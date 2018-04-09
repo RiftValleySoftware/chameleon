@@ -85,10 +85,13 @@
     
         if ($in_hierarchy_level) {
             echo('<div style="margin-left:'.strval($in_hierarchy_level + 2).'em;margin-top:1em;border:'.strval($in_hierarchy_level + 1).'px dashed black;padding:0.125em">');
+            
             if (NULL != $daddy) {
                 echo("<p>Ancestry is ".(($daddy == $in_parent_object) ? '' : 'un')."confirmed</p>");
             }
-            echo("<p>Indentation level: $in_hierarchy_level</p>");
+
+            echo("<p>Hierarchy level: $in_hierarchy_level</p>");
+            
             if (isset($in_parent_object) && method_exists($in_parent_object, 'id')) {
                 $id_no = $in_parent_object->id();
                 echo("<p>Parent Object ID: $id_no</p>");

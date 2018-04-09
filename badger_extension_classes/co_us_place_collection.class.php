@@ -21,7 +21,28 @@ require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place.class.php
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
 class CO_US_Place_Collection extends CO_US_Place {
-    /// CO_US_Place_Collection Methods
+
+    /***********************/
+    /**
+    This function sets up this instance, according to the DB-formatted associative array passed in.
+    
+    \returns TRUE, if the instance was able to set itself up to the provided array.
+     */
+    protected function _load_from_db(   $in_db_result   ///< This is an associative array, formatted as a database row response.
+                                    ) {
+        $ret = parent::_load_from_db($in_db_result);
+        
+        $this->_set_up_container();
+        
+        $count = 0;
+        if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {
+            $count = count($this->context['children_ids']);
+        }
+        
+        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
+        $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude - $count children objects)" : "($this->_longitude, $this->_latitude - $count children objects)";
+    }
+    
     /***********************************************************************************************************************/
     /***********************/
     /**
@@ -48,10 +69,6 @@ class CO_US_Place_Collection extends CO_US_Place {
         $this->_container = Array();
 
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
-        
-        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
-        
-        $this->_set_up_container();
     }
     
     use tCO_Collection; ///< These are the built-in collection methods.
