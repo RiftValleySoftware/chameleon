@@ -106,7 +106,7 @@ function collection_test_03($in_login = NULL, $in_hashed_password = NULL, $in_pa
     }
 }
     
-function collection_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+function collection_test_display($row_id, $tag, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $access_instance = NULL;
     
     if ( !defined('LGV_ACCESS_CATCHER') ) {
@@ -119,8 +119,8 @@ function collection_test_04($in_login = NULL, $in_hashed_password = NULL, $in_pa
     
     if ($access_instance->valid) {
         $st1 = microtime(TRUE);
-        $collection_item = $access_instance->get_single_data_record_by_id(2);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'DC')));
+        $collection_item = $access_instance->get_single_data_record_by_id($row_id);
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', $tag)));
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             $count = count($item_list);
@@ -128,227 +128,45 @@ function collection_test_04($in_login = NULL, $in_hashed_password = NULL, $in_pa
             $fail_count = 0;
             echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
             foreach ($item_list as $item) {
-                echo('<div class="inner_div">');
-                    if ( isset($item) ) {
-                        display_record($item);
-                    }
                 if ($collection_item->appendElement($item)) {
-                    echo("<h3 style=\"color:green;font-weight:bold\">Item successfully added.</h3>");
                     $success_count++;
                 } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add This Item!</h3>");
+                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add item ".$item->id()."!</h3>");
                     $fail_count++;
                 }
-                
-                echo('</div>');
             }
             
             if ($success_count == count($item_list)) {
-                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count DC items!</h3>");
+                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count $tag items!</h3>");
+                hierarchicalDisplayRecord($collection_item, 0, NULL);
             } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the DC items! There were $fail_count failures!</h3>");
+                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the $tag items! There were $fail_count failures!</h3>");
             }
         }
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
+}
+    
+function collection_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    collection_test_display(2, 'DC', $in_login, $in_hashed_password, $in_password);
 }
     
 function collection_test_05($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $access_instance = NULL;
-    
-    if ( !defined('LGV_ACCESS_CATCHER') ) {
-        define('LGV_ACCESS_CATCHER', 1);
-    }
-    
-    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
-    
-    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
-    
-    if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
-        $collection_item = $access_instance->get_single_data_record_by_id(3);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'VA')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        if (isset($item_list) && is_array($item_list) && count($item_list)) {
-            $count = count($item_list);
-            $success_count = 0;
-            $fail_count = 0;
-            echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
-            foreach ($item_list as $item) {
-                echo('<div class="inner_div">');
-                    if ( isset($item) ) {
-                        display_record($item);
-                    }
-                if ($collection_item->appendElement($item)) {
-                    echo("<h3 style=\"color:green;font-weight:bold\">Item successfully added.</h3>");
-                    $success_count++;
-                } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add This Item!</h3>");
-                    $fail_count++;
-                }
-                
-                echo('</div>');
-            }
-            
-            if ($success_count == count($item_list)) {
-                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count VA items!</h3>");
-            } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the VA items! There were $fail_count failures!</h3>");
-            }
-        }
-    } else {
-        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
-    }
+    collection_test_display(3, 'VA', $in_login, $in_hashed_password, $in_password);
 }
     
 function collection_test_06($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $access_instance = NULL;
-    
-    if ( !defined('LGV_ACCESS_CATCHER') ) {
-        define('LGV_ACCESS_CATCHER', 1);
-    }
-    
-    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
-    
-    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
-    
-    if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
-        $collection_item = $access_instance->get_single_data_record_by_id(4);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'MD')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        if (isset($item_list) && is_array($item_list) && count($item_list)) {
-            $count = count($item_list);
-            $success_count = 0;
-            $fail_count = 0;
-            echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
-            foreach ($item_list as $item) {
-                echo('<div class="inner_div">');
-                    if ( isset($item) ) {
-                        display_record($item);
-                    }
-                if ($collection_item->appendElement($item)) {
-                    echo("<h3 style=\"color:green;font-weight:bold\">Item successfully added.</h3>");
-                    $success_count++;
-                } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add This Item!</h3>");
-                    $fail_count++;
-                }
-                
-                echo('</div>');
-            }
-            
-            if ($success_count == count($item_list)) {
-                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count MD items!</h3>");
-            } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the MD items! There were $fail_count failures!</h3>");
-            }
-        }
-    } else {
-        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
-    }
+    collection_test_display(4, 'MD', $in_login, $in_hashed_password, $in_password);
 }
-    
+ 
 function collection_test_07($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $access_instance = NULL;
-    
-    if ( !defined('LGV_ACCESS_CATCHER') ) {
-        define('LGV_ACCESS_CATCHER', 1);
-    }
-    
-    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
-    
-    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
-    
-    if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
-        $collection_item = $access_instance->get_single_data_record_by_id(5);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'WV')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        if (isset($item_list) && is_array($item_list) && count($item_list)) {
-            $count = count($item_list);
-            $success_count = 0;
-            $fail_count = 0;
-            echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
-            foreach ($item_list as $item) {
-                echo('<div class="inner_div">');
-                    if ( isset($item) ) {
-                        display_record($item);
-                    }
-                if ($collection_item->appendElement($item)) {
-                    echo("<h3 style=\"color:green;font-weight:bold\">Item successfully added.</h3>");
-                    $success_count++;
-                } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add This Item!</h3>");
-                    $fail_count++;
-                }
-                
-                echo('</div>');
-            }
-            
-            if ($success_count == count($item_list)) {
-                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count WV items!</h3>");
-            } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the WV items! There were $fail_count failures!</h3>");
-            }
-        }
-    } else {
-        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
-    }
+    collection_test_display(5, 'WV', $in_login, $in_hashed_password, $in_password);
 }
-    
+ 
 function collection_test_08($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
-    $access_instance = NULL;
-    
-    if ( !defined('LGV_ACCESS_CATCHER') ) {
-        define('LGV_ACCESS_CATCHER', 1);
-    }
-    
-    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
-    
-    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
-    
-    if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
-        $collection_item = $access_instance->get_single_data_record_by_id(6);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'DE')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        if (isset($item_list) && is_array($item_list) && count($item_list)) {
-            $count = count($item_list);
-            $success_count = 0;
-            $fail_count = 0;
-            echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
-            foreach ($item_list as $item) {
-                echo('<div class="inner_div">');
-                    if ( isset($item) ) {
-                        display_record($item);
-                    }
-                if ($collection_item->appendElement($item)) {
-                    echo("<h3 style=\"color:green;font-weight:bold\">Item successfully added.</h3>");
-                    $success_count++;
-                } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">Unable to add This Item!</h3>");
-                    $fail_count++;
-                }
-                
-                echo('</div>');
-            }
-            
-            if ($success_count == count($item_list)) {
-                echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count DE items!</h3>");
-            } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the DE items! There were $fail_count failures!</h3>");
-            }
-        }
-    } else {
-        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
-    }
+    collection_test_display(6, 'DE', $in_login, $in_hashed_password, $in_password);
 }
     
 function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
@@ -391,42 +209,42 @@ ob_start();
     
     echo('<div class="test-wrapper" style="display:table;margin-left:auto;margin-right:auto;text-align:left">');            
         echo('<h1 class="header">COLLECTION TESTS</h1>');
-        echo('<div id="taking-inventory" class="closed">');
-            echo('<h2 class="header"><a href="javascript:toggle_main_state(\'taking-inventory\')">TAKING INVENTORY</a></h2>');
-            echo('<div class="container">');
-            
-                echo('<div id="test-021" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-021\')">TEST 21: Just List All the Logins.</a></h3>');
-                    echo('<div class="main_div inner_container">');
-                        echo('<div class="main_div" style="margin-right:2em">');
-                            echo('<p class="explain">This will just list the logins we will be working with in the following tests.</p>');
-                        echo('</div>');
-                        collection_test_relay(1, 'admin', '', CO_Config::$god_mode_password);
-                    echo('</div>');
-                echo('</div>');
-            
-                echo('<div id="test-022" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-022\')">TEST 22: Just List All the Collections.</a></h3>');
-                    echo('<div class="main_div inner_container">');
-                        echo('<div class="main_div" style="margin-right:2em">');
-                            echo('<p class="explain">This will just list the collections we will be working with in the following tests.</p>');
-                        echo('</div>');
-                        collection_test_relay(2);
-                    echo('</div>');
-                echo('</div>');
-            
-                echo('<div id="test-023" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-023\')">TEST 23: Just List All the Places.</a></h3>');
-                    echo('<div class="main_div inner_container">');
-                        echo('<div class="main_div" style="margin-right:2em">');
-                            echo('<p class="explain">This will just list the various location objects we will be working with in the following tests.</p>');
-                        echo('</div>');
-                        collection_test_relay(3);
-                    echo('</div>');
-                echo('</div>');
-                
-            echo('</div>');
-        echo('</div>');
+//         echo('<div id="taking-inventory" class="closed">');
+//             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'taking-inventory\')">TAKING INVENTORY</a></h2>');
+//             echo('<div class="container">');
+//             
+//                 echo('<div id="test-021" class="inner_closed">');
+//                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-021\')">TEST 21: Just List All the Logins.</a></h3>');
+//                     echo('<div class="main_div inner_container">');
+//                         echo('<div class="main_div" style="margin-right:2em">');
+//                             echo('<p class="explain">This will just list the logins we will be working with in the following tests.</p>');
+//                         echo('</div>');
+//                         collection_test_relay(1, 'admin', '', CO_Config::$god_mode_password);
+//                     echo('</div>');
+//                 echo('</div>');
+//             
+//                 echo('<div id="test-022" class="inner_closed">');
+//                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-022\')">TEST 22: Just List All the Collections.</a></h3>');
+//                     echo('<div class="main_div inner_container">');
+//                         echo('<div class="main_div" style="margin-right:2em">');
+//                             echo('<p class="explain">This will just list the collections we will be working with in the following tests.</p>');
+//                         echo('</div>');
+//                         collection_test_relay(2);
+//                     echo('</div>');
+//                 echo('</div>');
+//             
+//                 echo('<div id="test-023" class="inner_closed">');
+//                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-023\')">TEST 23: Just List All the Places.</a></h3>');
+//                     echo('<div class="main_div inner_container">');
+//                         echo('<div class="main_div" style="margin-right:2em">');
+//                             echo('<p class="explain">This will just list the various location objects we will be working with in the following tests.</p>');
+//                         echo('</div>');
+//                         collection_test_relay(3);
+//                     echo('</div>');
+//                 echo('</div>');
+//                 
+//             echo('</div>');
+//         echo('</div>');
         
         echo('<div id="collection-setup-tests" class="closed">');
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'collection-setup-tests\')">SETTING UP THE COLLECTIONS</a></h2>');
