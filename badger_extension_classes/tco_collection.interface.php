@@ -102,6 +102,10 @@ trait tCO_Collection {
             if ($ret && !$dont_update) {
                 $ret = $this->update_db();
             }
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_desc_user_not_authorized);
         }
         
         return $ret;
@@ -176,6 +180,10 @@ trait tCO_Collection {
             if ($ret) {
                 $ret = $this->update_db();
             }
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_desc_user_not_authorized);
         }
         
         return $ret;
@@ -242,6 +250,10 @@ trait tCO_Collection {
                 
                 $ret = $this->update_db();
             }
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_collection_error_desc_user_not_authorized);
         }
         
         return $ret;
@@ -442,7 +454,8 @@ trait tCO_Collection {
         - 'object' (Required). This is the actual instance that maps to this object.
         - 'children' (optional -may not be instantiated). This is an array of the same associative arrays for any "child objects" of the current object.
      */
-    public function getHierarchy($in_instance = NULL) {
+    public function getHierarchy(   $in_instance = NULL ///< The instance we want to find in this collection.
+                                ) {
         if (NULL == $in_instance) {
             $in_instance = $this;
         }

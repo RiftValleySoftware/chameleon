@@ -42,5 +42,11 @@ class CO_CHAMELEON_Lang {
     static  $chameleon_co_us_place_tag_5 = 'State';
     static  $chameleon_co_us_place_tag_6 = 'ZIP Code';
     static  $chameleon_co_us_place_tag_7 = 'Nation';
+
+    /// These apply to the *_Collection classes.
+    static  $co_collection_error_name_item_not_valid = 'The Item Is not a Valid Database Item';
+    static  $co_collection_error_desc_item_not_valid = 'The item with the given ID cannot be found in the database.';
+    static  $co_collection_error_name_user_not_authorized = 'User Not Authorized';
+    static  $co_collection_error_desc_user_not_authorized = 'The user is not authorized to modify this collection.';
 }
 ?>

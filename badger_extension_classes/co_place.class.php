@@ -15,6 +15,13 @@ defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure
 
 require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 
+if ( !defined('LGV_CHAMELEON_UTILS_CATCHER') ) {
+    define('LGV_CHAMELEON_UTILS_CATCHER', 1);
+}
+
+$utils_file = CO_Config::chameleon_main_class_dir().'/co_chameleon_utils.class.php';
+require_once($utils_file);
+
 /***************************************************************************************************************************/
 /**
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
@@ -207,9 +214,9 @@ class CO_Place extends CO_LL_Location {
             }
         }
             
-        $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_place_error_code_failed_to_geocode,
-                                        CO_CHAMELEON_Lang::$co_place_error_name_failed_to_geocode,
-                                        CO_CHAMELEON_Lang::$co_place_error_desc_failed_to_geocode);
+        $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_place_error_code_failed_to_lookup,
+                                        CO_CHAMELEON_Lang::$co_place_error_name_failed_to_lookup,
+                                        CO_CHAMELEON_Lang::$co_place_error_desc_failed_to_lookup);
 
         return NULL;
     }
