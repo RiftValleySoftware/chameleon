@@ -454,26 +454,18 @@ trait tCO_Collection {
         - 'object' (Required). This is the actual instance that maps to this object.
         - 'children' (optional -may not be instantiated). This is an array of the same associative arrays for any "child objects" of the current object.
      */
-    public function getHierarchy(   $in_instance = NULL ///< The instance we want to find in this collection.
-                                ) {
-        if (NULL == $in_instance) {
-            $in_instance = $this;
-        }
+    public function getHierarchy() {
+        $instance = Array('object' => $this);
         
-        $instance = Array('object' => $in_instance);
-        
-        if (method_exists($in_instance, 'children')) {
-            $children = $in_instance->children();
+        if (method_exists($this, 'children') && count($this->children())) {
+            $children = $this->children();
+            $instance['children'] = Array();
         
             foreach ($children as $child) {
-                $result = $this->getHierarchy($child);
-            
-                if ($result) {
-                    if (!isset($instance['children'])) {
-                        $instance['children'] = Array();
-                    }
-            
-                    array_push($instance['children'], $result);
+                if (method_exists($child, 'getHierarchy')) {
+                    array_push($instance['children'], $child->getHierarchy());
+                } else {
+                    array_push($instance['children'], Array('object' => $child));
                 }
             }
         }

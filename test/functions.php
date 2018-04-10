@@ -79,8 +79,34 @@
         echo('');
         echo('<h1 style="color:red">UNABLE TO OPEN DATABASE!</h1>');
     }
+    
+    function display_raw_hierarchy($in_hierarchy_array, $modifier) {
+        if (isset($in_hierarchy_array) && is_array($in_hierarchy_array) && count($in_hierarchy_array)) {
+            if (isset($in_hierarchy_array['children'])) {
+                echo('<div id="collection_wrapper_'.$in_hierarchy_array['object']->id().'_'.$modifier.'" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'collection_wrapper_'.$in_hierarchy_array['object']->id().'_'.$modifier."')\">");
+            } else {
+                echo('<h3 class="inner_header">');
+            }
             
-    function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_parent_object = NULL) {
+            echo($in_hierarchy_array['object']->name);
+    
+            if (isset($in_hierarchy_array['children'])) {
+                echo(" <em>(".count($in_hierarchy_array['children']).")</em>");
+                echo('</a></h3>');
+                foreach ($in_hierarchy_array['children'] as $child) {
+                    echo('<div class="main_div inner_container">');
+                        display_raw_hierarchy($child, $modifier);
+                    echo('</div>');
+                }
+                echo('</div>');
+            } else {
+                echo('</h3>');
+            }
+        }
+    }
+            
+    function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_parent_object = NULL, $shorty = FALSE) {
         $daddy = isset($in_parent_object) && $in_parent_object ? $in_parent_object->whosYourDaddy($in_record) : NULL;
     
         if ($in_hierarchy_level) {
@@ -100,95 +126,99 @@
             echo("<div>");
         }
         
-        display_record($in_record, $in_hierarchy_level);
+        display_record($in_record, $in_hierarchy_level, $shorty);
         
         echo('</div>');
     }
     
-    function display_record($in_record_object, $in_hierarchy_level = 0) {
+    function display_record($in_record_object, $in_hierarchy_level = 0, $shorty = FALSE) {
         echo("<h5 style=\"margin-top:0.5em\">ITEM ".$in_record_object->id().":</h5>");
         if (isset($in_record_object) && $in_record_object) {
             echo('<div class="inner_div">');
-                $access_object = $in_record_object->get_access_object();
-                if ($access_object) {
-                    $login_item = $access_object->get_login_item();
-                    if ($login_item) {
-                        echo('<p style="font-style:italic;margin-top:0.25em;margin-bottom:0.25em">'.'This user ("'.$login_item->name.'"), is logged in as "'.$login_item->login_id.'" ('.implode(', ', $login_item->ids()).').</p>');
-                        if ($in_record_object->user_can_write()) {
-                            echo('<p style="color: green;font-weight:bold;font-size:large;font-style:italic;margin-bottom:0.25em">This user can modify this record.</p>');
-                        }
-                    }
-                }
-                
-                echo("<p>$in_record_object->class_description</p>");
-                echo("<p>$in_record_object->instance_description</p>");
-                echo("<p>Read: $in_record_object->read_security_id</p>");
-                echo("<p>Write: $in_record_object->write_security_id</p>");
-            
-                if (method_exists($in_record_object, 'owner_id') && intval($in_record_object->owner_id())) {
-                    echo("<p>Owner: ".intval($in_record_object->owner_id())."</p>");
-                }
-            
-                if (isset($in_record_object->last_access)) {
-                    echo("<p>Last access: ".date('g:i:s A, F j, Y', $in_record_object->last_access)."</p>");
-                }
-            
-                if (isset($in_record_object->distance)) {
-                    $distance = sprintf('%01.3f', $in_record_object->distance);
-                    echo("<p>Distance: $distance"."Km</p>");
-                }
-                
-                if (method_exists($in_record_object, 'tags')) {
-                    if ($in_record_object instanceof CO_Place) {
-                        foreach ($in_record_object->address_elements as $key => $value) {
-                            if (trim($value)) {
-                                echo("<p>$key: \"$value\"</p>");
+                if (!$shorty) {
+                    $access_object = $in_record_object->get_access_object();
+                    if ($access_object) {
+                        $login_item = $access_object->get_login_item();
+                        if ($login_item) {
+                            echo('<p style="font-style:italic;margin-top:0.25em;margin-bottom:0.25em">'.'This user ("'.$login_item->name.'"), is logged in as "'.$login_item->login_id.'" ('.implode(', ', $login_item->ids()).').</p>');
+                            if ($in_record_object->user_can_write()) {
+                                echo('<p style="color: green;font-weight:bold;font-size:large;font-style:italic;margin-bottom:0.25em">This user can modify this record.</p>');
                             }
                         }
-                        if (($in_record_object instanceof CO_US_Place) && isset($in_record_object->tags()[7])) {
-                            echo("<p>Tag 7: \"".$in_record_object->tags()[7]."\"</p>");
-                        }
-                        if (isset($in_record_object->tags()[8])) {
-                            echo("<p>Tag 8: \"".$in_record_object->tags()[8]."\"</p>");
-                        }
-                        if (isset($in_record_object->tags()[9])) {
-                            echo("<p>Tag 9: \"".$in_record_object->tags()[9]."\"</p>");
-                        }
-                        $address = $in_record_object->get_readable_address();
-                        if ($address) {
-                            echo("<p>Address: \"$address.\"</p>");
-                        }
-                    } else {
-                        foreach ($in_record_object->tags() as $key => $value) {
-                            echo("<p>Tag $key: \"$value\"</p>");
-                        }
                     }
-                }
+                
+                    echo("<p>$in_record_object->class_description</p>");
+                    echo("<p>$in_record_object->instance_description</p>");
+                    echo("<p>Read: $in_record_object->read_security_id</p>");
+                    echo("<p>Write: $in_record_object->write_security_id</p>");
             
-                if ( $in_record_object instanceof CO_Security_Login) {
-                    if (method_exists($in_record_object, 'ids')) {
-                        echo("<p>IDs: ");
-                            $first = TRUE;
-                            foreach ( $in_record_object->ids() as $id ) {
-                                if (!$first) {
-                                    echo(", ");
-                                } else {
-                                    $first = FALSE;
+                    if (method_exists($in_record_object, 'owner_id') && intval($in_record_object->owner_id())) {
+                        echo("<p>Owner: ".intval($in_record_object->owner_id())."</p>");
+                    }
+            
+                    if (isset($in_record_object->last_access)) {
+                        echo("<p>Last access: ".date('g:i:s A, F j, Y', $in_record_object->last_access)."</p>");
+                    }
+            
+                    if (isset($in_record_object->distance)) {
+                        $distance = sprintf('%01.3f', $in_record_object->distance);
+                        echo("<p>Distance: $distance"."Km</p>");
+                    }
+                
+                    if (method_exists($in_record_object, 'tags')) {
+                        if ($in_record_object instanceof CO_Place) {
+                            foreach ($in_record_object->address_elements as $key => $value) {
+                                if (trim($value)) {
+                                    echo("<p>$key: \"$value\"</p>");
                                 }
-                                echo($id);
                             }
-                        echo("</p>");
-                    } else {
-                        echo("<h4>NO IDS!</h4>");
+                            if (($in_record_object instanceof CO_US_Place) && isset($in_record_object->tags()[7])) {
+                                echo("<p>Tag 7: \"".$in_record_object->tags()[7]."\"</p>");
+                            }
+                            if (isset($in_record_object->tags()[8])) {
+                                echo("<p>Tag 8: \"".$in_record_object->tags()[8]."\"</p>");
+                            }
+                            if (isset($in_record_object->tags()[9])) {
+                                echo("<p>Tag 9: \"".$in_record_object->tags()[9]."\"</p>");
+                            }
+                            $address = $in_record_object->get_readable_address();
+                            if ($address) {
+                                echo("<p>Address: \"$address.\"</p>");
+                            }
+                        } else {
+                            foreach ($in_record_object->tags() as $key => $value) {
+                                echo("<p>Tag $key: \"$value\"</p>");
+                            }
+                        }
                     }
-                }
             
-                if (method_exists($in_record_object, 'children')) {
-                    $children = $in_record_object->children();
-                    
-                    foreach ($children as $child) {
-                        hierarchicalDisplayRecord($child, $in_hierarchy_level + 1, $in_record_object);
+                    if ( $in_record_object instanceof CO_Security_Login) {
+                        if (method_exists($in_record_object, 'ids')) {
+                            echo("<p>IDs: ");
+                                $first = TRUE;
+                                foreach ( $in_record_object->ids() as $id ) {
+                                    if (!$first) {
+                                        echo(", ");
+                                    } else {
+                                        $first = FALSE;
+                                    }
+                                    echo($id);
+                                }
+                            echo("</p>");
+                        } else {
+                            echo("<h4>NO IDS!</h4>");
+                        }
                     }
+                        
+                    if (method_exists($in_record_object, 'children')) {
+                        $children = $in_record_object->children();
+                
+                        foreach ($children as $child) {
+                            hierarchicalDisplayRecord($child, $in_hierarchy_level + 1, $in_record_object, $shorty);
+                        }
+                    }
+                } else {
+                    echo("<p>$in_record_object->name <em>(".$in_record_object->id().")</em></p>");
                 }
             echo('</div>');
         } else {

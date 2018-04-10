@@ -116,6 +116,9 @@ if (isset($test_name_array) && is_array($test_name_array) && count($test_name_ar
                 min-width:30em;
             }
             
+            div.collection_wrapper {
+            }
+            
         </style>
         
         <script type="text/javascript" src="ajaxLoader.js"></script>

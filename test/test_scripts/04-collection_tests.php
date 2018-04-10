@@ -93,14 +93,16 @@ function collection_test_03($in_login = NULL, $in_hashed_password = NULL, $in_pa
     
     if ($access_instance->valid) {
         $st1 = microtime(TRUE);
-        $item = $access_instance->get_single_data_record_by_id($id);
+        $st1 = microtime(TRUE);
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place'));
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
-        echo('<div class="inner_div">');
-            if ( isset($item) ) {
+        if (isset($item_list) && is_array($item_list) && count($item_list)) {
+            $count = count($item_list);
+            echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
+            foreach ($item_list as $item) {
                 display_record($item);
             }
-            echo ("<p><em>This took $fetchTime seconds.</em></p>");
-        echo('</div>');
+        }
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
@@ -139,6 +141,11 @@ function collection_test_display($row_id, $tag, $in_login = NULL, $in_hashed_pas
             
             if ($success_count == count($item_list)) {
                 echo("<h3 style=\"color:green;font-weight:bold\">We successfully added all $success_count $tag items!</h3>");
+        
+                $hierarchy = $collection_item->getHierarchy();
+                $modifier = $row_id.'_'.$tag;
+                display_raw_hierarchy($hierarchy, $modifier);
+                
                 hierarchicalDisplayRecord($collection_item, 0, NULL);
             } else {
                 echo("<h3 style=\"color:red;font-weight:bold\">We failed to add all the $tag items! There were $fail_count failures!</h3>");
@@ -197,7 +204,8 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         echo ("<p><em>The test took $fetchTime seconds.</em></p>");
         
-        hierarchicalDisplayRecord($main_collection_item, 0, NULL);
+        $hierarchy = $main_collection_item->getHierarchy();
+        display_raw_hierarchy($hierarchy, '09');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
@@ -246,6 +254,9 @@ function collection_test_10($in_login = NULL, $in_hashed_password = NULL, $in_pa
         
             $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
             echo ("<p><em>The test took $fetchTime seconds.</em></p>");
+        
+            $hierarchy = $main_collection_item->getHierarchy();
+            display_raw_hierarchy($hierarchy, '10');
     
             hierarchicalDisplayRecord($main_collection_item, 0, NULL);
         }
@@ -271,8 +282,9 @@ function collection_test_11($in_login = NULL, $in_hashed_password = NULL, $in_pa
         $main_collection_item = $access_instance->get_single_data_record_by_id(11);
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         echo ("<p><em>The test took $fetchTime seconds.</em></p>");
-    
-        hierarchicalDisplayRecord($main_collection_item, 0, NULL);
+        
+        $hierarchy = $main_collection_item->getHierarchy();
+        display_raw_hierarchy($hierarchy, '11');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
@@ -351,8 +363,9 @@ function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_pa
         }
         $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
         echo ("<p><em>The test took $fetchTime seconds.</em></p>");
-    
-        hierarchicalDisplayRecord($main_collection_item, 0, NULL);
+        
+        $hierarchy = $main_collection_item->getHierarchy();
+        display_raw_hierarchy($hierarchy, '12');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
