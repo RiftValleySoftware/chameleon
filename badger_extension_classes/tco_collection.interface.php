@@ -45,7 +45,7 @@ trait tCO_Collection {
     /***********************/
     /**
     This inserts one record to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the item will be appeneded.
-    The element cannot be already in the collection at any level, as that could cause a loop.
+    Collection elements cannot be already in the collection at any level, as that could cause a loop.
     The logged-in user must have write access to the collection object (not the data object) in order to add the item.
     You can opt out of the automatic database update.
     
@@ -58,7 +58,7 @@ trait tCO_Collection {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            if (!$this->areYouMyDaddy($in_element)) {   // Make sure that we aren't already in the woodpile somewhere.
+            if (!(method_exists($in_element, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection aren't already in the woodpile somewhere.
                 if (!isset($this->_container) || !is_array($this->_container)) {
                     $this->_container = Array();
                 }
@@ -114,7 +114,7 @@ trait tCO_Collection {
     /***********************/
     /**
     This inserts multiple records to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the items will be appeneded.
-    The elements cannot be already in the collection at any level, as that could cause a loop.
+    Collection elements cannot be already in the collection at any level, as that could cause a loop.
     The logged-in user must have write access to the collection object (not the data objects) in order to add the items.
     You can opt out of the automatic database update.
     
@@ -129,7 +129,8 @@ trait tCO_Collection {
             $i_have_a_daddy = FALSE;
             
             foreach ($in_element_array as $element) {
-                if ($this->areYouMyDaddy($element)) {
+                // We can't insert nested collections.
+                if (method_exists($element, 'insertElement') && $this->areYouMyDaddy($element)) {
                     $i_have_a_daddy = TRUE;
                     break;
                 }
