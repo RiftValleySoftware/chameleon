@@ -330,6 +330,18 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This deletes all children of the container.
+    
+    \returns TRUE, if the new configuration was successfully updated in the DB.
+     */
+    public function deleteAllChildren() {
+        $this->_children = Array();
+        unset($this->context['children_ids']);
+        return $this->update_db();
+    }
+    
+    /***********************/
+    /**
     This takes an element, and returns its parent collection object (if available).
     This only checks the current collection and (if requested) its "child" collection objects.
     

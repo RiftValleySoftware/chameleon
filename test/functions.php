@@ -90,6 +90,8 @@
             }
             
             echo($in_hierarchy_array['object']->name);
+            echo(' (READ: '.$in_hierarchy_array['object']->read_security_id);
+            echo(', WRITE: '.$in_hierarchy_array['object']->write_security_id.')');
     
             if (isset($in_hierarchy_array['children'])) {
                 echo(" <em>(".count($in_hierarchy_array['children']).")</em>");
