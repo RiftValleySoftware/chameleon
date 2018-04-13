@@ -59,6 +59,7 @@ trait tCO_Collection {
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
             if (!(method_exists($in_element, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection aren't already in the woodpile somewhere.
+                $id = intval($in_element->id());
                 if (!isset($this->_container) || !is_array($this->_container)) {
                     $this->_container = Array();
                 }
@@ -89,7 +90,6 @@ trait tCO_Collection {
                     $this->context['children_ids'] = Array();
                 }
                 
-                $id = intval($in_element->id());
                 $ids = array_map('intval', $this->context['children_ids']);
                 if (!in_array($id, $ids)) {
                     array_push($ids, $id);
@@ -344,9 +344,9 @@ trait tCO_Collection {
     /***********************/
     /**
     This takes an element, and returns its parent collection object (if available).
-    This only checks the current collection and (if requested) its "child" collection objects.
+    This only checks the current collection and its "child" collection objects.
     
-    \returns an instance of a collection class, if that instance is the "parent" of the presented object. It may be this instance, or a "child" instance of this class.
+    \returns an array of instances of a collection class, if that instance is the "parent" of the presented object. It may be this instance, or a "child" instance of this class.
      */
     public function whosYourDaddy(  $in_element ///< The element to check.
                                 ) {
@@ -359,10 +359,10 @@ trait tCO_Collection {
             });
         
         if (isset($ret_array) && is_array($ret_array) && count($ret_array)) {
+            $ret = Array();
             foreach ($ret_array as $item) {
                 if ($item[0] == $id) {
-                    $ret = $item[1];
-                    break;
+                    array_push($ret, $item[1]);
                 }
             }
         }
