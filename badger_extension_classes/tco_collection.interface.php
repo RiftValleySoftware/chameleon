@@ -34,7 +34,7 @@ trait tCO_Collection {
         
         if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
             foreach ($children_ids as $child_id) {
-                $instance = $this->_db_object->get_single_record_by_id(intval($child_id));
+                $instance = $this->get_access_object()->get_single_data_record_by_id(intval($child_id));
                 if (isset($instance) && ($instance instanceof CO_Main_DB_Record)) {
                     array_push($this->_container, $instance);
                 }
@@ -46,6 +46,7 @@ trait tCO_Collection {
     /**
     This inserts one record to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the item will be appeneded.
     Collection elements cannot be already in the collection at any level, as that could cause a loop.
+    We also don't allow duplicates of any class in the same level of a collection. Only the first instance is retained. Subsequent copies are removed.
     The logged-in user must have write access to the collection object (not the data object) in order to add the item.
     You can opt out of the automatic database update.
     
@@ -83,7 +84,17 @@ trait tCO_Collection {
                 
                 $element_array = Array($in_element);
                 
-                $this->_container = array_merge($before_array, $element_array, $after_array);
+                $merged = array_merge($before_array, $element_array, $after_array);
+                
+                $unique  = array();
+
+                foreach ($merged as $current) {
+                    if (!in_array($current, $unique)) {
+                        $unique[] = $current;
+                    }
+                }
+                
+                $this->_container = $unique;
                 
                 $ret = TRUE;
                 if (!isset($this->context['children_ids'])) {
@@ -115,6 +126,7 @@ trait tCO_Collection {
     /**
     This inserts multiple records to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the items will be appeneded.
     Collection elements cannot be already in the collection at any level, as that could cause a loop.
+    We also don't allow duplicates of any class in the same level of a collection. Only the first instance is retained. Subsequent copies are removed.
     The logged-in user must have write access to the collection object (not the data objects) in order to add the items.
     You can opt out of the automatic database update.
     
@@ -158,7 +170,17 @@ trait tCO_Collection {
                     $after_array = array_slice($this->_container, $end_count, FALSE);
                 }
                 
-                $this->_container = array_merge($before_array, $in_element_array, $after_array);
+                $merged = array_merge($before_array, $in_element_array, $after_array);
+                
+                $unique  = array();
+
+                foreach ($merged as $current) {
+                    if (!in_array($current, $unique)) {
+                        $unique[] = $current;
+                    }
+                }
+                
+                $this->_container = $unique;
                 
                 $ret = TRUE;
             
@@ -381,20 +403,20 @@ trait tCO_Collection {
                                 ) {
         $ret = FALSE;
         
-        $id = intval($in_element->id());
-        
-        $simple_map = function($i){
-                                    return intval($i->id());
-                                };
-        
-        $my_ids = $full_hierachy ? $this->recursiveMap($simple_map) : $this->map($simple_map);
-        $their_ids = ($full_hierachy && method_exists($in_element, 'recursiveMap')) ? $in_element->recursiveMap($simple_map) : Array($in_element->id());
-    
-        if (isset($my_ids) && is_array($my_ids) && count($my_ids)) {
-            $my_ids = array_unique($my_ids);
-            $their_ids = array_unique($their_ids);
-            $in_both = array_intersect($my_ids, $their_ids);
-            $ret = 0 < count($in_both);
+        $children = $this->children();
+
+        foreach ($children as $object) {
+            if ($object == $in_element) {
+                $ret = TRUE;
+                break;
+            } else {
+                if ($full_hierachy && method_exists($object, 'areYouMyDaddy')) {
+                    if ($object->areYouMyDaddy($in_element)) {
+                        $ret = true;
+                        break;
+                    }
+                }
+            }
         }
         
         return $ret;

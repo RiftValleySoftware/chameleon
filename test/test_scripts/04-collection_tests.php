@@ -345,18 +345,31 @@ function collection_test_12($in_login = NULL, $in_hashed_password = NULL, $in_pa
                 if (!$dc_area_collection->appendElement($va_1)) {
                     echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE FAILED!</h3>");
                 } else {
-                    echo("<h3>We now have three copies of ".$va_1->name."</h3>");
+                    echo("<h3>We now have two copies of ".$va_1->name.". We wanted three, but duplicates are not allowed in a collection (they are allowed in children collections).</h3>");
                     $daddies = $dc_area_collection->whosYourDaddy($va_1);
                     
-                    echo("<h3>We should get three \"parent\" instances, with DC repeated twice:</h3>");
+                    echo("<h3>We should get two \"parent\" instances.</h3>");
+                    echo("<h3>This checks the top-level collection:</h3>");
                     foreach ($daddies as $daddy) {
                         echo('<p>'.htmlspecialchars(print_r($daddy->name, true)).'</p>');
+                    }
+                    
+                    echo("<h3>This checks the Access Object.</h3>");
+                    if ($daddies = $access_instance->get_all_collections_for_element($va_1)) {
+                        foreach ($daddies as $daddy) {
+                            echo('<p>'.htmlspecialchars(print_r($daddy->name, true)).'</p>');
+                        }
+                    } elseif ($access_instance->error) {
+                        echo("<h3 style=\"color:red;font-weight:bold\">ERROR!</h3>");
+                        echo('<pre>'.htmlspecialchars(print_r($access_instance, true)).'</pre>');
+                    } else {
+                        echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE FAILED!</h3>");
                     }
                     
                     $hierarchy = $dc_area_collection->getHierarchy();
                     display_raw_hierarchy($hierarchy, '4-12-1-'.$in_login);
 
-                    echo("<h3>Now, we will change the read ID for the main instance, and it should change for all three instances in the hierarchy.</h3>");
+                    echo("<h3>Now, we will change the read ID for the main instance, and it should change for both of the instances in the hierarchy.</h3>");
                     echo("<h3>".$va_1->name." should now all have a read ID of 8:</h3>");
                     $va_1->set_read_security_id(8);
                     $hierarchy = $dc_area_collection->getHierarchy();

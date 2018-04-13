@@ -39,34 +39,7 @@ require_once($lang_common_file);
 /**
  */
 class CO_Chameleon extends CO_Access {
-    protected   $_cached_collection_objects;
-    
-    /***********************************************************************************************************************/
-    /***********************/
-    /**
-     */
-    protected function _get_next_level_up(  $in_data_item   ///< The item we're examining.
-                                        ) {
-        $ret = NULL;
-        
-        if (isset($in_data_item) && $in_data_item) {
-            if (!isset($this->_cached_collection_objects) || !$this->_cached_collection_objects) {
-                $this->_cached_collection_objects = $this->generic_search(Array('access_class' => '%_Collection', 'use_like' => TRUE));
-            }
-        
-            if (isset($this->_cached_collection_objects) && is_array($this->_cached_collection_objects) && count($this->_cached_collection_objects)) {
-                foreach ($this->_cached_collection_objects as $parent_object) {
-                    if ($parent_object->areYouMyDaddy($the_object, FALSE)) {
-                        $ret = $parent_object;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        return $ret;
-    }
-    
+    /***********************************************************************************************************************/    
     /***********************/
     /**
     The constructor.
@@ -81,34 +54,34 @@ class CO_Chameleon extends CO_Access {
     
     /***********************/
     /**
-    This method allows you to search for a given item in the "data" database, given its ID.
-    This will return an array, with the item in the first element, and its hierarchy (if any) in subsequent elements.
-    NULL is returned if the item cannot be found.
-    The ancestry only goes "up." If the object is a collection, and has children, they are not included in this response.
+    This method chacks all the collections for the presence of the given element.
+    If the collection is a direct parent of the element, it is returned.
     
-    \returns an array of record objects. The first element of the array is the object, and the next is the "parent" of that object. As the hierarchy is crawled, it goes down the array.
+    \returns an array of collection objects. If the element has no parents, then NULL is returned.
      */
-	public function get_data_item_ancestry_by_id(   $in_data_item_id    ///< The ID of the item we are searching for.
-	                                            ) {
-	    $ret = NULL;
-	    
-	    $the_object = $this->get_single_data_record_by_id($in_data_item_id);
-	    
-	    if (isset($the_object) && $the_object) {
-	        $ret = Array();
-	        
-	        $this->_cached_collection_objects = NULL;
+    public function get_all_collections_for_element(    $in_element ///< The element we're looking for parents.
+                                                    ) {
+        $ret = NULL;
+        
+        if (isset($in_element) && $in_element && ($in_element->get_access_object() == $this)) {
+            $collection_objects = $this->generic_search(Array('access_class' => Array('%_Collection', 'use_like' => TRUE)));
 
-	        while (isset($the_object) && $the_object) {
-	            array_push($ret, $the_object);
-	            $the_object = $this->_get_next_level_up($the_object);
-	        }
-        } else {
+            if (isset($collection_objects) && is_array($collection_objects) && count($collection_objects)) {
+                foreach ($collection_objects as $parent_object) {
+                    if ($parent_object->areYouMyDaddy($in_element, FALSE)) {
+                        if (!$ret) {
+                            $ret = Array();
+                        }
+                        array_push($ret, $parent_object);
+                    }
+                }
+            }
+        } else {    // If the item is invalid, we not only give a NULL, we also flag an error.
             $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_item_not_valid,
                                             CO_CHAMELEON_Lang::$co_collection_error_name_item_not_valid,
                                             CO_CHAMELEON_Lang::$co_collection_error_desc_item_not_valid);
         }
         
-	    return $ret;
-	}
+        return $ret;
+    }
 };

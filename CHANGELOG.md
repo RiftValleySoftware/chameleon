@@ -1,6 +1,8 @@
-**1.0.0.2002** *TBD*
+**1.0.0.2002** *(April 13, 2018)*
 
 - Added more tests for security.
+- The BADGER system now uses an object cache. We test that here.
+- Tweaked the collection to make sure that contained (children) elements are always in the data database (not the security DB).
 
 **1.0.0.2001** *(April 10, 2018)*
 
