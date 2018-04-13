@@ -136,8 +136,8 @@ ob_start();
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'security-tests\')">SECURE COMPONENTS</a></h2>');
             echo('<div class="container">');
             
-                echo('<div id="test-036" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-036\')">TEST 36: Set Up A Security Situation</a></h3>');
+                echo('<div id="test-034" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-034\')">TEST 34: Set Up A Security Situation</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We log in as an "All" admin, and set up a collection with varying levels of security and visibility.</p>');
@@ -146,8 +146,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-037" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-037\')">TEST 37: Check As DC Admin</a></h3>');
+                echo('<div id="test-035" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-035\')">TEST 35: Check As DC Admin</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We log in as the "DC" admin, and make sure we can see what we need to, and not what we don\'t.</p>');
@@ -156,8 +156,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-038" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-038\')">TEST 38: Check As Virginia Admin</a></h3>');
+                echo('<div id="test-036" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-036\')">TEST 36: Check As Virginia Admin</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We log in as the "VA" admin, and make sure we can see what we need to, and not what we don\'t.</p>');
@@ -166,8 +166,8 @@ ob_start();
                     echo('</div>');
                 echo('</div>');
             
-                echo('<div id="test-039" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-039\')">TEST 39: Check As Maryland Admin</a></h3>');
+                echo('<div id="test-037" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-037\')">TEST 37: Check As Maryland Admin</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We log in as the "MD" admin, and make sure we can see what we need to, and not what we don\'t.</p>');
