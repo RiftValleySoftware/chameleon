@@ -16,6 +16,8 @@ defined( 'LGV_CONFIG_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes s
 /***************************************************************************************************************************/
 /**
  */
+define('_DB_TYPE_', 'mysql');
+
 class CO_Config {
     /***********************************************************************************************************************/
     /*                                                     CHANGE THIS                                                     */
@@ -28,16 +30,16 @@ class CO_Config {
     
     static $data_db_name = 'littlegr_badger_data';
     static $data_db_host = 'localhost';
-    static $data_db_type = 'mysql';
+    static $data_db_type = _DB_TYPE_;
     static $data_db_login = 'littlegr_badg';
     static $data_db_password = 'pnpbxI1aU0L(';
 
     static $sec_db_name = 'littlegr_badger_security';
     static $sec_db_host = 'localhost';
-    static $sec_db_type = 'mysql';
+    static $sec_db_type = _DB_TYPE_;
     static $sec_db_login = 'littlegr_badg';
     static $sec_db_password = 'pnpbxI1aU0L(';
-    
+
     /**
     This is the Google API key. It's required for CHAMELEON to do address lookups and other geocoding tasks.
     CHAMELEON requires this to have at least the Google Geocoding API enabled.
