@@ -48,27 +48,22 @@ function prepare_omfg_databases() {
             $error = NULL;
     
             try {
-                $test_command = "SELECT `id` FROM `co_data_nodes` WHERE `object_name`='OMFGWTFDude'";
-                $result = $pdo_data_db->preparedQuery($build_command);
-                
-                if (!isset($result) || !$result || !is_array($result) || !count($result)) {
-                    $input = fopen(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestDataset.sql', 'r+');
-                
-                    if ($input) {
-                        $build_command = '';
-                        while($line = fgets($input)) {
-                            $build_command .= $line;
-                            if (FALSE !== strpos($line, ';')) {
-                                $pdo_data_db->preparedExec($build_command);
-                                $build_command = '';
-                            }
+                $input = fopen(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestDataset_'.CO_Config::$data_db_type.'.sql', 'r+');
+            
+                if ($input) {
+                    $build_command = '';
+                    while($line = fgets($input)) {
+                        $build_command .= $line;
+                        if (FALSE !== strpos($line, ';')) {
+                            $pdo_data_db->preparedExec($build_command);
+                            $build_command = '';
                         }
                     }
-                
-                    $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestSecurity.sql');
-            
-                    $pdo_security_db->preparedExec($security_db_sql);
                 }
+            
+                $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestSecurity_'.CO_Config::$data_db_type.'.sql');
+        
+                $pdo_security_db->preparedExec($security_db_sql);
             } catch (Exception $exception) {
                 $error = new LGV_Error( 1,
                                         'INITIAL DATABASE SETUP FAILURE',
