@@ -3,12 +3,12 @@ DROP SEQUENCE IF EXISTS element_id_seq;
 CREATE SEQUENCE element_id_seq;
 CREATE TABLE co_data_nodes (
   id BIGINT NOT NULL DEFAULT nextval('element_id_seq'),
-  access_class VARCHAR(255) NOT NULL,
+  access_class VARCHAR(255) DEFAULT NULL,
   last_access TIMESTAMP NOT NULL,
   read_security_id BIGINT DEFAULT NULL,
   write_security_id BIGINT DEFAULT NULL,
   object_name VARCHAR(255) DEFAULT NULL,
-  access_class_context BYTEA DEFAULT NULL,
+  access_class_context TEXT DEFAULT NULL,
   owner BIGINT DEFAULT NULL,
   longitude DOUBLE PRECISION DEFAULT NULL,
   latitude DOUBLE PRECISION DEFAULT NULL,
@@ -35,7 +35,7 @@ INSERT INTO co_data_nodes (access_class, last_access, read_security_id, write_se
 ('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 12, 'Delaware and Maryland', NULL, 11, -75.536795, 39.757577, '1212 Corporation', '2700 North Washington Street', '', 'Wilmington', 'New Castle', 'DE', '19802', NULL, NULL, NULL, NULL),
 ('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 13, 'DC and Virginia', NULL, 13, -77.0735889, 38.8792787, 'Arlington National Cemetery', '1 Memorial Ave.', '', 'Arlington', 'Arlington', 'VA', '22211', NULL, NULL, NULL, NULL),
 ('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 14, 'West Virginia and Virginia', NULL, 14, -78.4370203, 39.2988766, 'Ruritan Community & Senior Center', '3223 Northwestern Pike', '', 'Capon Bridge', '', 'WV', '26711', NULL, NULL, NULL, NULL),
-('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 12, 'Dee''s Place', NULL, 12, -76.591533, 39.304999, 'Dee''s Place', '1212 N. Wolfe St.', '', 'Baltimore', 'Baltimore City', 'MD', '21213', NULL, NULL, NULL, NULL),
+('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 12, 'Dee''s Place', NULL, 12, -76.591533, 39.304999, 'Dees Place', '1212 N. Wolfe St.', '', 'Baltimore', 'Baltimore City', 'MD', '21213', NULL, NULL, NULL, NULL),
 ('CO_US_Place_Collection', '1970-01-02 00:00:00', 0, 15, 'DC Area', NULL, 15, -77.0502, 38.8893, 'Lincoln Memorial', '2 Lincoln Memorial Circle NW', '', 'Washington', 'DC', 'DC', '20037', '', '', '', NULL);
 
 INSERT INTO co_data_nodes (access_class, last_access, read_security_id, write_security_id, object_name, access_class_context, owner, longitude, latitude, tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, payload) VALUES

@@ -59,7 +59,7 @@ trait tCO_Collection {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            if (!(method_exists($in_element, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection aren't already in the woodpile somewhere.
+            if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection aren't already in the woodpile somewhere.
                 $id = intval($in_element->id());
                 if (!isset($this->_container) || !is_array($this->_container)) {
                     $this->_container = Array();

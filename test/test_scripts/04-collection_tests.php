@@ -12,7 +12,7 @@
     Little Green Viper Software Development: https://littlegreenviper.com
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
-set_time_limit ( 120 );
+set_time_limit ( 300 );
 
 function collection_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $function_name = sprintf('collection_test_%02d', $in_test_number);

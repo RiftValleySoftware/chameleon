@@ -8,7 +8,7 @@ CREATE TABLE co_data_nodes (
   read_security_id BIGINT DEFAULT NULL,
   write_security_id BIGINT DEFAULT NULL,
   object_name VARCHAR(255) DEFAULT NULL,
-  access_class_context BYTEA DEFAULT NULL,
+  access_class_context TEXT DEFAULT NULL,
   owner BIGINT DEFAULT NULL,
   longitude DOUBLE PRECISION DEFAULT NULL,
   latitude DOUBLE PRECISION DEFAULT NULL,
