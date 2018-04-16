@@ -64,7 +64,7 @@ class CO_Config {
     
     /***********************/
     /**
-    \returns the POSIX path to the BADGER main access class directory.
+    \returns the POSIX path to the CHAMELEON main access class directory.
      */
     static function chameleon_main_class_dir() {
         return self::base_dir().'/main';
