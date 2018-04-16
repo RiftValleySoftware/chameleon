@@ -1,3 +1,7 @@
+**1.0.0.2004** *(April 16, 2018)*
+
+- Got the system working with Postgres. Really. For realsies this time.
+
 **1.0.0.2003** *(April 15, 2018)*
 
 - Got the system working with Postgres.
