@@ -11,7 +11,16 @@
 
     Little Green Viper Software Development: https://littlegreenviper.com
 */
+
+$config_file_path = dirname(__FILE__).'/config/omfgwtfdude_config.class.php';
+
+if ( !defined('LGV_CONFIG_CATCHER') ) {
+    define('LGV_CONFIG_CATCHER', 1);
+}
+
+require_once($config_file_path);
 require_once(dirname(__FILE__).'/functions.php');
+
 set_time_limit ( 60 * 60 * 2 );
 
 function prepare_omfg_databases() {
@@ -48,23 +57,27 @@ function prepare_omfg_databases() {
             $error = NULL;
     
             try {
-                $input = fopen(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestDataset_'.CO_Config::$data_db_type.'.sql', 'r+');
+                $test = $pdo_data_db->preparedQuery('SELECT id FROM co_data_nodes WHERE id=100000;');
+                if (0 == count($test)) {               
+                    $input = fopen(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestDataset_'.CO_Config::$data_db_type.'.sql', 'r+');
             
-                if ($input) {
-                    $build_command = '';
-                    while($line = fgets($input)) {
-                        $build_command .= $line;
-                        if (FALSE !== strpos($line, ';')) {
-                            $pdo_data_db->preparedExec($build_command);
-                            $build_command = '';
+                    if ($input) {
+                        $build_command = '';
+                        while($line = fgets($input)) {
+                            $build_command .= $line;
+                            if (FALSE !== strpos($line, ';')) {
+                                $pdo_data_db->preparedExec($build_command);
+                                $build_command = '';
+                            }
                         }
                     }
-                }
             
-                $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestSecurity_'.CO_Config::$data_db_type.'.sql');
+                    $security_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/OMFGWTFDudeTestSecurity_'.CO_Config::$data_db_type.'.sql');
         
-                $pdo_security_db->preparedExec($security_db_sql);
+                    $pdo_security_db->preparedExec($security_db_sql);
+                }
             } catch (Exception $exception) {
+die('<pre>'.htmlspecialchars(print_r($exception, true)).'</pre>');
                 $error = new LGV_Error( 1,
                                         'INITIAL DATABASE SETUP FAILURE',
                                         'FAILED TO INITIALIZE A DATABASE!',

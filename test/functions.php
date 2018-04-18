@@ -11,17 +11,7 @@
 
     Little Green Viper Software Development: https://littlegreenviper.com
 */
-    $config_file_path = dirname(__FILE__).'/config/s_config.class.php';
-    $data_sql_file_path = dirname(__FILE__).'/sql/badger_test_data.sql';
-    $security_sql_file_path = dirname(__FILE__).'/sql/badger_test_security.sql';
-    
     date_default_timezone_set ( 'UTC' );
-    
-    if ( !defined('LGV_CONFIG_CATCHER') ) {
-        define('LGV_CONFIG_CATCHER', 1);
-    }
-    
-    require_once($config_file_path);
     
     function prepare_databases($in_file_prefix) {
         if ( !defined('LGV_DB_CATCHER') ) {

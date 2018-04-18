@@ -1,3 +1,8 @@
+**1.0.0.2005** *(April 17, 2018)*
+
+- Found one more Postgres issue (the payload), and fixed that.
+- Added explicit sorting to the generic search, so there is predictability in the behavior of the system.
+
 **1.0.0.2004** *(April 16, 2018)*
 
 - Got the system working with Postgres. Really. For realsies this time.

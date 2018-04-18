@@ -12,6 +12,14 @@
     Little Green Viper Software Development: https://littlegreenviper.com
 */
 
+$config_file_path = dirname(__FILE__).'/config/s_config.class.php';
+
+if ( !defined('LGV_CONFIG_CATCHER') ) {
+    define('LGV_CONFIG_CATCHER', 1);
+}
+
+require_once($config_file_path);
+    
 require_once(dirname(__FILE__).'/functions.php');
 
 $test_name_array = Array();
