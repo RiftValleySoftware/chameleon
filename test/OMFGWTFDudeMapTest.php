@@ -40,6 +40,7 @@ function prepare_omfg_databases() {
     try {
         $pdo_data_db = new CO_PDO(CO_Config::$data_db_type, CO_Config::$data_db_host, CO_Config::$data_db_name, CO_Config::$data_db_login, CO_Config::$data_db_password);
     } catch (Exception $exception) {
+die('<pre>'.htmlspecialchars(print_r($exception, true)).'</pre>');
         $error = new LGV_Error( 1,
                                 'INITIAL DATABASE SETUP FAILURE',
                                 'FAILED TO INITIALIZE A DATABASE!',

@@ -104,7 +104,14 @@ loadTestMap.prototype.getNewMarkers = function() {
     throbberContainer.style.display = 'block';
     var position = this.m_main_map.getCenter();
     var radius = this.m_main_map.radius;
+    var myBounds = this.m_main_map.getBounds();
+
     radius = 25000;
+    if (myBounds) {
+        var mapHeightInMeters = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(myBounds.getNorthEast(), myBounds.getSouthWest()) / 2.0);
+        radius = Math.min(radius, mapHeightInMeters);
+    };
+    
     this.makeRequest(position.lng(), position.lat(), radius);
 };
 
