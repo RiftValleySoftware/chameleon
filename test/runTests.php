@@ -19,7 +19,7 @@ if ( !defined('LGV_CONFIG_CATCHER') ) {
 }
 
 require_once($config_file_path);
-    
+
 require_once(dirname(__FILE__).'/functions.php');
 
 $test_name_array = Array();
