@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************************************************************/
 /**
-    Badger Hardened Baseline Database Component
+    CHAMELEON Object Abstraction Layer
     
     © Copyright 2018, Little Green Viper Software Development LLC.
     

@@ -1,3 +1,7 @@
+**1.0.0.2006** *TBD*
+
+- Added support for an "owner" collection class.
+
 **1.0.0.2005** *(April 17, 2018)*
 
 - Found one more Postgres issue (the payload), and fixed that.

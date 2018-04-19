@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************************************************************/
 /**
-    Chameleon Object Abstraction Layer
+    CHAMELEON Object Abstraction Layer
     
     © Copyright 2018, Little Green Viper Software Development LLC.
     
@@ -299,7 +299,6 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo ("<h4>AFTER:</h4>");
             $hierarchy = $collection_item->getHierarchy();
             hierarchicalDisplayRecord($collection_item);
-//             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
         echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
@@ -367,8 +366,6 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
 
             $hierarchy = $collection_item->getHierarchy();
             hierarchicalDisplayRecord($collection_item);
-            
-//             $hierarchy['object']->recursiveMap('hierarchicalDisplayRecord');
         echo('</div>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");

@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************************************************************/
 /**
-    Chameleon Object Abstraction Layer
+    CHAMELEON Object Abstraction Layer
     
     © Copyright 2018, Little Green Viper Software Development LLC.
     
@@ -11,6 +11,7 @@
 
     Little Green Viper Software Development: https://littlegreenviper.com
 */
+
 require_once(dirname(__FILE__).'/functions.php');
 
 if ( !defined('LGV_ACCESS_CATCHER') ) {

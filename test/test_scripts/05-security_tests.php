@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************************************************************/
 /**
-    Chameleon Object Abstraction Layer
+    CHAMELEON Object Abstraction Layer
     
     © Copyright 2018, Little Green Viper Software Development LLC.
     
@@ -11,6 +11,7 @@
 
     Little Green Viper Software Development: https://littlegreenviper.com
 */
+
 require_once(dirname(dirname(__FILE__)).'/functions.php');
 
 function security_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {

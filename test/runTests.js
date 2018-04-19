@@ -1,6 +1,6 @@
 /***************************************************************************************************************************/
 /**
-    Chameleon Object Abstraction Layer
+    CHAMELEON Object Abstraction Layer
     
     © Copyright 2018, Little Green Viper Software Development LLC.
     
