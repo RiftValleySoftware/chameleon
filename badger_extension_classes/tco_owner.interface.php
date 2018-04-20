@@ -18,34 +18,30 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 /***************************************************************************************************************************/
 /**
 This is a trait for the basic "owner" aggregator functionality.
+
+Owners are VERY simple aggregates. They only allow a very rough "pre-filter" for searches. If you want to get fancier, use a collection (but you won't be able to handle as many children).
  */
 trait tCO_Owner {
-    var $my_owner_id = NULL;    ///< This is the ID We will use for the "owner." If left NULL, then the instance ID is used instead.
+    var $my_owner_id = NULL;        ///< This is the ID We will use for the "owner." If left NULL, then the instance ID is used instead.
+    protected $_cached_ids = NULL;  ///< This will contain our "owned" IDs after we load.
     
     /***********************/
     /**
     This counts the direct children of this collection, and returns that count.
-    If recursive, then it counts everything inside, including collections.
         
-    \returns the number of direct children.
+    \returns the number of children.
      */
-    public function count(  $is_recursive = FALSE,  ///< If TRUE, then this will also count all "child" collections or owners. Default is FALSE.
-                            $loop_stopper = Array() /**< This is used to prevent "hierarchy loops."
-                                                         As we descend into recursion, we save the collection ID here.
-                                                         If the ID shows up in a "lower" collection or owner, we don't add that collection or owner.
-                                                         This shouldn't happen anyway, as were're not supposed to have been able to add embedded collections, but we can't be too careful.
-                                                         There can only be one...
-                                                    */
-                        ) {
+    public function count() {
         $children_ids = $this->children_ids();
         $my_count = isset($children_ids) && is_array($children_ids) ? count($children_ids) : 0;
         
         if ($is_recursive) {
             foreach ($children_ids as $child_id) {
                 $child = $this->get_access_object()->get_single_data_record_by_id(intval($child_id));
-                if (isset($child) && method_exists($child, 'count')) {
-                    if (!in_array($child->id(), $loop_stopper)) {
-                        array_push($loop_stopper, $child->id());
+                $id = intval($child->id());
+                if (!in_array($id, $loop_stopper)) {
+                    if (isset($child) && method_exists($child, 'count')) {
+                        array_push($loop_stopper, $id);
                         $my_count += $child->count($is_recursive, $loop_stopper);
                     }
                 }
@@ -61,8 +57,12 @@ trait tCO_Owner {
     \returns an array of integers, with the "owned" object IDs.
      */
     public function children_ids() {
-        $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
-        return $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), FALSE, 0, 0, FALSE, FALSE, TRUE);
+        if (!((isset($this->_cached_ids) && is_array($this->_cached_ids) && count($this->_cached_ids)))) {
+            $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
+            $this->_cached_ids = $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), FALSE, 0, 0, FALSE, FALSE, TRUE);
+        }
+        
+        return $this->_cached_ids;
     }
     
     /***********************/
@@ -72,21 +72,8 @@ trait tCO_Owner {
     \returns an array of instances, comprising all "owned" instances. This could recurse, inside the "child" objects.
      */
     public function children() {
-        $ret = NULL;
-        
         $children_ids = $this->children_ids();
-        foreach ($children_ids as $child_id) {
-            $child = $this->get_access_object()->get_single_data_record_by_id(intval($child_id));
-            if (isset($child)) {
-                if (!$ret) {
-                    $ret = Array();
-                }
-                
-                array_push($ret, $child);
-            }
-        }
-        
-        return $ret;
+        return $this->get_access_object()->get_multiple_data_records_by_id($children_ids);
     }
     
     /***********************/

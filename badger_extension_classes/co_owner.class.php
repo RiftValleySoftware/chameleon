@@ -31,6 +31,7 @@ class CO_Owner extends A_CO_DB_Table_Base {
                                 ) {
         parent::__construct($in_db_object, $in_db_result);
         $this->class_description = "This is an 'Owner' Class for general items.";
+        $this->children_ids();  ///< Forces a cache load.
     }
 
     /***********************/

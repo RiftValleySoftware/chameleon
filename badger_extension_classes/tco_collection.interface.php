@@ -20,7 +20,7 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 This is a trait for the basic "collection" aggregator functionality.
  */
 trait tCO_Collection {
-    protected $_container;  ///< This contains instances of the records referenced by the IDs stored in the object.
+    protected $_container;          ///< This contains instances of the records referenced by the IDs stored in the object.
 	
     /***********************/
     /**
@@ -30,15 +30,9 @@ trait tCO_Collection {
      */
     protected function _set_up_container() {
         $children_ids = $this->context['children_ids'];
-        $this->_container = Array();
         
         if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
-            foreach ($children_ids as $child_id) {
-                $instance = $this->get_access_object()->get_single_data_record_by_id(intval($child_id));
-                if (isset($instance) && ($instance instanceof CO_Main_DB_Record)) {
-                    array_push($this->_container, $instance);
-                }
-            }
+            $this->_container = $this->get_access_object()->get_multiple_data_records_by_id($children_ids);
         }
     }
     
@@ -46,7 +40,7 @@ trait tCO_Collection {
     /**
     This inserts one record to just before the indexed item (0-based index). If the index is -1, the length of the collection or larger, then the item will be appeneded.
     Collection elements cannot be already in the collection at any level, as that could cause a loop.
-    We also don't allow duplicates of any class in the same level of a collection. Only the first instance is retained. Subsequent copies are removed.
+    We also don't allow duplicates of any instance in the same level of a collection. Only the first instance is retained. Subsequent copies are removed.
     The logged-in user must have write access to the collection object (not the data object) in order to add the item.
     You can opt out of the automatic database update.
     
