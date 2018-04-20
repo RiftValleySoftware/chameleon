@@ -312,15 +312,6 @@ trait tCO_Collection {
         
         return $ret;
     }
-    
-    /***********************/
-    /**
-    \returns the 0-based index of the given element, or FALSE, if the element is not in the collection (This is not recursive).
-     */
-    public function indexOfThisElement(  $in_element    ///< The element we're looking for.
-                                        ) {
-        return array_search($in_element, $this->children());
-    }
         
     /***********************/
     /**
@@ -361,6 +352,15 @@ trait tCO_Collection {
         $this->_children = Array();
         unset($this->context['children_ids']);
         return $this->update_db();
+    }
+    
+    /***********************/
+    /**
+    \returns the 0-based index of the given element, or FALSE, if the element is not in the collection (This is not recursive).
+     */
+    public function indexOfThisElement(  $in_element    ///< The element we're looking for.
+                                        ) {
+        return array_search($in_element, $this->children());
     }
     
     /***********************/
@@ -469,6 +469,29 @@ trait tCO_Collection {
         }
         
         return $ret;
+    }
+    
+    /***********************/
+    /**
+    This counts the direct children of this collection, and returns that count.
+    If recursive, then it counts everything inside, including owners.
+        
+    \returns the number of direct children.
+     */
+    public function count(  $is_recursive = FALSE   ///< If TRUE, then this will also count all "child" collections. Default is FALSE.
+                        ) {
+        $my_count = count($this->_container);
+        
+        if ($is_recursive) {
+            $children = $this->children();
+            foreach ($children as $child) {
+                if (method_exists($child, 'count')) {
+                    $my_count += $child->count($is_recursive);
+                }
+            }
+        }
+        
+        return $my_count;
     }
     
     /***********************/
