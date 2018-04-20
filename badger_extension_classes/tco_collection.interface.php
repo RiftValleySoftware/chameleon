@@ -59,7 +59,7 @@ trait tCO_Collection {
         $ret = FALSE;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection aren't already in the woodpile somewhere.
+            if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
                 $id = intval($in_element->id());
                 if (!isset($this->_container) || !is_array($this->_container)) {
                     $this->_container = Array();
@@ -422,7 +422,6 @@ trait tCO_Collection {
         return $ret;
     }
         
-
     /***********************/
     /**
     This applies a given function to each of the elements in the child list.
@@ -453,7 +452,13 @@ trait tCO_Collection {
      */
     public function recursiveMap(   $in_function,               ///< This is the function to be applied to all elements.
                                     $in_hierarchy_level = 0,    ///< This is a 0-based integer that tells the callback how many "levels deep" the function is.
-                                    $in_parent_object = NULL    ///< This is the collection object that is the "parent" of the current array.
+                                    $in_parent_object = NULL,   ///< This is the collection object that is the "parent" of the current array.
+                                    $loop_stopper = Array()     /**< This is used to prevent "hierarchy loops."
+                                                                     As we descend into recursion, we save the collection ID here.
+                                                                     If the ID shows up in a "lower" collection, we don't add that collection.
+                                                                     This shouldn't happen anyway, as were're not supposed to have been able to add embedded collections, but we can't be too careful.
+                                                                     There can only be one...
+                                                                */
                                 ) {
         $in_hierarchy_level = intval($in_hierarchy_level);
         $ret = Array($in_function($this, $in_hierarchy_level, $in_parent_object));
@@ -461,7 +466,10 @@ trait tCO_Collection {
         
         foreach ($children as $child) {
             if (method_exists($child, 'recursiveMap')) {
-                $result = $child->recursiveMap($in_function, ++$in_hierarchy_level, $this);
+                if (!in_array($child->id(), $loop_stopper)) {
+                    array_push($loop_stopper, $child->id());
+                    $result = $child->recursiveMap($in_function, ++$in_hierarchy_level, $this, $loop_stopper);
+                }
             } else {
                 $result = Array($in_function($child, ++$in_hierarchy_level, $this));
             }
@@ -512,7 +520,13 @@ trait tCO_Collection {
         - 'object' (Required). This is the actual instance that maps to this object.
         - 'children' (optional -may not be instantiated). This is an array of the same associative arrays for any "child objects" of the current object.
      */
-    public function getHierarchy() {
+    public function getHierarchy(   $loop_stopper = Array()     /**< This is used to prevent "hierarchy loops."
+                                                                     As we descend into recursion, we save the collection ID here.
+                                                                     If the ID shows up in a "lower" collection, we don't add that collection.
+                                                                     This shouldn't happen anyway, as were're not supposed to have been able to add embedded collections, but we can't be too careful.
+                                                                     There can only be one...
+                                                                */
+                                    ) {
         $instance = Array('object' => $this);
         
         if (method_exists($this, 'children') && count($this->children())) {
@@ -521,7 +535,10 @@ trait tCO_Collection {
         
             foreach ($children as $child) {
                 if (method_exists($child, 'getHierarchy')) {
-                    array_push($instance['children'], $child->getHierarchy());
+                    if (!in_array($child->id(), $loop_stopper)) {
+                        array_push($loop_stopper, $child->id());
+                        array_push($instance['children'], $child->getHierarchy($loop_stopper));
+                    }
                 } else {
                     array_push($instance['children'], Array('object' => $child));
                 }
