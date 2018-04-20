@@ -14,7 +14,7 @@
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
 require_once(CO_Config::db_classes_extension_class_dir().'/tco_owner.interface.php');
-require_once(CO_Config::db_class_dir().'/a_co_db_table_base.class.class.php');
+require_once(CO_Config::db_class_dir().'/a_co_db_table_base.class.php');
 
 /***************************************************************************************************************************/
 /**
@@ -29,9 +29,6 @@ class CO_Owner extends A_CO_DB_Table_Base {
 	public function __construct(    $in_db_object = NULL,   ///< The database object for this instance.
 	                                $in_db_result = NULL    ///< The database row for this instance (associative array, with database keys).
                                 ) {
-        
-        $this->_container = Array();
-
         parent::__construct($in_db_object, $in_db_result);
         $this->class_description = "This is an 'Owner' Class for general items.";
     }
@@ -47,8 +44,7 @@ class CO_Owner extends A_CO_DB_Table_Base {
         $ret = parent::load_from_db($in_db_result);
         
         $this->class_description = "This is an 'Owner' Class for general items.";
-        $count = 0;
-        $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude - $count owned objects)" : "($this->_longitude, $this->_latitude - $count children objects)";
+        $this->instance_description = $this->name;
     }
     
     use tCO_Owner; ///< These are the built-in owner methods.

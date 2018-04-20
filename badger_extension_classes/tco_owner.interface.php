@@ -20,7 +20,7 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 This is a trait for the basic "owner" aggregator functionality.
  */
 trait tCO_Owner {
-    $my_owner_id = NULL;    ///< This is the ID We will use for the "owner." If left NULL, then the instance ID is used instead.
+    var $my_owner_id = NULL;    ///< This is the ID We will use for the "owner." If left NULL, then the instance ID is used instead.
     
     /***********************/
     /**
@@ -38,7 +38,7 @@ trait tCO_Owner {
                                                     */
                         ) {
         $children_ids = $this->children_ids();
-        $my_count = count($children_ids);
+        $my_count = isset($children_ids) && is_array($children_ids) ? count($children_ids) : 0;
         
         if ($is_recursive) {
             foreach ($children_ids as $child_id) {
@@ -62,7 +62,7 @@ trait tCO_Owner {
      */
     public function children_ids() {
         $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
-        $test_item = $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), FALSE, 0, 0, FALSE, FALSE, TRUE);
+        return $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), FALSE, 0, 0, FALSE, FALSE, TRUE);
     }
     
     /***********************/

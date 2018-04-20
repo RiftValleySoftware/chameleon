@@ -69,11 +69,13 @@ require_once($config_file_path);
                         echo("<div style=\"margin:auto;text-align:center;display:table\">");
                         echo("<h2>File/Folder Locations</h2>");
                         echo("<pre style=\"margin:auto;text-align:left;display:table\">");
-                        echo("<strong>CHAMELEON Version</strong>.....".__CHAMELEON_VERSION__."\n");
-                        echo("<strong>BADGER Version</strong>........".__BADGER_VERSION__."\n");
-                        echo("<strong>CHAMELEON Base dir</strong>....".CO_Config::base_dir()."\n");
-                        echo("<strong>BADGER Base dir</strong>.......".CO_Config::badger_base_dir()."\n");
-                        echo("<strong>Extension classes dir</strong>.".CO_Config::db_classes_extension_class_dir()."\n");
+                        echo("<strong>CHAMELEON Version</strong>......".__CHAMELEON_VERSION__."\n");
+                        echo("<strong>BADGER Version</strong>.........".__BADGER_VERSION__."\n");
+                        echo("<strong>CHAMELEON Base dir</strong>.....".CO_Config::base_dir()."\n");
+                        echo("<strong>BADGER Base dir</strong>........".CO_Config::badger_base_dir()."\n");
+                        echo("<strong>Extension classes dir</strong>..".CO_Config::db_classes_extension_class_dir()."\n");
+                        echo("<strong>Data Database Type</strong>.....".(CO_Config::$data_db_type == 'mysql' ? 'MySQL' : 'Postgres')."\n");
+                        echo("<strong>Security Database Type</strong>.".(CO_Config::$sec_db_type == 'mysql' ? 'MySQL' : 'Postgres')."\n");
                         echo("</pre></div>");
                     ?>
                     <div class="main_div">
