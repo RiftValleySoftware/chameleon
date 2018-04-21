@@ -55,6 +55,60 @@ function owner_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
 }
+    
+function owner_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(TRUE);
+        $owner_object = $access_instance->get_single_data_record_by_id(2061608);
+        
+        if (isset($owner_object) && $owner_object) {
+            $count = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, FALSE, TRUE);
+            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            echo('<div class="inner_div">');
+                echo('<p class="explain">This test looks at the Chesapeake Bay, and grabs a bunch of records within a 100-Km radius of the bay.</p>');
+                echo('<p class="explain">Since this is a US border dataset, we\'ll get quite a few hits.</p>');
+                echo('<p>We found '.$count.' records!</p>');
+            echo('</div>');
+            echo('<p>The test took '.$fetchTime.' seconds.</p>');
+            
+            $st1 = microtime(TRUE);
+            $count = intval($owner_object->generic_search(Array('location' => Array('longitude' => -118.4695, 'latitude' => 38.2336562, 'radius' => 200.0)), 0, 0, FALSE, TRUE));
+            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            echo('<div class="inner_div">');
+                echo('<p class="explain">Now, we try Venice Beach (CA), with a radius of 200Km. We expect to find zero records, even though there are plenty in the dataset.</p>');
+                echo('<p>We found '.$count.' records!</p>');
+            echo('</div>');
+            echo('<p>The test took '.$fetchTime.' seconds.</p>');
+            
+            $st1 = microtime(TRUE);
+            $data_points = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, FALSE, FALSE, TRUE);
+            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            echo('<div class="inner_div">');
+                echo('<p class="explain">Now, we try the Chesapeake Bay test again, but this time, we get the IDs of the datapoints involved.</p>');
+                echo('<div id="owner_test_02-03" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'owner_test_02-03\')">We found '.count($data_points).' records!</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<ul class="crowded_list"><li class="li_crowded_list">'.implode(',</li><li class="li_crowded_list">', $data_points).'</li></ul>');
+                    echo('</div>');
+                echo('</div>');
+            echo('</div>');
+            echo('<p style="clear:both">The test took '.$fetchTime.' seconds.</p>');
+        }
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
 
 ob_start();
 
@@ -73,6 +127,17 @@ ob_start();
                             echo('<p class="explain">We expect to see 697332 "owned" records.</p>');
                         echo('</div>');
                         owner_test_relay(1);
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-039" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-039\')">TEST 39: Do a radius location search on a big dataset.</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">This test looks at the US borders, and does a number of tests.</p>');
+                            echo('<p class="explain">The "owner" instance we\'ll be testing has only East Coast USA datapoints.</p>');
+                        echo('</div>');
+                        owner_test_relay(2);
                     echo('</div>');
                 echo('</div>');
 

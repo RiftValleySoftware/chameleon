@@ -297,7 +297,6 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             $collection_item->appendElements($test_item1);
             
             echo ("<h4>AFTER:</h4>");
-            $hierarchy = $collection_item->getHierarchy();
             hierarchicalDisplayRecord($collection_item);
         echo('</div>');
     } else {
@@ -364,7 +363,6 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             
             echo ("<h4>AFTER:</h4>");
 
-            $hierarchy = $collection_item->getHierarchy();
             hierarchicalDisplayRecord($collection_item);
         echo('</div>');
     } else {

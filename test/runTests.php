@@ -127,6 +127,18 @@ if (isset($test_name_array) && is_array($test_name_array) && count($test_name_ar
             div.collection_wrapper {
             }
             
+            ul.crowded_list {
+                list-style-type: none;
+                display: table;
+            }
+            
+            li.li_crowded_list {
+                list-style-type: none;
+                display: block;
+                float:left;
+                margin-right: 0.25em;
+            }
+            
         </style>
         
         <script type="text/javascript" src="ajaxLoader.js"></script>

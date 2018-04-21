@@ -34,21 +34,7 @@ trait tCO_Owner {
     public function count() {
         $children_ids = $this->children_ids();
         $my_count = isset($children_ids) && is_array($children_ids) ? count($children_ids) : 0;
-        
-        if ($is_recursive) {
-            foreach ($children_ids as $child_id) {
-                $child = $this->get_access_object()->get_single_data_record_by_id(intval($child_id));
-                $id = intval($child->id());
-                if (!in_array($id, $loop_stopper)) {
-                    if (isset($child) && method_exists($child, 'count')) {
-                        array_push($loop_stopper, $id);
-                        $my_count += $child->count($is_recursive, $loop_stopper);
-                    }
-                }
-                unset($child);
-            }
-        }
-        
+                
         return $my_count;
     }
     
@@ -113,7 +99,7 @@ trait tCO_Owner {
                                     ) {
         $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
         $in_search_parameters['owner'] = $my_owner_id;
-        return $this->get_access_object->generic_search($in_search_parameters, FALSE, $page_size, $initial_page, $and_writeable, $count_only, $ids_only);
+        return $this->get_access_object()->generic_search($in_search_parameters, FALSE, $page_size, $initial_page, $and_writeable, $count_only, $ids_only);
         
         return $ret;
     }
