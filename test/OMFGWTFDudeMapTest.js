@@ -340,6 +340,9 @@ loadTestMap.prototype.displayMeetingMarkerInResults = function(   in_mtg_obj_arr
 		            marker_html += '<dt><strong>';
 		            marker_html += in_mtg_obj_array[c]['name'];
 		            marker_html += '</strong></dt>';
+		            marker_html += '<dt><em>';
+		            marker_html += in_mtg_obj_array[c]['owner'];
+		            marker_html += '</em></dt>';
 		            marker_html += '<dd><em>Distance: ' + in_mtg_obj_array[c]['distance'] + ' Km</em></dd>';
                 };
                 

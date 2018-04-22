@@ -1,4 +1,4 @@
-**1.0.0.2006** *TBD*
+**1.0.0.2006** *April 21, 2018*
 
 - Added support for an "owner" collection class.
 

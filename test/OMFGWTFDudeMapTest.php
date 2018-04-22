@@ -110,7 +110,7 @@ if (isset($_GET['resolve_query'])) {
         list($long, $lat, $radius) = array_map('floatval', explode(',', trim($_GET['resolve_query'])));
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => $long, 'latitude' => $lat, 'radius' => $radius)));
         if (isset($test_item) && is_array($test_item) && count($test_item)) {
-            $test = array_map(function($item){return '{"id":'.intval($item->id()).',"name":'.json_encode($item->name).',"longitude":'.floatval($item->longitude()).',"latitude":'.floatval($item->latitude()).',"distance":'.floatval($item->distance).'}';}, $test_item);
+            $test = array_map(function($item){return '{"id":'.intval($item->id()).',"name":'.json_encode($item->name).',"longitude":'.floatval($item->longitude()).',"latitude":'.floatval($item->latitude()).',"owner":'.intval($item->owner_id()).',"distance":'.floatval($item->distance).'}';}, $test_item);
             echo(implode(',',$test));
         }
     }
