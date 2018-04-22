@@ -17,10 +17,15 @@ require_once(CO_Config::db_class_dir().'/co_main_db_record.class.php');
 
 /***************************************************************************************************************************/
 /**
+    This is a simple key/value class. It uses the Tag 0 object as a "key" (So the key needs to be a string), and the payload
+    to store the value (so the value can be fairly big).
+    
+    There can only be one.
+    
+    The unique is determined by a combination of the access_class and tag0 fields. That means that a subclass of this class
+    could have the same key as a parent, but two instances of the same class cannot have duplicate keys.
  */
 class CO_KeyValue extends CO_Main_DB_Record {
-    protected $_my_key = NULL;
-    
     /***********************************************************************************************************************/
     /***********************/
     /**
@@ -28,13 +33,16 @@ class CO_KeyValue extends CO_Main_DB_Record {
      */
 	public function __construct(    $in_db_object = NULL,   ///< The database object for this instance.
 	                                $in_db_result = NULL,   ///< The database row for this instance (associative array, with database keys).
-	                                $inKey = NULL           ///< The key to be used for this instance.
+	                                $in_key = NULL,         ///< The key to be used for this instance (overrides anything in the DB record).
+	                                $in_value = NULL        ///< The value to be used for this instance (overrides anything in the DB record).
                                 ) {
         parent::__construct($in_db_object, $in_db_result);
         $this->class_description = "This is an class for doing \"key/value\" storage.";
         
-        if (NULL != $inKey) {
-            $this->set_key($inKey);
+        if (NULL != $in_key) {
+            $this->set_key($in_key, $value);
+        } elseif (NULL != $in_value) {
+            $this->set_value($in_key, $value);
         }
     }
 
@@ -54,17 +62,82 @@ class CO_KeyValue extends CO_Main_DB_Record {
     
     /***********************/
     /**
+    This method will set the key for this instance.
+    It checks the database, as the key needs to be unique for the access class and tag 0.
+    
+    \returns TRUE, if the key was successfully set and updated in the database.
      */
-    function set_key(    $inKey  ///< The key to be applied to this object.
+    function set_key(   $in_key,            ///< The key to be applied to this object.
+                        $in_value = NULL    ///< We can associate a value.
                     ) {
-        $this->_my_key = $inKey;
-        $this->update_db();
+        $ret = FALSE;
+        
+        if ($this->is_writeable()) { //< Must have write access
+            // We need to make sure that the key doesn't already exist, or if it does, that the object associated with it is us. Must be writeable.
+            $instance_list = $this->get_access_instance()->generic_search(Array('access_class' => get_class($this), 'tags' => Array($in_key)));
+        
+            if (!isset($instance_list) || !is_array($instance_list) || !count($instance_list) || (1 == count($instance_list) && ($instance_list[0] === $this))) {
+                // If there is no change, then we don't do anything, and report a success.
+                if (isset($instance_list) && is_array($instance_list) && (1 == count($instance_list) && ($instance_list[0] === $this)) {
+                    $ret = true;
+                } else {
+                    $ret = $this->set_tag(0, $in_key);   // We assume that our claim to be writeable is true. If not, this will fail. Remember we are untrusting bastards.
+                }
+                
+                if ($ret && (NULL != $in_value)) {
+                    return $this->set_value($in_value);
+                }
+            }
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_key_value_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_key_value_error_desc_user_not_authorized);
+        }
+        
+        return $ret;
     }
     
     /***********************/
     /**
+    \returns the instance key.
      */
     function get_key() {
-        return $this->_my_key;
+        return $this->tags[0];
+    }
+    
+    /***********************/
+    /**
+    \returns the instance key and value, in an associative array.
+     */
+    function get_key_value() {
+        return Array($this->get_key() => $this->get_value());
+        );
+    }
+    
+    /***********************/
+    /**
+    \returns TRUE, if the value was successfully set and updated in the database.
+     */
+    function set_value( $in_value
+                        ) {
+        $ret = FALSE;
+        
+        if ($this->is_writeable()) { //< Must have write access
+            $ret = $this->set_payload($in_value);
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_key_value_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$co_key_value_error_desc_user_not_authorized);
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    \returns the payload for this instance.
+     */
+    function get_value() {
+        return $this->get_payload();
     }
 };
