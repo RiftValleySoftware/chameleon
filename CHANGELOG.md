@@ -1,3 +1,7 @@
+**1.0.0.2007** *TBD*
+
+- Added support for a basic key/value pair facility.
+
 **1.0.0.2006** *April 21, 2018*
 
 - Added support for an "owner" collection class.
