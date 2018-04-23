@@ -22,7 +22,7 @@ require_once(CO_Config::db_class_dir().'/co_main_db_record.class.php');
     
     There can only be one.
     
-    The unique is determined by a combination of the access_class and tag0 fields. That means that a subclass of this class
+    The uniqueness is determined by a combination of the access_class and tag0 fields. That means that a subclass of this class
     could have the same key as a parent, but two instances of the same class cannot have duplicate keys.
  */
 class CO_KeyValue extends CO_Main_DB_Record {
@@ -107,9 +107,26 @@ class CO_KeyValue extends CO_Main_DB_Record {
     
     /***********************/
     /**
-    \returns the instance key and value, in an associative array.
+    \returns the payload for this instance.
      */
-    function get_key_value() {
+    function get_value() {
+        return $this->get_payload();
+    }
+    
+    /***********************/
+    /**
+    \returns the instance key and value, in a 2-element indexed array, with element 0 being the key, and element 1 being the value.
+     */
+    function get_key_value_array() {
+        return Array($this->get_key(), $this->get_value());
+        );
+    }
+    
+    /***********************/
+    /**
+    \returns the instance key and value, in a 1-element associative array, with the key being the key, and the value being the value.
+     */
+    function get_key_value_assoc() {
         return Array($this->get_key() => $this->get_value());
         );
     }
@@ -131,13 +148,5 @@ class CO_KeyValue extends CO_Main_DB_Record {
         }
         
         return $ret;
-    }
-    
-    /***********************/
-    /**
-    \returns the payload for this instance.
-     */
-    function get_value() {
-        return $this->get_payload();
     }
 };

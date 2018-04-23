@@ -21,5 +21,6 @@ class CO_CHAMELEON_Lang_Common {
     static  $co_place_error_code_failed_to_lookup = 301;
     static  $co_collection_error_code_item_not_valid = 400;
     static  $co_collection_error_code_user_not_authorized = 401;
+    static  $co_key_value_error_code_user_not_authorized = 402;
 }
 ?>
