@@ -1,4 +1,4 @@
-**1.0.0.2007** *TBD*
+**1.0.0.2007** *April 24, 2018*
 
 - Added support for a basic key/value pair facility.
 
