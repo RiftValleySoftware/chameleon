@@ -17,10 +17,11 @@ defined( 'LGV_LANG_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sur
 /**
  */
 class CO_CHAMELEON_Lang_Common {
-    static  $co_place_error_code_failed_to_geocode = 300;
-    static  $co_place_error_code_failed_to_lookup = 301;
-    static  $co_collection_error_code_item_not_valid = 400;
-    static  $co_collection_error_code_user_not_authorized = 401;
-    static  $co_key_value_error_code_user_not_authorized = 402;
+    static  $co_place_error_code_failed_to_geocode = 1000;
+    static  $co_place_error_code_failed_to_lookup = 1001;
+    static  $co_collection_error_code_item_not_valid = 1100;
+    static  $co_collection_error_code_user_not_authorized = 1101;
+    static  $co_key_value_error_code_user_not_authorized = 1102;
+    static  $co_key_value_error_code_instance_failed_to_initialize = 1103;
 }
 ?>

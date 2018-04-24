@@ -51,6 +51,8 @@ class CO_CHAMELEON_Lang {
 
     /// These apply to the KeyValue classes.
     static  $co_key_value_error_name_user_not_authorized = 'User Not Authorized';
-    static  $co_key_value_error_desc_user_not_authorized = 'The user is not authorized to modify this collection.';
+    static  $co_key_value_error_desc_user_not_authorized = 'The user is not authorized to modify this value.';
+    static  $co_key_value_error_name_instance_failed_to_initialize = 'Value Not Initialized';
+    static  $co_key_value_error_desc_instance_failed_to_initialize = 'The value object failed to initialize properly.';
 }
 ?>

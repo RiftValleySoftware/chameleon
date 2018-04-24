@@ -72,13 +72,13 @@ class CO_KeyValue extends CO_Main_DB_Record {
                     ) {
         $ret = FALSE;
         
-        if ($this->is_writeable()) { //< Must have write access
+        if ($this->user_can_write()) { //< Must have write access
             // We need to make sure that the key doesn't already exist, or if it does, that the object associated with it is us. Must be writeable.
-            $instance_list = $this->get_access_instance()->generic_search(Array('access_class' => get_class($this), 'tags' => Array($in_key)));
+            $instance_list = $this->get_access_object()->generic_search(Array('access_class' => get_class($this), 'tags' => Array($in_key)));
         
             if (!isset($instance_list) || !is_array($instance_list) || !count($instance_list) || (1 == count($instance_list) && ($instance_list[0] === $this))) {
                 // If there is no change, then we don't do anything, and report a success.
-                if (isset($instance_list) && is_array($instance_list) && (1 == count($instance_list) && ($instance_list[0] === $this)) {
+                if (isset($instance_list) && is_array($instance_list) && (1 == count($instance_list) && ($instance_list[0] === $this))) {
                     $ret = true;
                 } else {
                     $ret = $this->set_tag(0, $in_key);   // We assume that our claim to be writeable is true. If not, this will fail. Remember we are untrusting bastards.
@@ -119,7 +119,6 @@ class CO_KeyValue extends CO_Main_DB_Record {
      */
     function get_key_value_array() {
         return Array($this->get_key(), $this->get_value());
-        );
     }
     
     /***********************/
@@ -128,7 +127,6 @@ class CO_KeyValue extends CO_Main_DB_Record {
      */
     function get_key_value_assoc() {
         return Array($this->get_key() => $this->get_value());
-        );
     }
     
     /***********************/
@@ -139,7 +137,7 @@ class CO_KeyValue extends CO_Main_DB_Record {
                         ) {
         $ret = FALSE;
         
-        if ($this->is_writeable()) { //< Must have write access
+        if ($this->user_can_write()) { //< Must have write access
             $ret = $this->set_payload($in_value);
         } else {
             $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_user_not_authorized,
