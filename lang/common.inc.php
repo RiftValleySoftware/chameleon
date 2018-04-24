@@ -21,7 +21,8 @@ class CO_CHAMELEON_Lang_Common {
     static  $co_place_error_code_failed_to_lookup = 1001;
     static  $co_collection_error_code_item_not_valid = 1100;
     static  $co_collection_error_code_user_not_authorized = 1101;
-    static  $co_key_value_error_code_user_not_authorized = 1102;
-    static  $co_key_value_error_code_instance_failed_to_initialize = 1103;
+    static  $co_owner_error_code_user_not_authorized = 1200;
+    static  $co_key_value_error_code_user_not_authorized = 1300;
+    static  $co_key_value_error_code_instance_failed_to_initialize = 1301;
 }
 ?>

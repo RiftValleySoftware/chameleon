@@ -27,6 +27,30 @@ trait tCO_Owner {
     
     /***********************/
     /**
+    This method will change a given object to have this as its owner.
+    
+    \returns TRUE, if the object's owner changed successfully.
+     */
+    public function adopt_child(    $in_object_to_own   ///< The instance that will be "owned" by this instance. The user must have write privileges on the onject.
+                                ) {
+        $ret = FALSE;
+        
+        $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
+        if ($in_object_to_own->owner_id() != $my_owner_id) {
+            if ($in_object->user_can_write()) {
+                $ret = $in_object->set_owner_id($my_owner_id);
+            } else {
+                $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_owner_error_code_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$co_owner_error_name_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$co_owner_error_desc_user_not_authorized);
+            } 
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This counts the direct children of this collection, and returns that count.
         
     \returns the number of children.

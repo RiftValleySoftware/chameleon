@@ -49,6 +49,10 @@ class CO_CHAMELEON_Lang {
     static  $co_collection_error_name_user_not_authorized = 'User Not Authorized';
     static  $co_collection_error_desc_user_not_authorized = 'The user is not authorized to modify this collection.';
 
+    /// These apply to the Owner classes.
+    static  $co_owner_error_name_user_not_authorized = 'User Not Authorized';
+    static  $co_owner_error_desc_user_not_authorized = 'The user is not authorized to modify this value.';
+
     /// These apply to the KeyValue classes.
     static  $co_key_value_error_name_user_not_authorized = 'User Not Authorized';
     static  $co_key_value_error_desc_user_not_authorized = 'The user is not authorized to modify this value.';

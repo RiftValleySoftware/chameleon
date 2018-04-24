@@ -171,6 +171,7 @@ ob_start();
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'owner-tests\')">MASSIVE DATASET TESTS</a></h2>');
             echo('<div class="container">');
             
+            if (FALSE !== strpos('localhost', $_SERVER['SERVER_NAME'])) {
                 echo('<div id="test-038" class="inner_closed">');
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-038\')">TEST 38: Look at a YUGE Dataset</a></h3>');
                     echo('<div class="main_div inner_container">');
@@ -202,7 +203,9 @@ ob_start();
                         owner_test_relay(3);
                     echo('</div>');
                 echo('</div>');
-
+            } else {
+                echo('<h3>TESTS SKIPPED, BECAUSE THE SERVER CAN\'T HANDLE THEM.</h3>');
+            }
             echo('</div>');
         echo('</div>');
     echo('</div>');
