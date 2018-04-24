@@ -205,11 +205,15 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
                                 }
                             } else {
                                 echo("<h2 style=\"color:red;font-weight:bold\">There was no text payload!</h2>");
-                                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                                if ($access_instance->error) {
+                                    echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                                }
                             }
                         } else {
                             echo("<h2 style=\"color:red;font-weight:bold\">There was an error with accessing the value!</h2>");
-                            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                            if ($access_instance->error) {
+                                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                            }
                         }
                     } else {
                         echo("<h2 style=\"color:red;font-weight:bold\">The initial payloads don\'t match!</h2>");
@@ -219,18 +223,24 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
                 }
             } else {
                 echo("<h2 style=\"color:red;font-weight:bold\">The value was not saved!</h2>");
-                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$test_subject->error->error_code.') '.$test_subject->error->error_name.' ('.$test_subject->error->error_description.')</p>');
+                if ($test_subject->error) {
+                    echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$test_subject->error->error_code.') '.$test_subject->error->error_name.' ('.$test_subject->error->error_description.')</p>');
+                }
             }
         } else {
             echo("<h2 style=\"color:red;font-weight:bold\">The user was not allowed to save the value!</h2>");
-            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+            if ($access_instance->error) {
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+            }
         }
         
         $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
-        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+        if ($access_instance->error) {
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+        }
     }
 }
 
