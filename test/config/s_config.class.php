@@ -102,6 +102,24 @@ class CO_Config {
         return self::base_dir().'/badger';
     }
     
+    /***********************/
+    /**
+    Includes the given file.
+     */
+    static function require_extension_class(   $in_filename    ///< The name of the file we want to require.
+                                            ) {
+        if (is_array(self::db_classes_extension_class_dir())) {
+            foreach (self::db_classes_extension_class_dir() as $dir) {
+                if (file_exists("$dir/$in_filename")) {
+                    require_once("$dir/$in_filename");
+                    break;
+                }
+            }
+        } else {
+            require_once(self::db_classes_extension_class_dir().'/'.$in_filename);
+        }
+    }
+    
     /***********************************************************************************************************************/
     /*                                                    BADGER STUFF                                                     */
     /***********************************************************************************************************************/

@@ -27,7 +27,7 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     }
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
-    require_once(CO_Config::db_classes_extension_class_dir().'/co_us_place_collection.class.php');
+    CO_Config::require_extension_class('co_us_place_collection.class.php');
     
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     

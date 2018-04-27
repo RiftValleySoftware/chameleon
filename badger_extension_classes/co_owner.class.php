@@ -13,8 +13,8 @@
 */
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-require_once(CO_Config::db_classes_extension_class_dir().'/tco_owner.interface.php');
 require_once(CO_Config::db_class_dir().'/a_co_db_table_base.class.php');
+CO_Config::require_extension_class('tco_owner.interface.php');
 
 /***************************************************************************************************************************/
 /**

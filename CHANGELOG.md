@@ -1,3 +1,8 @@
+**1.0.0.2008** *April 27, 2018*
+
+- Added the "fuzzing" ability from BADGER.
+- Added flexibility for arrayed extension dirs (for COBRA).
+
 **1.0.0.2007** *April 24, 2018*
 
 - Added support for a basic key/value pair facility.

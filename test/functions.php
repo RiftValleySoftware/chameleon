@@ -13,9 +13,15 @@ Little Green Viper Software Development: https://littlegreenviper.com
 */
 date_default_timezone_set ( 'UTC' );
 
-if ( !defined('LGV_CONFIG_CATCHER') ) {
-    define('LGV_CONFIG_CATCHER', 1);
+if (!class_exists('CO_Config')) {
     $config_file_path = dirname(__FILE__).'/config/s_config.class.php';
+
+    date_default_timezone_set ( 'UTC' );
+
+    if ( !defined('LGV_CONFIG_CATCHER') ) {
+        define('LGV_CONFIG_CATCHER', 1);
+    }
+
     require_once($config_file_path);
 }
 
