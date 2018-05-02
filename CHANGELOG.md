@@ -1,3 +1,7 @@
+**1.0.0.2009** *May 2, 2018*
+
+- Updated to the latest BADGER, with its security tweaks.
+
 **1.0.0.2008** *April 27, 2018*
 
 - Added the "fuzzing" ability from BADGER.
