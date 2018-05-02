@@ -58,5 +58,13 @@ class CO_CHAMELEON_Lang {
     static  $co_key_value_error_desc_user_not_authorized = 'The user is not authorized to modify this value.';
     static  $co_key_value_error_name_instance_failed_to_initialize = 'Value Not Initialized';
     static  $co_key_value_error_desc_instance_failed_to_initialize = 'The value object failed to initialize properly.';
+
+    // These apply to the user collection classes.
+    static  $user_error_name_user_not_authorized = 'User Not Authorized';
+    static  $user_error_desc_user_not_authorized = 'The user is not authorized to access the login for this user.';
+    static  $user_error_name_invalid_id = 'User ID Invalid';
+    static  $user_error_desc_invalid_id = 'The user ID in this instance is invalid.';
+    static  $user_error_name_invalid_class = 'User Login Class Invalid';
+    static  $user_error_desc_invalid_class = 'The login access class for this user is invalid.';
 }
 ?>
