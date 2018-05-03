@@ -124,4 +124,51 @@ class CO_User_Collection extends CO_Main_DB_Record {
     }
     
     use tCO_Collection; ///< These are the built-in collection methods.
+    
+    /***********************/
+    /**
+    Simple setter for the tags.
+    
+    \returns TRUE, if successful.
+     */
+    public function set_tags(   $in_tags_array  ///< An array of strings, up to ten elements long, for the tags.
+                            ) {
+        $ret = FALSE;
+        
+        if (isset($in_tags_array) && is_array($in_tags_array) && count($in_tags_array) && (11 > count($in_tags_array))) {
+            // We cannot assign a user we don't have write permissions for
+            $id_pool = $this->get_access_object()->get_security_ids();
+            $tag0 = intval($in_tags_array[0]);
+            if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 == $tag0) || in_array($tag0, $id_pool))))) {
+                $ret = parent::set_tags($in_tags_array);
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    Setter for one tag, by index.
+    
+    \returns TRUE, if successful.
+     */
+    public function set_tag(    $in_tag_index,  ///< The index (0-based -0 through 9) of the tag to set.
+                                $in_tag_value   ///< A string, with the tag value.
+                            ) {
+        $ret = FALSE;
+        
+        $in_tag_index = intval($in_tag_index);
+        
+        if (isset($in_tag_value) && (10 > $in_tag_index) && $this->user_can_write()) {
+            // We cannot assign a user we don't have write permissions for
+            $id_pool = $this->get_access_object()->get_security_ids();
+            $tag0 = intval($in_tags_array[0]);
+            if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 < $in_tag_index) || in_array(intval($in_tag_value), $id_pool))))) {
+                $ret = parent::set_tag($in_tag_index, $in_tag_value);
+            }
+        }
+        
+        return $ret;
+    }
 };
