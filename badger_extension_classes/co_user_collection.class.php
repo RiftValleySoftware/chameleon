@@ -29,6 +29,12 @@ require_once($lang_common_file);
 /***************************************************************************************************************************/
 /**
 This is a container, meant to define a user.
+
+A user is a collection, with various data items attached to it.
+
+It also has a single link to a login (which can be NULL, if the user is not one that can log into the system).
+
+As with other login-related classes, only login managers that have access to security tokens (which are also IDs of login and other security DB items) can set certain IDs as tokens.
  */
 class CO_User_Collection extends CO_Main_DB_Record {
     private $_login_object = NULL;  ///< The Security DB COBRA login instance associated with this user.
@@ -166,6 +172,29 @@ class CO_User_Collection extends CO_Main_DB_Record {
             $tag0 = intval($in_tags_array[0]);
             if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 < $in_tag_index) || in_array(intval($in_tag_value), $id_pool))))) {
                 $ret = parent::set_tag($in_tag_index, $in_tag_value);
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    This overloads the base class method, as we restrict it further to only login managers can modify these records.
+    
+    This method is slightly "incestuous," as it sort of knows about COBRA, which is otherwise encapsulated from this class.
+    
+    \returns TRUE, if the current logged-in user has write permission on this record.
+     */
+    public function user_can_write() {
+        $ret = parent::user_can_write();
+        
+        // Further check to make sure that the current login is a manager.
+        if ($ret) {
+            $login_item = $this->get_access_object()->get_login_item();
+            
+            if (!($login_item instanceof CO_Login_Manager)) {
+                $ret = FALSE;
             }
         }
         

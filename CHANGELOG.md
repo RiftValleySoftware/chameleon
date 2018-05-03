@@ -1,3 +1,7 @@
+**1.0.0.2010** *May 3, 2018*
+
+- Added the user collection class.
+
 **1.0.0.2009** *May 2, 2018*
 
 - Updated to the latest BADGER, with its security tweaks.
