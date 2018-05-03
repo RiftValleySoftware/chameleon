@@ -151,4 +151,29 @@ class CO_Chameleon extends CO_Access {
         
         return $ret;
     }
+    
+    /***********************/
+    /**
+    \returns the user collection object for a given login. If there is no login given, then the current login is assumed. This is subject to security restrictions.
+     */
+    public function get_user_from_login(    $in_login_id = NULL ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
+                                        ) {
+        $ret = NULL;
+        
+        $login_id = $this->get_login_id();  // Default is the current login.
+        
+        if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.
+            $login_id = intval($in_login_id);
+        }
+        
+        $tag0 = strval($login_id);
+        
+        $ret_temp = $this->generic_search(Array('access_class' => 'CO_User_Collection', 'tags' => Array($tag0)));
+        
+        if (isset($ret_temp) && is_array($ret_temp) && count($ret_temp)) {
+            $ret = $ret_temp[0];    // We only get the first one. Multiple responses mean the DB is not so healthy.
+        }
+        
+        return $ret;
+    }
 };

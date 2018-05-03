@@ -56,26 +56,26 @@ class CO_User_Collection extends CO_Main_DB_Record {
                 $this->_login_object = $my_login_object;
                 $ret = TRUE;
             } elseif (!($my_login_object instanceof CO_Security_Login)) {
-                $this->error = new LGV_Error(   CO_Lang_Common::$user_error_code_invalid_class,
-                                                CO_Lang::$user_error_name_invalid_class,
-                                                CO_Lang::$user_error_desc_invalid_class,
+                $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$user_error_code_invalid_class,
+                                                CO_CHAMELEON_Lang::$user_error_name_invalid_class,
+                                                CO_CHAMELEON_Lang::$user_error_desc_invalid_class,
                                                 __FILE__,
                                                 __LINE__,
                                                 __METHOD__
                                             );
             } else {
-                $this->error = new LGV_Error(   CO_Lang_Common::$user_error_code_user_not_authorized,
-                                                CO_Lang::$user_error_name_user_not_authorized,
-                                                CO_Lang::$user_error_desc_user_not_authorized,
+                $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$user_error_code_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$user_error_name_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$user_error_desc_user_not_authorized,
                                                 __FILE__,
                                                 __LINE__,
                                                 __METHOD__
                                             );
             }
         } else {
-            $this->error = new LGV_Error(   CO_Lang_Common::$user_error_code_invalid_id,
-                                            CO_Lang::$user_error_name_invalid_id,
-                                            CO_Lang::$user_error_desc_invalid_id,
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$user_error_code_invalid_id,
+                                            CO_CHAMELEON_Lang::$user_error_name_invalid_id,
+                                            CO_CHAMELEON_Lang::$user_error_desc_invalid_id,
                                             __FILE__,
                                             __LINE__,
                                             __METHOD__
@@ -195,6 +195,37 @@ class CO_User_Collection extends CO_Main_DB_Record {
             
             if (!($login_item instanceof CO_Login_Manager)) {
                 $ret = FALSE;
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    This sets the login ID, and has the object regenerate the new instance.
+    
+    This can only be done by a COBRA Login Manager that has write access to the user object and the login object.
+    
+    \returns TRUE, if the operation suceeded.
+     */
+    public function set_login(  $in_login_id
+                            ) {
+        $ret = FALSE;
+        $ret = parent::user_can_write();
+        
+        // Further check to make sure that the current login is a manager.
+        if ($ret) {
+            $login_item = $this->get_access_object()->get_login_item($in_login_id);
+            
+            if ($login_item instanceof CO_Security_Login) {
+                $tag0 = strval(intval($in_login_id));
+                
+                $ret = $this->set_tag(0, $tag0);
+                
+                if ($ret) {
+                    $ret = $this->_load_login;
+                }
             }
         }
         
