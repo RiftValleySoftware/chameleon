@@ -16,6 +16,14 @@ defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure
 CO_Config::require_extension_class('tco_collection.interface.php');
 require_once(CO_Config::db_class_dir().'/co_main_db_record.class.php');
 
+$lang = CO_Config::$lang;
+
+global $g_lang_override;    // This allows us to override the configured language at initiation time.
+
+if (isset($g_lang_override) && $g_lang_override && file_exists(CO_Config::lang_class_dir().'/'.$g_lang_override.'.php')) {
+    $lang = $g_lang_override;
+}
+
 $lang_file = CO_Config::badger_lang_class_dir().'/'.$lang.'.php';
 $lang_common_file = CO_Config::badger_lang_class_dir().'/common.inc.php';
 
@@ -45,9 +53,8 @@ class CO_User_Collection extends CO_Main_DB_Record {
      */
     protected function _load_login() {
         $ret = FALSE;
-        
         // Tag 0 contains the ID of the user login (in the security DB) for this user.
-        $login_id = intval($this-itags[0]);
+        $login_id = isset($this->tags()[0]) ? intval($this->tags()[0]) : 0;
         
         if (0 < $login_id) {
             $my_login_object = $this->get_access_object()->get_single_security_record_by_id($login_id);
@@ -169,7 +176,6 @@ class CO_User_Collection extends CO_Main_DB_Record {
         if (isset($in_tag_value) && (10 > $in_tag_index) && $this->user_can_write()) {
             // We cannot assign a user we don't have write permissions for
             $id_pool = $this->get_access_object()->get_security_ids();
-            $tag0 = intval($in_tags_array[0]);
             if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 < $in_tag_index) || in_array(intval($in_tag_value), $id_pool))))) {
                 $ret = parent::set_tag($in_tag_index, $in_tag_value);
             }
@@ -224,7 +230,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
                 $ret = $this->set_tag(0, $tag0);
                 
                 if ($ret) {
-                    $ret = $this->_load_login;
+                    $ret = $this->_load_login();
                 }
             }
         }
