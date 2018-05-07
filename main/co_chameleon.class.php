@@ -39,6 +39,8 @@ require_once($lang_common_file);
 /**
  */
 class CO_Chameleon extends CO_Access {
+    protected $_special_access_id;  ///< This is a special ephemeral ID that we use to allow a manager to create a login, and add that login to its pool.
+    
     /***********************************************************************************************************************/    
     /***********************/
     /**
@@ -50,6 +52,26 @@ class CO_Chameleon extends CO_Access {
 	                            ) {
         parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
 	    $this->version = __CHAMELEON_VERSION__;
+    }
+    
+    /***********************/
+    /**
+    This fetches the list of security tokens the currently logged-in user has available.
+    This will reload any non-God Mode IDs before fetching the IDs, in order to spike privilege escalation.
+    If they have God Mode, then you're pretty much screwed, anyway.
+    
+    \returns an array of integers, with each one representing a security token. The first element will always be the ID of the user.
+     */
+    public function get_security_ids() {
+        $ret = parent::get_security_ids();
+        
+        if (isset($this->_special_access_id)) {
+            $id = $this->_special_access_id;
+            unset($this->_special_access_id);
+            $ret[] = intval($id);
+        }
+        
+        return $ret;
     }
     
     /***********************/
@@ -80,6 +102,31 @@ class CO_Chameleon extends CO_Access {
             $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_item_not_valid,
                                             CO_CHAMELEON_Lang::$co_collection_error_name_item_not_valid,
                                             CO_CHAMELEON_Lang::$co_collection_error_desc_item_not_valid);
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    This tests a login ID for the special "Heisenberg" one-time test.
+    
+    \returns TRUE, if the item was a login, and had the flag set.
+     */
+    public function test_access(    $in_login_id    ///< The ID of the instance to test.
+                                ) {
+        $ret = FALSE;
+        
+        // Yeah, this will crash if we're not in COBRA. Good.
+        if ($this->security_db_available() && ($this->get_login_item() instanceof CO_Login_Manager)) {
+            $item_to_test = $this->_security_db_object->get_initial_record_by_id($in_login_id);
+            
+            if ($item_to_test instanceof CO_Cobra_Login) {
+                $ret = $item_to_test->security_exemption();
+                if ($ret) {
+                    $this->_special_access_id = $in_login_id;
+                }
+            }
         }
         
         return $ret;
