@@ -1,3 +1,7 @@
+**1.0.0.2011** *May 7, 2018*
+
+- Added support for COBRA user creation.
+
 **1.0.0.2010** *May 3, 2018*
 
 - Added the user collection class.

@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__CHAMELEON_VERSION__', '1.0.0.2010');
+define('__CHAMELEON_VERSION__', '1.0.0.2011');
 
 require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
 
@@ -64,7 +64,7 @@ class CO_Chameleon extends CO_Access {
         $ret = NULL;
         
         if (isset($in_element) && $in_element && ($in_element->get_access_object() == $this)) {
-            $collection_objects = $this->generic_search(Array('access_class' => Array('%_Collection', 'use_like' => TRUE)));
+            $collection_objects = $this->generic_search(Array('access_class' => Array('%_collection', 'use_like' => TRUE)));
 
             if (isset($collection_objects) && is_array($collection_objects) && count($collection_objects)) {
                 foreach ($collection_objects as $parent_object) {
@@ -168,7 +168,7 @@ class CO_Chameleon extends CO_Access {
         
         $tag0 = strval($login_id);
         
-        $ret_temp = $this->generic_search(Array('access_class' => 'CO_User_Collection', 'tags' => Array($tag0)));
+        $ret_temp = $this->generic_search(Array('access_class' => Array('%_user_collection', 'use_like' => TRUE), 'tags' => Array($tag0)));
         
         if (isset($ret_temp) && is_array($ret_temp) && count($ret_temp)) {
             $ret = $ret_temp[0];    // We only get the first one. Multiple responses mean the DB is not so healthy.

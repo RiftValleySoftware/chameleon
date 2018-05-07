@@ -199,7 +199,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
         if ($ret) {
             $login_item = $this->get_access_object()->get_login_item();
             
-            if (!($login_item instanceof CO_Login_Manager)) {
+            if (!$this->get_access_object()->god_mode() && !($login_item instanceof CO_Login_Manager)) {
                 $ret = FALSE;
             }
         }
