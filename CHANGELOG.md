@@ -1,6 +1,7 @@
-**1.0.0.2011** *May 7, 2018*
+**1.0.0.2011** *May 8, 2018*
 
 - Added support for COBRA user creation.
+- Added "garbage collection" to the collection classes.
 
 **1.0.0.2010** *May 3, 2018*
 

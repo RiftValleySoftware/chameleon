@@ -24,11 +24,36 @@ trait tCO_Collection {
 	
     /***********************/
     /**
+    This is a "garbage collection" method.
+    This checks each of the contained items, and removes the ID if the item does not actually exist (security is not taken into account, so it's an accurate check).
+     */
+    protected function _scrub() {
+        $children_ids = $this->context['children_ids'];
+        
+        if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
+            $new_ids = Array();
+            foreach ($children_ids as $id) {
+                $id = intval($id); // Belt and suspenders.
+                if ($this->get_access_object()->item_exists($id)) {
+                    array_push($new_ids, $id);
+                }
+            }
+            $new_ids = array_unique($new_ids);
+            sort($new_ids);
+            $this->context['children_ids'] = $new_ids;
+            $this->update_db();
+        }
+    }
+	
+    /***********************/
+    /**
     This method simply sets up the internal container from the object's tags.
     The tags already need to be loaded when this is called, so it should be called towards the end of the
     object's constructor.
      */
     protected function _set_up_container() {
+        $this->_scrub();    // Garbage collection.
+        
         $children_ids = $this->context['children_ids'];
         
         if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
