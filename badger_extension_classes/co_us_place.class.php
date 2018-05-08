@@ -26,12 +26,15 @@ if (!is_array(CO_Config::db_classes_extension_class_dir())) {
 	
 /***************************************************************************************************************************/
 /**
-This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
+This is a specialization of the location class. It adds support for US addresses, and uses the first seven tags for this.
  */
 class CO_US_Place extends CO_Place {
     /***********************************************************************************************************************/
     /***********************/
     /**
+    This fetches string labels to be used as keys for the fixed tags.
+    
+    \returns an array of strings, which will correspond to the first six tags.
      */
 	protected function _get_address_element_labels() {
 	    return Array(
@@ -68,6 +71,8 @@ class CO_US_Place extends CO_Place {
 	                                $in_latitude = NULL     ///< An initial latitude value.
                                 ) {
         
+        $this->region_bias = 'us';
+
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
         
         $this->class_description = "This is a 'Place' Class for US Addresses.";

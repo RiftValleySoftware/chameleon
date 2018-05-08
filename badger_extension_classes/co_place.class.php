@@ -27,13 +27,17 @@ require_once($utils_file);
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
  */
 class CO_Place extends CO_LL_Location {
-    var $address_elements = Array();
-    var $google_geocode_uri_prefix = NULL;
-    var $google_lookup_uri_prefix = NULL;
+    var $address_elements = Array();        ///< These are the address elements we use for creating lookup addresses.
+    var $google_geocode_uri_prefix = NULL;  ///< This is the Geocode URI for the Google Geocode.
+    var $google_lookup_uri_prefix = NULL;   ///< This is the lookup URI for the Google reverse Geocode.
+    var $region_bias = NULL;                ///< This can be set by subclasses in order to set a region bias.
     
     /***********************************************************************************************************************/
     /***********************/
     /**
+    This fetches string labels to be used as keys for the fixed tags.
+    
+    \returns an array of strings, which will correspond to the first eight tags.
      */
 	protected function _get_address_element_labels() {
 	    return Array(
@@ -79,8 +83,10 @@ class CO_Place extends CO_LL_Location {
         
         $this->set_address_elements($this->tags(), TRUE);
         
-        $this->google_geocode_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&address=';
-        $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?key='.CO_Config::$google_api_key.'&ll=';
+        $bias = (NULL != $this->region_bias) ? 'region='.$this->region_bias.'&' : '';
+        
+        $this->google_geocode_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?'.$bias.'key='.CO_Config::$google_api_key.'&address=';
+        $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?'.$bias.'key='.CO_Config::$google_api_key.'&ll=';
     }
     
     /***********************/
@@ -232,7 +238,7 @@ class CO_Place extends CO_LL_Location {
         $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(FALSE));
         $http_status = '';
         $error_catcher = '';
-        
+
         $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
         
         if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
