@@ -419,6 +419,13 @@ function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_pa
                 $main_collection_item = $access_instance0->get_single_data_record_by_id(11);
                 $hierarchy = $main_collection_item->getHierarchy();
                 display_raw_hierarchy($hierarchy, '13C');
+                if ('mysql' == CO_Config::$data_db_type) {
+                    echo('<p class="explain">All right, now we manually re-add "High Noon Hope." The idea is that it will no longer be available, even though it is there, because it has been removed from all the collections:</p>');
+                    re_add_hn();
+                    $main_collection_item = $access_instance0->get_single_data_record_by_id(11);
+                    $hierarchy = $main_collection_item->getHierarchy();
+                    display_raw_hierarchy($hierarchy, '13D');
+                }
             } else {
                 echo("<h3 style=\"color:red;font-weight:bold\">The Deletion Failed!</h3>");
                 echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$high_noon_hope->error->error_code.') '.$high_noon_hope->error->error_name.' ('.$high_noon_hope->error->error_description.')</p>');
@@ -431,6 +438,60 @@ function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_pa
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance0->error->error_code.') '.$access_instance0->error->error_name.' ('.$access_instance0->error->error_description.')</p>');
     }
+}
+
+function re_add_hn() {
+    if ( !defined('LGV_DB_CATCHER') ) {
+        define('LGV_DB_CATCHER', 1);
+    }
+
+    require_once(CO_Config::db_class_dir().'/co_pdo.class.php');
+
+    if ( !defined('LGV_ERROR_CATCHER') ) {
+        define('LGV_ERROR_CATCHER', 1);
+    }
+
+    require_once(CO_Config::badger_shared_class_dir().'/error.class.php');
+    
+    $pdo_data_db = NULL;
+    try {
+        $pdo_data_db = new CO_PDO(CO_Config::$data_db_type, CO_Config::$data_db_host, CO_Config::$data_db_name, CO_Config::$data_db_login, CO_Config::$data_db_password);
+    } catch (Exception $exception) {
+// die('<pre style="text-align:left">'.htmlspecialchars(print_r($exception, true)).'</pre>');
+                $error = new LGV_Error( 1,
+                                        'INITIAL DATABASE SETUP FAILURE',
+                                        'FAILED TO INITIALIZE A DATABASE!',
+                                        $exception->getFile(),
+                                        $exception->getLine(),
+                                        $exception->getMessage());
+            echo('<h1 style="color:red">ERROR WHILE TRYING TO ACCESS DATABASES!</h1>');
+            echo('<pre>'.htmlspecialchars(print_r($error, true)).'</pre>');
+    }
+    
+    if ($pdo_data_db) {
+        $data_db_sql = file_get_contents(CO_Config::test_class_dir().'/sql/high_noon.sql');
+            
+        $error = NULL;
+
+        try {
+            $pdo_data_db->preparedExec($data_db_sql);
+        } catch (Exception $exception) {
+// die('<pre style="text-align:left">'.htmlspecialchars(print_r($exception, true)).'</pre>');
+            $error = new LGV_Error( 1,
+                                    'RE-ADD DATABASE SETUP FAILURE',
+                                    'FAILED TO INITIALIZE A DATABASE!',
+                                    $exception->getFile(),
+                                    $exception->getLine(),
+                                    $exception->getMessage());
+                                            
+            echo('<h1 style="color:red">ERROR WHILE TRYING TO OPEN DATABASES!</h1>');
+            echo('<pre>'.htmlspecialchars(print_r($error, true)).'</pre>');
+        }
+    
+        return;
+    }
+    
+    echo('<h1 style="color:red">UNABLE TO OPEN DATABASE!</h1>');
 }
 
 ob_start();

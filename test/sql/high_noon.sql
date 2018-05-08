@@ -1,0 +1,2 @@
+INSERT INTO `co_data_nodes` (`id`, `access_class`, `last_access`, `read_security_id`, `write_security_id`, `object_name`, `access_class_context`, `owner`, `longitude`, `latitude`, `tag0`, `tag1`, `tag2`, `tag3`, `tag4`, `tag5`, `tag6`, `tag7`, `tag8`, `tag9`, `payload`) VALUES
+(49, 'CO_US_Place', '1970-01-02 00:00:00', 0, 8, 'High Noon Hope', NULL, 8, -77.797551, 38.713577, 'Warrenton Recovery Center', '30 John Marshall Street', '', 'Warrenton', '', 'VA', '', NULL, '2', '12:00:00', NULL);

@@ -25,7 +25,6 @@ if (!class_exists('CO_Config')) {
     require_once($config_file_path);
 }
 
-
 function prepare_databases($in_file_prefix) {
     if ( !defined('LGV_DB_CATCHER') ) {
         define('LGV_DB_CATCHER', 1);
@@ -75,13 +74,14 @@ function prepare_databases($in_file_prefix) {
                                         $exception->getLine(),
                                         $exception->getMessage());
                                                 
-            echo('<h1 style="color:red">ERROR WHILE TRYING TO OPEN DATABASES!</h1>');
-            echo('<pre>'.htmlspecialchars(print_r($error, true)).'</pre>');
+                echo('<h1 style="color:red">ERROR WHILE TRYING TO OPEN DATABASES!</h1>');
+                echo('<pre>'.htmlspecialchars(print_r($error, true)).'</pre>');
             }
-        return;
+            
+            return;
         }
     }
-    echo('');
+
     echo('<h1 style="color:red">UNABLE TO OPEN DATABASE!</h1>');
 }
 
