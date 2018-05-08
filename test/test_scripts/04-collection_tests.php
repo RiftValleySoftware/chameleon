@@ -384,6 +384,54 @@ function collection_test_12($in_login = NULL, $in_hashed_password = NULL, $in_pa
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
 }
+    
+function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    echo('<p class="explain">First, we go in with the God Mode ID, and list all available items:</p>');
+
+    $access_instance0 = new CO_Chameleon('admin', '', CO_Config::$god_mode_password);
+    
+    if ($access_instance0->valid) {
+        $main_collection_item = $access_instance0->get_single_data_record_by_id(11);
+        $hierarchy = $main_collection_item->getHierarchy();
+        display_raw_hierarchy($hierarchy, '13A');
+        echo('<p class="explain">Next, we go in with the DC Admin ID, and list all available items:</p>');
+
+        $access_instance1 = new CO_Chameleon('DCAdmin', '', 'CoreysGoryStory');
+    
+        if ($access_instance1->valid) {
+            $main_collection_item = $access_instance1->get_single_data_record_by_id(11);
+        
+            $hierarchy = $main_collection_item->getHierarchy();
+            display_raw_hierarchy($hierarchy, '13B');
+            
+            echo('<p class="explain">Now, we go back as God, and delete "High Noon Hope":</p>');
+            $high_noon_hope = $access_instance0->get_single_data_record_by_id(49);
+            
+            if ($high_noon_hope->delete_from_db()) {
+                echo('<p class="explain">Look at the result as God:</p>');
+                $main_collection_item = $access_instance0->get_single_data_record_by_id(11);
+                $hierarchy = $main_collection_item->getHierarchy();
+                display_raw_hierarchy($hierarchy, '13C');
+            } else {
+                echo("<h3 style=\"color:red;font-weight:bold\">The Deletion Failed!</h3>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$high_noon_hope->error->error_code.') '.$high_noon_hope->error->error_name.' ('.$high_noon_hope->error->error_description.')</p>');
+            }
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance1->error->error_code.') '.$access_instance1->error->error_name.' ('.$access_instance1->error->error_description.')</p>');
+        }
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance0->error->error_code.') '.$access_instance0->error->error_name.' ('.$access_instance0->error->error_description.')</p>');
+    }
+}
 
 ob_start();
 
@@ -547,6 +595,16 @@ ob_start();
                             echo('<p class="explain">This is actually a series of tests, where we make sure that the instance cache works, and that we can\'t add repeated collections.</p>');
                         echo('</div>');
                         collection_test_relay(12, 'AllAdmin', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+        
+                echo('<div id="test-033A" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-033A\')">TEST 33A: Delete Some Elements, and Make Sure They are "Garbage-Collected."</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain"></p>');
+                        echo('</div>');
+                        collection_test_relay(13, '', '', '');
                     echo('</div>');
                 echo('</div>');
 
