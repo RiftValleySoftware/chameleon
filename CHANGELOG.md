@@ -1,3 +1,7 @@
+**1.0.0.2012** *May 9, 2018*
+
+- Adds support for the special "decomissioning" of login IDs.
+
 **1.0.0.2011** *May 8, 2018*
 
 - Added support for COBRA user creation.
