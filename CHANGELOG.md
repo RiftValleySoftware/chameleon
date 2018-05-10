@@ -1,3 +1,7 @@
+**1.0.0.2013** *May 10, 2018*
+
+- Added some more support for COBRA's auditing functionality.
+
 **1.0.0.2012** *May 9, 2018*
 
 - Adds support for the special "decomissioning" of login IDs.
