@@ -27,4 +27,6 @@ CREATE TABLE co_data_nodes (
 
 INSERT INTO co_data_nodes (access_class, last_access, read_security_id, write_security_id, object_name, access_class_context, owner, longitude, latitude, tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, payload) VALUES
 ('CO_Main_DB_Record', '1970-01-02 00:00:00', -1, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('CO_User_Collection', '1970-01-02 00:00:00', 0, 3, 'Norm User', 'a:1:{s:4:"lang";s:2:"en"}', NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+('CO_User_Collection', '1970-01-02 00:00:00', 0, 3, 'Norm User', 'a:1:{s:4:"lang";s:2:"sv";}', NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('CO_User_Collection', '1970-01-02 00:00:00', 0, 4, 'Bob User', NULL, NULL, NULL, NULL, '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('CO_User_Collection', '1970-01-02 00:00:00', 0, 5, 'Cobra User', NULL, NULL, NULL, NULL, '5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

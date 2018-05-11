@@ -40,7 +40,15 @@ function lang_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password
     
     if ($access_instance->valid) {
         $st1 = microtime(TRUE);
+        $server_lang = CO_Config::$lang;
+        $access_lang = $access_instance->get_lang();
+        $login_lang = $access_instance->get_login_item()->get_lang();
+        $user_lang = $access_instance->get_user_from_login()->get_lang();
         $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        echo('<p><strong>Access Object (main) Language: </strong>'.$access_lang.'</p>');
+        echo('<p><strong>Server Language: </strong>'.$server_lang.'</p>');
+        echo('<p><strong>Login Object Language: </strong>'.$login_lang.'</p>');
+        echo('<p><strong>User Object Language: </strong>'.$user_lang.'</p>');
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
@@ -60,12 +68,32 @@ ob_start();
             echo('<div class="container">');
             
                 echo('<div id="test-045" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-045\')">TEST 45:</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-045\')">TEST 45: Precedence Test 1</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
-                            echo('<p class="explain"></p>');
+                            echo('<p class="explain">In this test, we login with a user that has \'sv\' set as the user lang, \'fr\' set as the login lang, and \'en\' set as the server lang. Let\'s see which one take precedence (It should be the user one).</p>');
                         echo('</div>');
                         lang_test_relay(1, 'norm', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-046" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-046\')">TEST 46: Precedence Test 2</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">In this test, we login with a user that has no user lang, \'fr\' set as the login lang, and \'en\' set as the server lang. Let\'s see which one take precedence (It should be the login one, and the user object should use the login lang).</p>');
+                        echo('</div>');
+                        lang_test_relay(1, 'bob', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-047" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-047\')">TEST 47: Precedence Test 3</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">In this test, we login with a user that has no user lang, no login lang, and \'en\' set as the server lang. Let\'s see which one take precedence (It should be the server one, and the user and login objects should both use the server lang).</p>');
+                        echo('</div>');
+                        lang_test_relay(1, 'cobra', '', 'CoreysGoryStory');
                     echo('</div>');
                 echo('</div>');
 

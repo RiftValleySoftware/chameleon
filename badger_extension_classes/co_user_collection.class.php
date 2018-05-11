@@ -241,7 +241,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the language ID for this login.
      */
     public function get_lang() {
-        $ret = parent::$lang;
+        $ret = parent::get_lang();
         
         if (!isset($this->context['lang'])) {
             if (isset($this->_login_object)) {

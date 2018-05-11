@@ -28,20 +28,22 @@ trait tCO_Collection {
     This checks each of the contained items, and removes the ID if the item does not actually exist (security is not taken into account, so it's an accurate check).
      */
     protected function _scrub() {
-        $children_ids = $this->context['children_ids'];
+        if (isset($this->context['children_ids'])) {
+            $children_ids = $this->context['children_ids'];
         
-        if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
-            $new_ids = Array();
-            foreach ($children_ids as $id) {
-                $id = intval($id); // Belt and suspenders.
-                if ($this->get_access_object()->item_exists($id)) {
-                    array_push($new_ids, $id);
+            if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
+                $new_ids = Array();
+                foreach ($children_ids as $id) {
+                    $id = intval($id); // Belt and suspenders.
+                    if ($this->get_access_object()->item_exists($id)) {
+                        array_push($new_ids, $id);
+                    }
                 }
+                $new_ids = array_unique($new_ids);
+                sort($new_ids);
+                $this->context['children_ids'] = $new_ids;
+                $this->update_db();
             }
-            $new_ids = array_unique($new_ids);
-            sort($new_ids);
-            $this->context['children_ids'] = $new_ids;
-            $this->update_db();
         }
     }
 	
@@ -54,10 +56,12 @@ trait tCO_Collection {
     protected function _set_up_container() {
         $this->_scrub();    // Garbage collection.
         
-        $children_ids = $this->context['children_ids'];
+        if (isset($this->context['children_ids'])) {
+            $children_ids = $this->context['children_ids'];
         
-        if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
-            $this->_container = $this->get_access_object()->get_multiple_data_records_by_id($children_ids);
+            if (isset($children_ids) && is_array($children_ids) && count($children_ids)) {
+                $this->_container = $this->get_access_object()->get_multiple_data_records_by_id($children_ids);
+            }
         }
     }
     
