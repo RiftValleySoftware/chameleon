@@ -136,8 +136,6 @@ class CO_User_Collection extends CO_Main_DB_Record {
         return $this->_login_object;
     }
     
-    use tCO_Collection; ///< These are the built-in collection methods.
-    
     /***********************/
     /**
     Simple setter for the tags.
@@ -237,4 +235,40 @@ class CO_User_Collection extends CO_Main_DB_Record {
         
         return $ret;
     }
+    
+    /***********************/
+    /**
+    \returns a string, with the language ID for this login.
+     */
+    public function get_lang() {
+        $ret = CO_Config::$lang;
+        
+        if (!isset($this->context['lang'])) {
+            if (isset($this->_login_object)) {
+                $ret = $this->_login_object->get_lang();
+            }
+        } else {
+            $ret = $this->context['lang'];
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    \returns TRUE, if the set was successful.
+     */
+    public function set_lang(   $in_lang_id = NULL  ///< The lang ID. This is not used for the low-level error handlers (which use the server setting). It is used to determine higher-level strings.
+                            ) {
+        $ret = FALSE;
+        
+        if ($this->user_can_write()) {
+            $this->context['lang'] = strtolower(trim(strval($in_lang_id)));
+            $ret = $this->update_db();
+        }
+        
+        return $ret;
+    }
+    
+    use tCO_Collection; ///< These are the built-in collection methods.
 };

@@ -109,6 +109,32 @@ class CO_Chameleon extends CO_Access {
     
     /***********************/
     /**
+    This returns the language string for the given user/login.
+    
+    If there is a user item associated with the login, then that gets first dibs. Login item gets dibs over default server.
+    
+    \returns a string, with the language ID for the login. If none, the the server default is returned.
+     */
+    public function get_lang(   $in_login_id = NULL ///< The integer login ID to check. If not-NULL, then the ID of a login instance. It must be one that the current user can see.
+                            ) {
+        $ret = parent::get_lang();
+        
+        $login_item = $this->get_login_item($in_login_id);
+        
+        if ($login_item) {
+            $user_item = $this->get_user_from_login($login_item->login_id);
+            if ($user_item) {
+                $ret = $user_item->get_lang();
+            } else {
+                $ret = $login_item->get_lang();
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This tests a login ID for the special "Heisenberg" one-time test.
     
     \returns TRUE, if the item was a login, and had the flag set.
