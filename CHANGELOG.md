@@ -1,3 +1,7 @@
+**1.0.0.2014** *May 11, 2018*
+
+- Updated to the latest BADGER, with its security tweaks.
+
 **1.0.0.2013** *May 10, 2018*
 
 - Added some more support for COBRA's auditing functionality.
