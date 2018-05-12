@@ -1,3 +1,7 @@
+**1.0.0.2015** *May 12, 2018*
+
+- Made sure that the language precedence is done correctly.
+
 **1.0.0.2014** *May 11, 2018*
 
 - Updated to the latest BADGER, with its security tweaks.
