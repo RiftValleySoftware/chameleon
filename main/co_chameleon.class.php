@@ -247,4 +247,12 @@ class CO_Chameleon extends CO_Access {
         
         return $ret;
     }
+    
+    /***********************/
+    /**
+    \returns the security token label objects for this login.
+     */
+    public function get_security_token_labels() {
+        return $this->_security_token_labels;
+    }
 };
