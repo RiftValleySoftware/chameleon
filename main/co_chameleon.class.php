@@ -125,8 +125,6 @@ class CO_Chameleon extends CO_Access {
             $user_item = $this->get_user_from_login($login_item->login_id);
             if ($user_item) {
                 $ret = $user_item->get_lang();
-            } else {
-                $ret = $login_item->get_lang();
             }
         }
         
