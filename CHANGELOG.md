@@ -1,3 +1,7 @@
+**1.0.0.2016** *TBD*
+
+- Updated BADGER with the new security ID fix.
+
 **1.0.0.2015** *May 12, 2018*
 
 - Made sure that the language precedence is done correctly.
