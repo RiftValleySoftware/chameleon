@@ -1,7 +1,9 @@
-**1.0.0.2016** *TBD*
+**1.0.0.2016** *May 13, 2018*
 
-- Updated BADGER with the new security ID fix.
 - Loosened write perms on users, so that the login does not have to be a login manager to modify many of the items (however, only a login manager can modify the "login_manager" context).
+- Fixed an issue where a warning was emitted when there was no response to a search for IDs.
+- Removed the token label stuff. You know what? It's too complicated for this level, and is better left to the higher-level implementation.
+- Changed deleted security logins (which become token placeholders) to have a read ID of the token's ID. The write remains -1 (God-only).
 
 **1.0.0.2015** *May 12, 2018*
 
