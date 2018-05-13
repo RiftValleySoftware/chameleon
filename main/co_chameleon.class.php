@@ -145,7 +145,7 @@ class CO_Chameleon extends CO_Access {
         if ($this->security_db_available() && ($this->get_login_item() instanceof CO_Login_Manager)) {
             $item_to_test = $this->_security_db_object->get_initial_record_by_id($in_login_id);
             
-            if ($item_to_test instanceof CO_Cobra_Login) {
+            if (($item_to_test instanceof CO_Cobra_Login) || ($item_to_test instanceof CO_Security_ID)) {
                 $ret = $item_to_test->security_exemption();
                 if ($ret) {
                     $this->_special_access_id = $in_login_id;
