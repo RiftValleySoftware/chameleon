@@ -119,6 +119,60 @@ function lang_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password
         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
     }
 }
+    
+function lang_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $st1 = microtime(TRUE);
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $place_instance = $access_instance->get_single_data_record_by_id(6);
+        $user_instance = $access_instance->get_user_from_login();
+        $original_place_lang = $place_instance->get_lang();
+        $server_lang = CO_Config::$lang;
+        $access_lang = $access_instance->get_lang();
+        $old_login_lang = $access_instance->get_login_item()->get_lang();
+        $old_user_lang = $user_instance->get_lang();
+        if ($access_instance->get_login_item()->set_lang('pt')) {
+            if ($place_instance->set_lang('es')) {
+                if ($user_instance->set_lang('de')) {
+                    $user_lang = $user_instance->get_lang();
+                    $place_lang = $place_instance->get_lang();
+                    $login_lang = $access_instance->get_login_item()->get_lang();
+                    $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+                    echo('<p><strong>Original Place Object Language: </strong>'.$original_place_lang.'</p>');
+                    echo('<p><strong>New Place Object Language: </strong>'.$place_lang.'</p>');
+                    echo('<p><strong>Access Object Language: </strong>'.$access_lang.'</p>');
+                    echo('<p><strong>Server Language: </strong>'.$server_lang.'</p>');
+                    echo('<p><strong>Original Login Object Language: </strong>'.$old_login_lang.'</p>');
+                    echo('<p><strong>New Login Object Language: </strong>'.$login_lang.'</p>');
+                    echo('<p><strong>Original User Object Language: </strong>'.$old_user_lang.'</p>');
+                    echo('<p><strong>New User Object Language: </strong>'.$user_lang.'</p>');
+                } else {
+                    echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                    echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+                }
+            } else {
+                echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$place_instance->error->error_code.') '.$place_instance->error->error_name.' ('.$place_instance->error->error_description.')</p>');
+            }
+        } else {
+            echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+        }
+        echo('<p>The test took '.$fetchTime.' seconds.</p>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+    }
+}
 
 ob_start();
 
@@ -179,12 +233,22 @@ ob_start();
                 echo('</div>');
             
                 echo('<div id="test-049" class="inner_closed">');
-                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-049\')">TEST 49: Explicit Set Test</a></h3>');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-049\')">TEST 49: Explicit Value Test</a></h3>');
                     echo('<div class="main_div inner_container">');
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">In this test, we load a standard place record with a setting for Italian (\'it\'). It should display \'it\'.</p>');
                         echo('</div>');
                         lang_test_relay(3, 'norm', '', 'CoreysGoryStory');
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-050" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-050\')">TEST 50: Explicit Set Test</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">In this test, we change a couple of langs, and make sure that they are reflected properly.</p>');
+                        echo('</div>');
+                        lang_test_relay(4, 'norm', '', 'CoreysGoryStory');
                     echo('</div>');
                 echo('</div>');
 

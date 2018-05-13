@@ -1,6 +1,7 @@
 **1.0.0.2016** *TBD*
 
 - Updated BADGER with the new security ID fix.
+- Loosened write perms on users, so that the login does not have to be a login manager to modify many of the items (however, only a login manager can modify the "login_manager" context).
 
 **1.0.0.2015** *May 12, 2018*
 

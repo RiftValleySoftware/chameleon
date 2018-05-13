@@ -184,29 +184,6 @@ class CO_User_Collection extends CO_Main_DB_Record {
     
     /***********************/
     /**
-    This overloads the base class method, as we restrict it further to only login managers can modify these records.
-    
-    This method is slightly "incestuous," as it sort of knows about COBRA, which is otherwise encapsulated from this class.
-    
-    \returns TRUE, if the current logged-in user has write permission on this record.
-     */
-    public function user_can_write() {
-        $ret = parent::user_can_write();
-        
-        // Further check to make sure that the current login is a manager.
-        if ($ret) {
-            $login_item = $this->get_access_object()->get_login_item();
-            
-            if (!$this->get_access_object()->god_mode() && !($login_item instanceof CO_Login_Manager)) {
-                $ret = FALSE;
-            }
-        }
-        
-        return $ret;
-    }
-    
-    /***********************/
-    /**
     This sets the login ID, and has the object regenerate the new instance.
     
     This can only be done by a COBRA Login Manager that has write access to the user object and the login object.
