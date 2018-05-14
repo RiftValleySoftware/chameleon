@@ -1,49 +1,53 @@
-**1.0.0.2016** *May 13, 2018*
+**1.0.0.2017** *(May 14, 2018)*
+
+- Includes the latest BADGER, with improved vetting.
+
+**1.0.0.2016** *(May 13, 2018)*
 
 - Loosened write perms on users, so that the login does not have to be a login manager to modify many of the items (however, only a login manager can modify the "login_manager" context).
 - Fixed an issue where a warning was emitted when there was no response to a search for IDs.
 - Removed the token label stuff. You know what? It's too complicated for this level, and is better left to the higher-level implementation.
 - Changed deleted security logins (which become token placeholders) to have a read ID of the token's ID. The write remains -1 (God-only).
 
-**1.0.0.2015** *May 12, 2018*
+**1.0.0.2015** *(May 12, 2018)*
 
 - Made sure that the language precedence is done correctly.
 
-**1.0.0.2014** *May 11, 2018*
+**1.0.0.2014** *(May 11, 2018)*
 
 - Updated to the latest BADGER, with its security tweaks.
 
-**1.0.0.2013** *May 10, 2018*
+**1.0.0.2013** *(May 10, 2018)*
 
 - Added some more support for COBRA's auditing functionality.
 
-**1.0.0.2012** *May 9, 2018*
+**1.0.0.2012** *(May 9, 2018)*
 
 - Adds support for the special "decomissioning" of login IDs.
 
-**1.0.0.2011** *May 8, 2018*
+**1.0.0.2011** *(May 8, 2018)*
 
 - Added support for COBRA user creation.
 - Added "garbage collection" to the collection classes.
 
-**1.0.0.2010** *May 3, 2018*
+**1.0.0.2010** *(May 3, 2018)*
 
 - Added the user collection class.
 
-**1.0.0.2009** *May 2, 2018*
+**1.0.0.2009** *(May 2, 2018)*
 
 - Updated to the latest BADGER, with its security tweaks.
 
-**1.0.0.2008** *April 27, 2018*
+**1.0.0.2008** *(April 27, 2018)*
 
 - Added the "fuzzing" ability from BADGER.
 - Added flexibility for arrayed extension dirs (for COBRA).
 
-**1.0.0.2007** *April 24, 2018*
+**1.0.0.2007** *(April 24, 2018)*
 
 - Added support for a basic key/value pair facility.
 
-**1.0.0.2006** *April 21, 2018*
+**1.0.0.2006** *(April 21, 2018)*
 
 - Added support for an "owner" collection class.
 
