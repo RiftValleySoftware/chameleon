@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__CHAMELEON_VERSION__', '1.0.0.2017');
+define('__CHAMELEON_VERSION__', '1.0.0.2018');
 
 require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
 
@@ -230,7 +230,7 @@ class CO_Chameleon extends CO_Access {
     public function get_user_from_login(    $in_login_id = NULL ///< The login ID that is associated with the user collection. If NULL, then the current login is used.
                                         ) {
         $ret = NULL;
-        
+
         $login_id = $this->get_login_id();  // Default is the current login.
         
         if (isset($in_login_id) && (0 < intval($in_login_id))) {    // See if they seek a different login.

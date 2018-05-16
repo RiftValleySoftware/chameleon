@@ -1,3 +1,7 @@
+**1.0.0.2018** *(May 16, 2018)*
+
+- Includes the latest BADGER, with token ID 1.
+
 **1.0.0.2017** *(May 15, 2018)*
 
 - Includes the latest BADGER, with improved vetting.
