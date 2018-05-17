@@ -28,7 +28,7 @@ $admin_map = Array(7 => 'Maryland Admin', 8 => 'Virginia Admin', 9 => 'DC Admin'
 if (isset($_GET['resolve_query'])) {
     if (isset($_GET['select']) && $_GET['select']) {
         $login_id = trim($_GET['select']);
-        $password = 'admin' == $login_id ? CO_Config::$god_mode_password : 'CoreysGoryStory';
+        $password = 'admin' == $login_id ? CO_COnfig::god_mode_password() : 'CoreysGoryStory';
         $access_instance = new CO_Chameleon($login_id, NULL, $password);
     } else {
         $access_instance = new CO_Chameleon();

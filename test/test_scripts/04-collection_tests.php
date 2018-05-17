@@ -395,7 +395,7 @@ function collection_test_13($in_login = NULL, $in_hashed_password = NULL, $in_pa
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     echo('<p class="explain">First, we go in with the God Mode ID, and list all available items:</p>');
 
-    $access_instance0 = new CO_Chameleon('admin', '', CO_Config::$god_mode_password);
+    $access_instance0 = new CO_Chameleon('admin', '', CO_COnfig::god_mode_password());
     
     if ($access_instance0->valid) {
         $main_collection_item = $access_instance0->get_single_data_record_by_id(11);
@@ -510,7 +510,7 @@ ob_start();
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">This will just list the logins we will be working with in the following tests.</p>');
                         echo('</div>');
-                        collection_test_relay(1, 'admin', '', CO_Config::$god_mode_password);
+                        collection_test_relay(1, 'admin', '', CO_COnfig::god_mode_password());
                     echo('</div>');
                 echo('</div>');
             

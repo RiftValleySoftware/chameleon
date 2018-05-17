@@ -26,8 +26,6 @@ class CO_Config {
     static $lang = 'en';
     static $min_pw_len = 8;                                     // The minimum password length.
 
-    static $god_mode_password = 'BWU-HA-HAAAA-HA!';
-    
     static $data_db_name = 'littlegr_wtf_data';
     static $data_db_host = 'localhost';
     static $data_db_type = _DB_TYPE_;
@@ -47,6 +45,19 @@ class CO_Config {
     static $google_api_key = 'AIzaSyAPCtPBLI24J6qSpkpjngXAJtp8bhzKzK8';
     
     static private $_god_mode_id = 2;                           // Default is 2 (First security item created).
+    static private $_god_mode_password = 'BWU-HA-HAAAA-HA!'; ///< Plaintext password for the God Mode ID login. This overrides anything in the ID row.
+
+    /***********************/
+    /**
+    We encapsulate this, because this is likely to be called from methods, and this prevents it from being changed.
+    
+    \returns the God Mode user password, in cleartext.
+     */
+    static function god_mode_password() {
+        $ret = strval(self::$_god_mode_password);  // This just ensures that the return will be an ephemeral string, so there is no access to the original.
+        
+        return $ret;
+    }
 
     /***********************/
     /**

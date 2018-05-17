@@ -271,7 +271,7 @@ ob_start();
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">Now we login with the "God" login. This should work.</p>');
                         echo('</div>');
-                        kvp_test_relay(1, 'admin', '', CO_Config::$god_mode_password);
+                        kvp_test_relay(1, 'admin', '', CO_COnfig::god_mode_password());
                     echo('</div>');
                 echo('</div>');
             
@@ -281,7 +281,7 @@ ob_start();
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We save and retrieve the entire text of "The Great Shadow," by Arthur Conan Doyle.</p>');
                         echo('</div>');
-                        kvp_test_relay(2, 'admin', '', CO_Config::$god_mode_password);
+                        kvp_test_relay(2, 'admin', '', CO_COnfig::god_mode_password());
                     echo('</div>');
                 echo('</div>');
             
@@ -291,7 +291,7 @@ ob_start();
                         echo('<div class="main_div" style="margin-right:2em">');
                             echo('<p class="explain">We save and retrieve a 1279 X 835 JPEG image of Yosemite Park.</p>');
                         echo('</div>');
-                        kvp_test_relay(3, 'admin', '', CO_Config::$god_mode_password);
+                        kvp_test_relay(3, 'admin', '', CO_COnfig::god_mode_password());
                     echo('</div>');
                 echo('</div>');
 

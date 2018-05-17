@@ -1,3 +1,8 @@
+**1.0.0.2019** *(May 17, 2018)*
+
+- Sequestered the configuration God Mode password.
+- Included new BADGER.
+
 **1.0.0.2018** *(May 16, 2018)*
 
 - Includes the latest BADGER, with token ID 1.
