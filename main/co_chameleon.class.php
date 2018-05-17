@@ -17,23 +17,11 @@ define('__CHAMELEON_VERSION__', '1.0.0.2018');
 
 require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
 
-$lang = CO_Config::$lang;
-
-global $g_lang_override;    // This allows us to override the configured language at initiation time.
-
-if (isset($g_lang_override) && $g_lang_override && file_exists(CO_Config::badger_lang_class_dir().'/'.$g_lang_override.'.php')) {
-    $lang = $g_lang_override;
-}
-
-$lang_file = CO_Config::chameleon_lang_class_dir().'/'.$lang.'.php';
-$lang_common_file = CO_Config::chameleon_lang_class_dir().'/common.inc.php';
-
 if ( !defined('LGV_LANG_CATCHER') ) {
     define('LGV_LANG_CATCHER', 1);
 }
 
-require_once($lang_file);
-require_once($lang_common_file);
+require_once(CO_Config::chameleon_lang_class_dir().'/common.inc.php');
 
 /***************************************************************************************************************************/
 /**
