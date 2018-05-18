@@ -57,6 +57,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
         $login_id = isset($this->tags()[0]) ? intval($this->tags()[0]) : 0;
         
         if (0 < $login_id) {
+
             $my_login_object = $this->get_access_object()->get_single_security_record_by_id($login_id);
             
             if (isset($my_login_object) && ($my_login_object instanceof CO_Security_Login)) {
@@ -109,6 +110,8 @@ class CO_User_Collection extends CO_Main_DB_Record {
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array);
         
         $this->class_description = "This is a 'Collection' Class for Users.";
+       
+        $this->_set_up_container();
     }
     
     /***********************/
@@ -121,11 +124,9 @@ class CO_User_Collection extends CO_Main_DB_Record {
                                     ) {
         $ret = parent::load_from_db($in_db_result);
         
-        if ($this->_load_login()) {
-            $this->_set_up_container();
-        }
-        
         $this->class_description = "This is a 'Collection' Class for Users.";
+     
+        $this->_set_up_container();
     }
     
     /***********************/
@@ -133,6 +134,9 @@ class CO_User_Collection extends CO_Main_DB_Record {
      Accessor for the login object.
      */
     public function get_login_instance() {
+        if (!$this->_login_object) {
+            $this->_load_login();
+        }
         return $this->_login_object;
     }
     
