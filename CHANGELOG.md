@@ -1,3 +1,7 @@
+**1.0.0.2021** *(May 19, 2018)*
+
+- Modified the collection classes to allow deletion of contained children and/or associated logins.
+
 **1.0.0.2020** *(May 18, 2018)*
 
 - Added new BADGER, with security DB fix.

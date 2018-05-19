@@ -132,11 +132,14 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /***********************/
     /**
      Accessor for the login object.
+     
+     \returns the login object associated with this user. It loads the object, if one is not in the cache.
      */
     public function get_login_instance() {
-        if (!$this->_login_object) {
+        if (!($this->_login_object instanceof CO_Security_Login)) {
             $this->_load_login();
         }
+        
         return $this->_login_object;
     }
     
@@ -191,27 +194,36 @@ class CO_User_Collection extends CO_Main_DB_Record {
     This sets the login ID, and has the object regenerate the new instance.
     
     This can only be done by a COBRA Login Manager that has write access to the user object and the login object.
+    The manager does not have to have write access to the login object, but it does need read access to it.
     
     \returns TRUE, if the operation suceeded.
      */
-    public function set_login(  $in_login_id
+    public function set_login(  $in_login_id_integer    ///< The integer ID of the login object to be associated with this instance.
                             ) {
         $ret = FALSE;
         $ret = parent::user_can_write();
         
         // Further check to make sure that the current login is a manager.
-        if ($ret) {
-            $login_item = $this->get_access_object()->get_login_item($in_login_id);
+        if ($ret && ($this->get_access_object()->god_mode() || ($this->get_access_object()->get_login_item() instanceof CO_Login_Manager))) {
+            $login_item = $this->get_access_object()->get_login_item($in_login_id_integer);
             
             if ($login_item instanceof CO_Security_Login) {
-                $tag0 = strval(intval($in_login_id));
+                $tag0 = strval(intval($in_login_id_integer));
                 
                 $ret = $this->set_tag(0, $tag0);
                 
-                if ($ret) {
-                    $ret = $this->_load_login();
+                if ($ret) { // Make sure that we'll get a fresh login next time.
+                    $this->_login_object = NULL;
                 }
             }
+        } else {
+            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$user_error_code_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$user_error_name_user_not_authorized,
+                                            CO_CHAMELEON_Lang::$user_error_desc_user_not_authorized,
+                                            __FILE__,
+                                            __LINE__,
+                                            __METHOD__
+                                        );
         }
         
         return $ret;
@@ -219,35 +231,54 @@ class CO_User_Collection extends CO_Main_DB_Record {
     
     /***********************/
     /**
+    We override this, because we see if we need to fetch our lang from the login object.
+    
     \returns a string, with the language ID for this login.
      */
     public function get_lang() {
         $ret = parent::get_lang();
         
         if (!isset($this->context['lang'])) {
-            if (isset($this->_login_object)) {
-                $ret = $this->_login_object->get_lang();
+            $login_object = $this->get_login_instance();
+            if (isset($login_object) && ($login_object instanceof CO_Security_Login)) {
+                $ret = $login_object->get_lang();
             }
         }
         
         return $ret;
     }
     
+    use tCO_Collection; ///< These are the built-in collection methods.
+    
     /***********************/
     /**
-    \returns TRUE, if the set was successful.
+    We override this, because we want to see if     
+    \returns TRUE, if the deletion was successful.
      */
-    public function set_lang(   $in_lang_id = NULL  ///< The lang ID. This is not used for the low-level error handlers (which use the server setting). It is used to determine higher-level strings.
-                            ) {
-        $ret = FALSE;
-        
-        if ($this->user_can_write()) {
-            $this->context['lang'] = strtolower(trim(strval($in_lang_id)));
-            $ret = $this->update_db();
+    public function delete_from_db( $with_extreme_prejudice = FALSE,    ///< If TRUE (Default is FALSE), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
+                                    $delete_login_object_too = FALSE    ///< If TRUE (Default is FALSE), then we will attempt to delete any associated login object, as well.
+                                    ) {
+        if ($with_extreme_prejudice && $this->user_can_write()) {
+            // We don't error-check this on purpose, as it's a given that there might be issues, here. This is a "due dilligence" thing.
+            $user_items_to_delete = $this->children();
+            
+            foreach ($user_items_to_delete as $child) {
+                if ($child->user_can_write()) {
+                    $child->delete_from_db();
+                }
+            }
         }
         
-        return $ret;
+        // Again, we won't return FALSE if this fails, but we will fetch the error.
+        if ($delete_login_object_too) {
+            $login_object = $this->get_login_instance();
+        
+            if (isset($login_object) && $login_object->user_can_write()) {
+                $login_object->delete_from_db();
+                $this->error = $login_object->error;
+            }
+        }
+        
+        return parent::delete_from_db();
     }
-    
-    use tCO_Collection; ///< These are the built-in collection methods.
 };

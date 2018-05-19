@@ -72,5 +72,26 @@ class CO_US_Place_Collection extends CO_US_Place {
         $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude - $count children objects)" : "($this->_longitude, $this->_latitude - $count children objects)";
     }
     
+    /***********************/
+    /**
+    We override this, because we want to see if we can possibly delete children objects.  
+    \returns TRUE, if the deletion was successful.
+     */
+    public function delete_from_db( $with_extreme_prejudice = FALSE ///< If TRUE (Default is FALSE), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
+                                    ) {
+        if ($with_extreme_prejudice && $this->user_can_write()) {
+            // We don't error-check this on purpose, as it's a given that there might be issues, here. This is a "due dilligence" thing.
+            $user_items_to_delete = $this->children();
+            
+            foreach ($user_items_to_delete as $child) {
+                if ($child->user_can_write()) {
+                    $child->delete_from_db();
+                }
+            }
+        }
+        
+        return parent::delete_from_db();
+    }
+    
     use tCO_Collection; ///< These are the built-in collection methods.
 };
