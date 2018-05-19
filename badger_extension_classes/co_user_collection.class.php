@@ -178,10 +178,10 @@ class CO_User_Collection extends CO_Main_DB_Record {
         
         $in_tag_index = intval($in_tag_index);
         
-        if (isset($in_tag_value) && (10 > $in_tag_index) && $this->user_can_write()) {
+        if ((10 > $in_tag_index) && $this->user_can_write()) {
             // We cannot assign a user we don't have write permissions for
             $id_pool = $this->get_access_object()->get_security_ids();
-            if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 < $in_tag_index) || in_array(intval($in_tag_value), $id_pool))))) {
+            if ($this->get_access_object()->god_mode() || ((isset($id_pool) && is_array($id_pool) && count($id_pool) && ((0 <= $in_tag_index) || in_array(intval($in_tag_value), $id_pool))))) {
                 $ret = parent::set_tag($in_tag_index, $in_tag_value);
             }
         }
@@ -200,15 +200,14 @@ class CO_User_Collection extends CO_Main_DB_Record {
      */
     public function set_login(  $in_login_id_integer    ///< The integer ID of the login object to be associated with this instance.
                             ) {
-        $ret = FALSE;
         $ret = parent::user_can_write();
-        
+        $in_login_id_integer = intval($in_login_id_integer);
         // Further check to make sure that the current login is a manager.
         if ($ret && ($this->get_access_object()->god_mode() || ($this->get_access_object()->get_login_item() instanceof CO_Login_Manager))) {
             $login_item = $this->get_access_object()->get_login_item($in_login_id_integer);
             
-            if ($login_item instanceof CO_Security_Login) {
-                $tag0 = strval(intval($in_login_id_integer));
+            if ((0 == $in_login_id_integer) || ($login_item instanceof CO_Security_Login)) {
+                $tag0 = (0 == $in_login_id_integer) ? NULL : strval(intval($in_login_id_integer));
                 
                 $ret = $this->set_tag(0, $tag0);
                 
