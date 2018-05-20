@@ -1,3 +1,7 @@
+**1.0.0.2023** *(TBD)*
+
+- Added new BADGER with fixed test.
+
 **1.0.0.2022** *(May 20, 2018)*
 
 - Updated to the latest BADGER.
