@@ -133,6 +133,8 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
      Accessor for the login object.
      
+     Note that this may return NULL, even if there is a login, as the current user may not have permission to see that login.
+     
      \returns the login object associated with this user. It loads the object, if one is not in the cache.
      */
     public function get_login_instance() {
@@ -141,6 +143,37 @@ class CO_User_Collection extends CO_Main_DB_Record {
         }
         
         return $this->_login_object;
+    }
+    
+    /***********************/
+    /**
+    This is a "security-safe" way of testing for an associated login object. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
+    
+     \returns TRUE, if the object has a login (regardless of whether or not they can see that login).
+     */
+    public function has_login() {
+        return (intval($this->tags()[0]) > 0);
+    }
+    
+    /***********************/
+    /**
+    This is a "security-safe" way of testing for a login ID that the current user can't see. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
+    
+     \returns TRUE, if the object has a login ID, but the current user can't see that ID or object.
+     */
+    public function has_login_i_cant_see() {
+        $this->get_login_instance();
+        return (!($this->_login_object instanceof CO_Security_Login) && (isset($this->tags()[0]) && intval($this->tags()[0])));
+    }
+    
+    /***********************/
+    /**
+    This is a "security-safe" way of testing for a God login ID. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
+    
+     \returns TRUE, if the object is for the "God" user.
+     */
+    public function is_god_user() {
+        return (intval($this->tags()[0]) == CO_Config::god_mode_id());
     }
     
     /***********************/
