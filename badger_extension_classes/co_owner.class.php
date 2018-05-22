@@ -20,6 +20,7 @@ CO_Config::require_extension_class('tco_owner.interface.php');
 /**
  */
 class CO_Owner extends A_CO_DB_Table_Base {
+    use tCO_Owner; // These are the built-in owner methods.
     
     /***********************************************************************************************************************/
     /***********************/
@@ -47,6 +48,4 @@ class CO_Owner extends A_CO_DB_Table_Base {
         $this->class_description = "This is an 'Owner' Class for general items.";
         $this->instance_description = $this->name;
     }
-    
-    use tCO_Owner; ///< These are the built-in owner methods.
 };
