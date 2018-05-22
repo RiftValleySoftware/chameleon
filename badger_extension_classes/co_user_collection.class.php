@@ -45,6 +45,8 @@ It also has a single link to a login (which can be NULL, if the user is not one 
 As with other login-related classes, only login managers that have access to security tokens (which are also IDs of login and other security DB items) can set certain IDs as tokens.
  */
 class CO_User_Collection extends CO_Main_DB_Record {
+    use tCO_Collection; // These are the built-in collection methods.
+
     private $_login_object = NULL;  ///< The Security DB COBRA login instance associated with this user.
 
     /***********************/
@@ -279,8 +281,6 @@ class CO_User_Collection extends CO_Main_DB_Record {
         
         return $ret;
     }
-    
-    use tCO_Collection; ///< These are the built-in collection methods.
     
     /***********************/
     /**

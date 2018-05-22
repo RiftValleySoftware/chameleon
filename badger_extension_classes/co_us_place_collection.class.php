@@ -21,6 +21,7 @@ CO_Config::require_extension_class('co_us_place.class.php');
 This is a specialization of the US Place class. It acts as a collection, so it's a "place of places."
  */
 class CO_US_Place_Collection extends CO_US_Place {
+    use tCO_Collection; // These are the built-in collection methods.
     
     /***********************************************************************************************************************/
     /***********************/
@@ -92,6 +93,4 @@ class CO_US_Place_Collection extends CO_US_Place {
         
         return parent::delete_from_db();
     }
-    
-    use tCO_Collection; ///< These are the built-in collection methods.
 };
