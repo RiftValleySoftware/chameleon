@@ -181,15 +181,46 @@ class CO_Chameleon extends CO_Access {
             // First, we look for the object.
             $value_object = $this->generic_search(Array('access_class' => $in_classname, 'tags' => Array(strval($in_key))));
         
-            if (!isset($value_object) || !$value_object) {
-                $value_object = $access_instance->make_new_blank_record($in_classname);
+            if ((NULL != $in_value) && (!isset($value_object) || !$value_object)) {
+                $value_object = $this->make_new_blank_record($in_classname);
+                if (isset($value_object) && ($value_object instanceof CO_KeyValue) && $value_object->user_can_write()) {
+                    $ret = $value_object->set_key($in_key);
+                    if (!$ret) {
+                        $this->error = $value_object->error;
+                        $value_object->delete_from_db();
+                        $value_object = NULL;
+                        if (!$this->error) {
+                            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_instance_failed_to_initialize,
+                                                            CO_CHAMELEON_Lang::$co_key_value_error_name_instance_failed_to_initialize,
+                                                            CO_CHAMELEON_Lang::$co_key_value_error_desc_instance_failed_to_initialize);
+                        }
+                    }
+               }
+            } elseif (isset($value_object) && is_array($value_object) && count($value_object)) {
+                $value_object = $value_object[0];
+            } else {
+                $value_object = NULL;
+                $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_instance_failed_to_initialize,
+                                                CO_CHAMELEON_Lang::$co_key_value_error_name_instance_failed_to_initialize,
+                                                CO_CHAMELEON_Lang::$co_key_value_error_desc_instance_failed_to_initialize);
             }
-            
+
             if (isset($value_object) && ($value_object instanceof CO_KeyValue) && $value_object->user_can_write()) {
                 if (NULL == $in_value) {    // If we are deleting, we ask the object to go quietly into the great beyond.
                     $ret = $value_object->delete_from_db();
                 } else {                    // Otherwise, we just set the value.
-                    $ret = $value_object->set_value($in_value);
+                    $ret = $value_object->set_tag(0, $in_key);
+                    if ($ret) {
+                        $ret = $value_object->set_value($in_value);
+                    } else {
+                        $this->error = $value_object->error;
+                        
+                        if (!$this->error) {
+                            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_instance_failed_to_initialize,
+                                                            CO_CHAMELEON_Lang::$co_key_value_error_name_instance_failed_to_initialize,
+                                                            CO_CHAMELEON_Lang::$co_key_value_error_desc_instance_failed_to_initialize);
+                        }
+                    }
                 }
             } else {
                 if (isset($value_object) && ($value_object instanceof CO_KeyValue) && !$value_object->user_can_write()) {

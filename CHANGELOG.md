@@ -1,6 +1,6 @@
-**1.0.0.2023** *(May 22, 2018)*
+**1.0.0.2023** *(May 23, 2018)*
 
-- Updated to the latest BADGER.
+- Fixed a bug with the Key/Value pair storage.
 
 **1.0.0.2022** *(May 20, 2018)*
 
