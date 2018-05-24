@@ -13,7 +13,7 @@
 */
 defined( 'LGV_ACCESS_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-define('__CHAMELEON_VERSION__', '1.0.0.2023');
+define('__CHAMELEON_VERSION__', '1.0.0.2024');
 
 require_once(CO_Config::badger_main_class_dir().'/co_access.class.php');
 
@@ -146,19 +146,35 @@ class CO_Chameleon extends CO_Access {
     
     /***********************/
     /**
-    \returns the value for a given key. It is dependednt on the class passed in. NULL, if no value or instance for the key.
+    \returns the value for a given key. It is dependent on the class passed in. NULL, if no value or instance for the key.
      */
     public function get_value_for_key(  $in_key,                        ///< This is the key that we are searching for. It must be a string.
                                         $in_classname = 'CO_KeyValue'   ///< This is the class to search for the key. The default is the base class.
                                     ) {
-        $value_object_array = $this->generic_search(Array('access_class' => $in_classname, 'tags' => Array(strval($in_key))));
         $ret = NULL;
+        $value_object_array = $this->generic_search(Array('access_class' => $in_classname, 'tags' => Array(strval($in_key))));
         
         if (isset($value_object_array) && is_array($value_object_array) && count($value_object_array)) {
             $value_object = $value_object_array[0]; // If the DB is messed up, we could get more than one. In that case, we only take the first one.
             if (isset($value_object) && ($value_object instanceof CO_KeyValue)) {
                 $ret = $value_object->get_value();
             }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
+    \returns the object that stores the given key. NULL, if no value or instance for the key.
+     */
+    public function get_object_for_key( $in_key ///< This is the key that we are searching for. It must be a string.
+                                        ) {
+        $ret = NULL;
+        $value_object_array = $this->generic_search(Array('access_class' => Array('%_KeyValue', 'use_like' => 1), 'tags' => Array(strval($in_key))));
+        
+        if (isset($value_object_array) && is_array($value_object_array) && count($value_object_array)) {
+            $ret = $value_object_array[0]; // If the DB is messed up, we could get more than one. In that case, we only take the first one.
         }
         
         return $ret;
