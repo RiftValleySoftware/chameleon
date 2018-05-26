@@ -40,8 +40,8 @@ class CO_CHAMELEON_Lang_Common {
     static  $co_key_value_error_code_user_not_authorized = 1300;
     static  $co_key_value_error_code_instance_failed_to_initialize = 1301;
 
-    static  $user_error_code_user_not_authorized = 500;
-    static  $user_error_code_invalid_id = 501;
-    static  $user_error_code_invalid_class = 502;
+    static  $user_error_code_user_not_authorized = 1400;
+    static  $user_error_code_invalid_id = 1401;
+    static  $user_error_code_invalid_class = 1402;
 }
 ?>

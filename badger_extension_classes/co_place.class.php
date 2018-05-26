@@ -86,7 +86,7 @@ class CO_Place extends CO_LL_Location {
         $bias = (NULL != $this->region_bias) ? 'region='.$this->region_bias.'&' : '';
         
         $this->google_geocode_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?'.$bias.'key='.CO_Config::$google_api_key.'&address=';
-        $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?'.$bias.'key='.CO_Config::$google_api_key.'&ll=';
+        $this->google_lookup_uri_prefix = 'https://maps.googleapis.com/maps/api/geocode/json?'.$bias.'key='.CO_Config::$google_api_key.'&latlng=';
     }
     
     /***********************/
@@ -235,18 +235,17 @@ class CO_Place extends CO_LL_Location {
     \returns 
      */
     public function geocode_long_lat() {
-        $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(FALSE));
+        $uri = $this->google_lookup_uri_prefix . urlencode($this->raw_latitude()) . ',' . urlencode($this->raw_longitude());
         $http_status = '';
         $error_catcher = '';
 
         $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
-        
         if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
             if (isset($resulting_json->results[0]->address_components) && is_array($resulting_json->results[0]->address_components) && count($resulting_json->results[0]->address_components)) {
                 $address_components = $resulting_json->results[0]->address_components;
                 
                 $labels = $this->_get_address_element_labels();
-                $ret = Array($labels[1] => '', $labels[3] => '', $labels[4] => '', $labels[5] => '', $labels[6] => '');
+                $ret = Array($labels[0] => '', $labels[1] => '', $labels[3] => '', $labels[4] => '', $labels[5] => '', $labels[6] => '');
                 
                 if (isset($labels[7])) {
                     $ret[$labels[7]] = '';
@@ -256,6 +255,12 @@ class CO_Place extends CO_LL_Location {
                     $int_key = $component->types[0];
                     
                     switch ($int_key) {
+                        case 'premise':
+                            if ($ret[$labels[0]]) {
+                                $ret[$labels[0]] = ' '.$ret[$labels[0]];
+                            }
+                            $ret[$labels[0]] = strval($component->long_name).$ret[$labels[0]];
+                        break;
                         case 'street_number':
                             if ($ret[$labels[1]]) {
                                 $ret[$labels[1]] = ' '.$ret[$labels[1]];

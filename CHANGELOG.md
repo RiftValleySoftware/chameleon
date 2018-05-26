@@ -1,3 +1,8 @@
+**1.0.0.2025** *(TBD)*
+
+- Changed the error numbers for the user errors to avoid overlap.
+- Fixed a bug in the long/lat geocode function.
+
 **1.0.0.2024** *(May 24, 2018)*
 
 - Added an accessor for the KVP object.
