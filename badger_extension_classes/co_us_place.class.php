@@ -13,16 +13,7 @@
 */
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-if (!is_array(CO_Config::db_classes_extension_class_dir())) {
-    require_once(CO_Config::db_classes_extension_class_dir().'/co_place.class.php');
-} else {
-    foreach (CO_Config::db_classes_extension_class_dir() as $dir) {
-        if (file_exists("$dir/co_place.class.php")) {
-            require_once("$dir/co_place.class.php");
-            break;
-        }
-    }
-}
+CO_Config::require_extension_class('co_place.class.php');
 	
 /***************************************************************************************************************************/
 /**

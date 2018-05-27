@@ -1,8 +1,9 @@
-**1.0.0.2025** *(TBD)*
+**1.0.0.2025** *(May 26, 2018)*
 
 - Changed the error numbers for the user errors to avoid overlap.
 - Fixed a bug in the long/lat geocode function.
 - Added a generic place collection class.
+- Fixed an issue with the US Place class. It needed to use the proper config include.
 
 **1.0.0.2024** *(May 24, 2018)*
 
