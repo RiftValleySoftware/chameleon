@@ -1,3 +1,7 @@
+**1.0.0.2026** *(TBD)*
+
+- Updated to the latest BADGER.
+
 **1.0.0.2025** *(May 26, 2018)*
 
 - Changed the error numbers for the user errors to avoid overlap.
