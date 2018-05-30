@@ -64,6 +64,14 @@ trait tCO_Collection {
             }
         }
     }
+	
+    /***********************/
+    /**
+    This method forces a reload of the collection data.
+     */
+    public function reload_collection() {
+        $this->_scrub();
+    }
     
     /***********************/
     /**
