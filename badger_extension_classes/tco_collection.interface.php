@@ -20,7 +20,7 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 This is a trait for the basic "collection" aggregator functionality.
  */
 trait tCO_Collection {
-    protected $_container;          ///< This contains instances of the records referenced by the IDs stored in the object.
+    protected $_container;      ///< This contains instances of the records referenced by the IDs stored in the object.
 	
     /***********************/
     /**
@@ -70,7 +70,7 @@ trait tCO_Collection {
     This method forces a reload of the collection data.
      */
     public function reload_collection() {
-        $this->_scrub();
+        $this->_set_up_container();
     }
     
     /***********************/
