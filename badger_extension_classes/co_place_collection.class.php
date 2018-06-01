@@ -63,8 +63,6 @@ class CO_Place_Collection extends CO_Place {
                                     ) {
         $ret = parent::load_from_db($in_db_result);
         
-        $this->_set_up_container();
-        
         $count = 0;
         if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {
             $count = count($this->context['children_ids']);

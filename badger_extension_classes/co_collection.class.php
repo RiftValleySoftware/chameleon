@@ -38,8 +38,6 @@ class CO_Collection extends CO_Main_DB_Record {
 
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array);
         $this->class_description = "This is a 'Generic Collection' Class.";
-        
-        $this->_set_up_container();
     }
 
     /***********************/
@@ -51,8 +49,6 @@ class CO_Collection extends CO_Main_DB_Record {
     public function load_from_db(   $in_db_result   ///< This is an associative array, formatted as a database row response.
                                     ) {
         $ret = parent::load_from_db($in_db_result);
-        
-        $this->_set_up_container();
         
         $count = 0;
         if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {

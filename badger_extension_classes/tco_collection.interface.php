@@ -36,7 +36,7 @@ trait tCO_Collection {
                 foreach ($children_ids as $id) {
                     $id = intval($id); // Belt and suspenders.
                     if ($this->get_access_object()->item_exists($id)) {
-                        array_push($new_ids, $id);
+                        $new_ids[] = $id;
                     }
                 }
                 $new_ids = array_unique($new_ids);
@@ -54,8 +54,6 @@ trait tCO_Collection {
     object's constructor.
      */
     protected function _set_up_container() {
-        $this->_scrub();    // Garbage collection.
-        
         if (isset($this->context['children_ids'])) {
             $children_ids = $this->context['children_ids'];
         
@@ -70,6 +68,7 @@ trait tCO_Collection {
     This method forces a reload of the collection data.
      */
     public function reload_collection() {
+        $this->_scrub();    // Garbage collection.
         $this->_set_up_container();
     }
     
@@ -134,7 +133,7 @@ trait tCO_Collection {
                 
                 $ids = array_map('intval', $this->context['children_ids']);
                 if (!in_array($id, $ids)) {
-                    array_push($ids, $id);
+                    $ids[] = $id;
                     $ids = array_unique($ids);
                     sort($ids);
                     $this->context['children_ids'] = $ids;
@@ -223,7 +222,7 @@ trait tCO_Collection {
                     $id = intval($element->id());
                     $ids = array_map('intval', $this->context['children_ids']);
                     if (!in_array($id, $ids)) {
-                        array_push($ids, $id);
+                        $ids[] = $id;
                         $ids = array_unique($ids);
                         sort($ids);
                         $this->context['children_ids'] = $ids;
@@ -272,7 +271,7 @@ trait tCO_Collection {
             // We simply record the IDs of each of the elements we'll be deleting.
             for ($i = $in_first_index; $i < $last_index_plus_one; $i++) {
                 $element = $self->_container[$i];
-                array_push($element_ids, $element->id());
+                $element_ids[] = $element->id();
             }
             
             if ($in_deletion_length == count($element_ids)) {  // Belt and suspenders. Make sure we are actually deleting the requested elements.
@@ -283,7 +282,7 @@ trait tCO_Collection {
                     $element_id = $element->id();
                     
                     if (!in_array($element_id, $element_ids)) {
-                        array_push($new_container, $element_id);
+                        $new_container[] = $element_id;
                     }
                 }
                 
@@ -294,7 +293,7 @@ trait tCO_Collection {
                 // We build a new list that doesn't have the deleted element IDs.
                 while ($element_id = array_unshift($this->context['children_ids'])) {
                     if (!in_array($element_id, $element_ids)) {
-                        array_push($new_list, $element_id);
+                        $new_list[] = $element_id;
                     }
                 }
                 
@@ -415,7 +414,7 @@ trait tCO_Collection {
             $ret = Array();
             foreach ($ret_array as $item) {
                 if ($item[0] == $id) {
-                    array_push($ret, $item[1]);
+                    $ret[] = $item[1];
                 }
             }
         }
@@ -468,7 +467,7 @@ trait tCO_Collection {
         
         foreach ($children as $child) {
             $result = $in_function($child);
-            array_push($ret, $result);
+            $ret[] = $result;
         }
         
         return self::class;
@@ -498,7 +497,7 @@ trait tCO_Collection {
         foreach ($children as $child) {
             if (method_exists($child, 'recursiveMap')) {
                 if (!in_array($child->id(), $loop_stopper)) {
-                    array_push($loop_stopper, $child->id());
+                    $loop_stopper[] = $child->id();
                     $result = $child->recursiveMap($in_function, ++$in_hierarchy_level, $this, $loop_stopper);
                 }
             } else {
@@ -514,15 +513,16 @@ trait tCO_Collection {
     /**
     This counts the direct children of this collection, and returns that count.
     If recursive, then it counts everything inside, including owners.
+    Remember that this is "security-aware." The collection may have children that are not visible to the current login.
         
     \returns the number of direct children.
      */
     public function count(  $is_recursive = FALSE   ///< If TRUE, then this will also count all "child" collections. Default is FALSE.
                         ) {
-        $my_count = count($this->_container);
+        $children = $this->children();
+        $my_count = count($children);
         
         if ($is_recursive) {
-            $children = $this->children();
             foreach ($children as $child) {
                 if (method_exists($child, 'count')) {
                     $my_count += $child->count($is_recursive);
@@ -541,6 +541,10 @@ trait tCO_Collection {
     \returns the child objects array.
      */
     public function children() {
+        if (!isset($this->_container) || !$this->_container || (!count($this->_container))) {
+            $this->_scrub();
+            $this->_set_up_container();
+        }
         return $this->_container;
     }
     
@@ -567,11 +571,11 @@ trait tCO_Collection {
             foreach ($children as $child) {
                 if (method_exists($child, 'getHierarchy')) {
                     if (!in_array($child->id(), $loop_stopper)) {
-                        array_push($loop_stopper, $child->id());
-                        array_push($instance['children'], $child->getHierarchy($loop_stopper));
+                        $loop_stopper[] = $child->id();
+                        $instance['children'][] = $child->getHierarchy($loop_stopper);
                     }
                 } else {
-                    array_push($instance['children'], Array('object' => $child));
+                    $instance['children'][] = Array('object' => $child);
                 }
             }
         }

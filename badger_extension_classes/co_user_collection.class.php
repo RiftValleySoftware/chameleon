@@ -112,8 +112,6 @@ class CO_User_Collection extends CO_Main_DB_Record {
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array);
         
         $this->class_description = "This is a 'Collection' Class for Users.";
-       
-        $this->_set_up_container();
     }
     
     /***********************/

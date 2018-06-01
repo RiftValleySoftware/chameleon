@@ -1,7 +1,8 @@
-**1.0.0.2026** *(TBD)*
+**1.0.0.2026** *(May 31, 2018)*
 
 - Updated to the latest BADGER.
 - Added a general collection class.
+- Optimized all the collection classes. Increased performance by an order of magnitude.
 
 **1.0.0.2025** *(May 26, 2018)*
 
