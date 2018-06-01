@@ -81,7 +81,7 @@ class CO_Place extends CO_LL_Location {
         $this->class_description = "This is a 'Place' Class for General Addresses.";
         $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude)" : "($this->_longitude, $this->_latitude)";
         
-        $this->set_address_elements($this->tags(), TRUE);
+        $this->set_address_elements($this->tags(), true);
         
         $bias = (NULL != $this->region_bias) ? 'region='.$this->region_bias.'&' : '';
         
@@ -93,7 +93,7 @@ class CO_Place extends CO_LL_Location {
     /**
     This sets the address_elements property, as per the provided array of strings. This can also update the tags.
     
-    \returns TRUE, if $dont_save was FALSE, and the tags were successfully saved.
+    \returns true, if $dont_save was false, and the tags were successfully saved.
      */
 	public function set_address_elements (  $in_tags,   /**< An array of up to 8 strings, with the new address information. Order is important:
                                                             - 0: Venue
@@ -107,9 +107,9 @@ class CO_Place extends CO_LL_Location {
                                                               
                                                             Associative keys are not used. The array should be in that exact order.
 	                                                    */
-	                                        $dont_save = FALSE  ///< If TRUE, then the DB update will not be called.
+	                                        $dont_save = false  ///< If true, then the DB update will not be called.
                                 ) {
-        $ret = FALSE;
+        $ret = false;
 
         $this->address_elements = Array();
         $labels = $this->_get_address_element_labels();
@@ -117,7 +117,7 @@ class CO_Place extends CO_LL_Location {
         for ($i = 0; $i < count($labels); $i++) {
             $tag_value = isset($in_tags[$i]) ? $in_tags[$i] : '';
             
-            $this->set_address_element($i, $tag_value, TRUE);
+            $this->set_address_element($i, $tag_value, true);
         }
         
         if (!$dont_save) {
@@ -131,13 +131,13 @@ class CO_Place extends CO_LL_Location {
     /**
     This sets the indexed address_element property, as per the provided string. This can also update the tag.
     
-    \returns TRUE, if $dont_save was FALSE, and the tags were successfully saved.
+    \returns true, if $dont_save was false, and the tags were successfully saved.
      */
     public function set_address_element(    $in_index,          ///< The 0-based index of the value to set.
                                             $in_value,          ///< The value to set to the address element string.
-	                                        $dont_save = FALSE  ///< If TRUE, then the DB update will not be called.
+	                                        $dont_save = false  ///< If true, then the DB update will not be called.
 	                                    ) {
-	    $ret = FALSE;
+	    $ret = false;
         
         $in_index = intval($in_index);
         $labels = $this->_get_address_element_labels();
@@ -162,13 +162,13 @@ class CO_Place extends CO_LL_Location {
     /**
     This sets the address_element property, as per the provided string, and indexed by the associative key. This can also update the tag.
     
-    \returns TRUE, if $dont_save was FALSE, and the tags were successfully saved.
+    \returns true, if $dont_save was false, and the tags were successfully saved.
      */
     public function set_address_element_by_key( $in_key,            ///< The string, with the element key.
                                                 $in_value,          ///< The value to set to the address element string.
-	                                            $dont_save = FALSE  ///< If TRUE, then the DB update will not be called.
+	                                            $dont_save = false  ///< If true, then the DB update will not be called.
 	                                            ) {
-	    $ret = FALSE;
+	    $ret = false;
         
         $in_index = intval($in_index);
         $labels = $this->_get_address_element_labels();
@@ -209,11 +209,11 @@ class CO_Place extends CO_LL_Location {
     \returns 
      */
     public function lookup_address() {
-        $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(FALSE));
+        $uri = $this->google_geocode_uri_prefix.urlencode($this->get_readable_address(false));
         $http_status = '';
         $error_catcher = '';
         
-        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
+        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, false, $http_status, $error_catcher));
         if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
             if (isset($resulting_json->results[0]->geometry) && isset($resulting_json->results[0]->geometry->location) && isset($resulting_json->results[0]->geometry->location->lng) && isset($resulting_json->results[0]->geometry->location->lat)) {
                 return Array( 'longitude' => floatval($resulting_json->results[0]->geometry->location->lng), 'latitude' => floatval($resulting_json->results[0]->geometry->location->lat));
@@ -239,7 +239,7 @@ class CO_Place extends CO_LL_Location {
         $http_status = '';
         $error_catcher = '';
 
-        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, FALSE, $http_status, $error_catcher));
+        $resulting_json = json_decode(CO_Chameleon_Utils::call_curl($uri, false, $http_status, $error_catcher));
         if (isset($resulting_json) && $resulting_json &&isset($resulting_json->results) && is_array($resulting_json->results) && count($resulting_json->results)) {
             if (isset($resulting_json->results[0]->address_components) && is_array($resulting_json->results[0]->address_components) && count($resulting_json->results[0]->address_components)) {
                 $address_components = $resulting_json->results[0]->address_components;
@@ -317,7 +317,7 @@ class CO_Place extends CO_LL_Location {
     /**
     \returns the address, in a "readable" format.
      */
-    public function get_readable_address(   $with_venue = TRUE  ///< If FALSE, then only the street address/town/state/nation will be displayed. That makes this better for geocoding. Default is TRUE.
+    public function get_readable_address(   $with_venue = true  ///< If false, then only the street address/town/state/nation will be displayed. That makes this better for geocoding. Default is true.
                                         ) {
         $ret = '';
         
@@ -329,11 +329,11 @@ class CO_Place extends CO_LL_Location {
             }
         
             if ($with_venue && isset($tag_key_array[2]) && isset($this->address_elements[$tag_key_array[2]]) && $this->address_elements[$tag_key_array[2]]) {
-                $open_paren = FALSE;
+                $open_paren = false;
             
                 if ($ret) {
                     $ret .= ' (';
-                    $open_paren = TRUE;
+                    $open_paren = true;
                 }
             
                 $ret .= $this->address_elements[$tag_key_array[2]];
@@ -391,7 +391,7 @@ class CO_Place extends CO_LL_Location {
     /**
     This updates the tags (and saves them to the DB) as per our internal address_elements property.
     
-    \returns TRUE, if successful.
+    \returns true, if successful.
      */
 	public function set_tags_from_address_elements() {
 	    $new_tags = $this->tags;

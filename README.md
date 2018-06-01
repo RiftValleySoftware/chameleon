@@ -1,4 +1,6 @@
-![CHAMELEON](images/icon.png)
+[]: # \page CHAMELEON CHAMELEON
+
+![CHAMELEON](images/CHAMELEON.png)
 
 CHAMELEON
 ======

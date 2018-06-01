@@ -66,7 +66,7 @@ function prepare_omfg_databases() {
                         $build_command = '';
                         while($line = fgets($input)) {
                             $build_command .= $line;
-                            if (FALSE !== strpos($line, ';')) {
+                            if (false !== strpos($line, ';')) {
                                 $pdo_data_db->preparedExec($build_command);
                                 $build_command = '';
                             }

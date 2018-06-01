@@ -33,9 +33,9 @@ function stress_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwo
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -115.2435726, 'latitude' => 36.1356661, 'radius' => 50.0)));
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
@@ -70,9 +70,9 @@ function stress_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwo
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -78.6, 'latitude' => 38.3,  'radius' => 50.0)));
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
@@ -107,9 +107,9 @@ function stress_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwo
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -6.2603, 'latitude' => 53.3498,  'radius' => 50.0)));
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
@@ -144,9 +144,9 @@ function stress_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwo
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => 151.2093, 'latitude' => -33.8688,  'radius' => 50.0)));
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
@@ -186,8 +186,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         stress_test_relay(1, 'tertiary', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -200,8 +200,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         stress_test_relay(2);
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -214,8 +214,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         stress_test_relay(3);
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -228,8 +228,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         stress_test_relay(4);
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
                 

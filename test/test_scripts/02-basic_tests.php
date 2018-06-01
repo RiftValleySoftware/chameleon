@@ -33,9 +33,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(21131);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -53,9 +53,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(11236);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -73,9 +73,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(10872);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -93,9 +93,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(7562);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -113,9 +113,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(1302);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -133,9 +133,9 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(20764);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -172,9 +172,9 @@ function basic_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search(Array('location' => Array('longitude' => -77.0502, 'latitude' => 38.8893, 'radius' => 50.0)));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($test_item) ) {
                 if (is_array($test_item)) {
@@ -205,9 +205,9 @@ function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(2);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -215,9 +215,9 @@ function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(3);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -225,9 +225,9 @@ function basic_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
         
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $item = $access_instance->get_single_data_record_by_id(4);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($item) ) {
                 display_record($item);
@@ -252,18 +252,18 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $collection_item = $access_instance->get_single_data_record_by_id(4);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($collection_item) ) {
                 display_record($collection_item);
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item1 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DC')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo ("<h4>BEFORE:</h4>");
             if ( isset($test_item1) ) {
@@ -278,9 +278,9 @@ function basic_test_04($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             
             $collection_item2 = $access_instance->get_single_data_record_by_id(3);
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $test_item2 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DE')));
-            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
             if ( isset($test_item2) ) {
                 if (is_array($test_item2)) {
                     if (count($test_item2)) {
@@ -317,18 +317,18 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $collection_item = $access_instance->get_single_data_record_by_id(2);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             if ( isset($collection_item) ) {
                 display_record($collection_item);
             }
             echo ("<p><em>This took $fetchTime seconds.</em></p>");
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item1 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DC')));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo ("<h4>BEFORE:</h4>");
             if ( isset($test_item1) ) {
@@ -343,9 +343,9 @@ function basic_test_05($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             }
             
             $collection_item2 = $access_instance->get_single_data_record_by_id(3);
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $test_item2 = $access_instance->generic_search(Array('access_class' => 'CO_US_Place','tags' => Array('', '', '', '', '', 'DE')));
-            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
             if ( isset($test_item2) ) {
                 if (is_array($test_item2)) {
                     if (count($test_item2)) {

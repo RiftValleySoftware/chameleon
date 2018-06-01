@@ -34,9 +34,9 @@ function collection_test_01($in_login = NULL, $in_hashed_password = NULL, $in_pa
     
     if ($access_instance->valid) {
         for ($id = 2; $id < 14; $id++) {
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $item = $access_instance->get_single_security_record_by_id($id);
-            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
             if (isset($item) && $item) {
                 echo('<div class="inner_div">');
                     if ( isset($item) ) {
@@ -65,9 +65,9 @@ function collection_test_02($in_login = NULL, $in_hashed_password = NULL, $in_pa
     
     if ($access_instance->valid) {
         for ($id = 2; $id < 12; $id++) {
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $item = $access_instance->get_single_data_record_by_id($id);
-            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 if ( isset($item) ) {
                     display_record($item);
@@ -93,10 +93,10 @@ function collection_test_03($in_login = NULL, $in_hashed_password = NULL, $in_pa
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
+        $st1 = microtime(true);
         $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place'));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             $count = count($item_list);
             echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
@@ -122,10 +122,10 @@ function collection_test_display($row_id, $tag, $in_login = NULL, $in_hashed_pas
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $collection_item = $access_instance->get_single_data_record_by_id($row_id);
         $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', $tag)));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             $count = count($item_list);
             $success_count = 0;
@@ -190,7 +190,7 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $main_collection_item = $access_instance->get_single_data_record_by_id(11);
 
         $dc_collection_item = $access_instance->get_single_data_record_by_id(2);
@@ -202,7 +202,7 @@ function collection_test_09($in_login = NULL, $in_hashed_password = NULL, $in_pa
         $main_collection_item->appendElement($dc_collection_item);
 
         $main_collection_item->appendElements(Array($de_collection_item, $md_collection_item, $va_collection_item, $wv_collection_item));
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo ("<p><em>The test took $fetchTime seconds.</em></p>");
         
         $hierarchy = $main_collection_item->getHierarchy();
@@ -225,7 +225,7 @@ function collection_test_10($in_login = NULL, $in_hashed_password = NULL, $in_pa
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $main_collection_item = $access_instance->get_single_data_record_by_id(11);
 
         $dc_collection_item = $access_instance->get_single_data_record_by_id(2);
@@ -253,7 +253,7 @@ function collection_test_10($in_login = NULL, $in_hashed_password = NULL, $in_pa
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             $main_collection_item->appendElement($de_collection_item);
         
-            $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
             echo ("<p><em>The test took $fetchTime seconds.</em></p>");
         
             $hierarchy = $main_collection_item->getHierarchy();
@@ -279,9 +279,9 @@ function collection_test_11($in_login = NULL, $in_hashed_password = NULL, $in_pa
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $main_collection_item = $access_instance->get_single_data_record_by_id(11);
-        $fetchTime = sprintf('%01.4f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         echo ("<p><em>The test took $fetchTime seconds.</em></p>");
         
         $hierarchy = $main_collection_item->getHierarchy();

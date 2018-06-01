@@ -51,10 +51,10 @@ class CO_User_Collection extends CO_Main_DB_Record {
 
     /***********************/
     /**
-    \returns TRUE, if the instance was able to set itself up to the internal login ID.
+    \returns true, if the instance was able to set itself up to the internal login ID.
      */
     protected function _load_login() {
-        $ret = FALSE;
+        $ret = false;
         // Tag 0 contains the ID of the user login (in the security DB) for this user.
         $login_id = isset($this->tags()[0]) ? intval($this->tags()[0]) : 0;
         
@@ -64,7 +64,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
             
             if (isset($my_login_object) && ($my_login_object instanceof CO_Security_Login)) {
                 $this->_login_object = $my_login_object;
-                $ret = TRUE;
+                $ret = true;
             } elseif (!($my_login_object instanceof CO_Security_Login)) {
                 $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$user_error_code_invalid_class,
                                                 CO_CHAMELEON_Lang::$user_error_name_invalid_class,
@@ -118,7 +118,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     This function sets up this instance, according to the DB-formatted associative array passed in.
     
-    \returns TRUE, if the instance was able to set itself up to the provided array.
+    \returns true, if the instance was able to set itself up to the provided array.
      */
     public function load_from_db(   $in_db_result   ///< This is an associative array, formatted as a database row response.
                                     ) {
@@ -149,7 +149,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     This is a "security-safe" way of testing for an associated login object. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
     
-     \returns TRUE, if the object has a login (regardless of whether or not they can see that login).
+     \returns true, if the object has a login (regardless of whether or not they can see that login).
      */
     public function has_login() {
         return (intval($this->tags()[0]) > 0);
@@ -159,7 +159,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     This is a "security-safe" way of testing for a login ID that the current user can't see. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
     
-     \returns TRUE, if the object has a login ID, but the current user can't see that ID or object.
+     \returns true, if the object has a login ID, but the current user can't see that ID or object.
      */
     public function has_login_i_cant_see() {
         $this->get_login_instance();
@@ -170,7 +170,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     This is a "security-safe" way of testing for a God login ID. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
     
-     \returns TRUE, if the object is for the "God" user.
+     \returns true, if the object is for the "God" user.
      */
     public function is_god_user() {
         return (intval($this->tags()[0]) == CO_Config::god_mode_id());
@@ -180,11 +180,11 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     Simple setter for the tags.
     
-    \returns TRUE, if successful.
+    \returns true, if successful.
      */
     public function set_tags(   $in_tags_array  ///< An array of strings, up to ten elements long, for the tags.
                             ) {
-        $ret = FALSE;
+        $ret = false;
         
         if (isset($in_tags_array) && is_array($in_tags_array) && count($in_tags_array) && (11 > count($in_tags_array))) {
             // We cannot assign a user we don't have write permissions for
@@ -202,12 +202,12 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /**
     Setter for one tag, by index.
     
-    \returns TRUE, if successful.
+    \returns true, if successful.
      */
     public function set_tag(    $in_tag_index,  ///< The index (0-based -0 through 9) of the tag to set.
                                 $in_tag_value   ///< A string, with the tag value.
                             ) {
-        $ret = FALSE;
+        $ret = false;
         
         $in_tag_index = intval($in_tag_index);
         
@@ -229,7 +229,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     This can only be done by a COBRA Login Manager that has write access to the user object and the login object.
     The manager does not have to have write access to the login object, but it does need read access to it.
     
-    \returns TRUE, if the operation suceeded.
+    \returns true, if the operation suceeded.
      */
     public function set_login(  $in_login_id_integer    ///< The integer ID of the login object to be associated with this instance.
                             ) {
@@ -283,10 +283,10 @@ class CO_User_Collection extends CO_Main_DB_Record {
     /***********************/
     /**
     We override this, because we want to see if     
-    \returns TRUE, if the deletion was successful.
+    \returns true, if the deletion was successful.
      */
-    public function delete_from_db( $with_extreme_prejudice = FALSE,    ///< If TRUE (Default is FALSE), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
-                                    $delete_login_object_too = FALSE    ///< If TRUE (Default is FALSE), then we will attempt to delete any associated login object, as well.
+    public function delete_from_db( $with_extreme_prejudice = false,    ///< If true (Default is false), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
+                                    $delete_login_object_too = false    ///< If true (Default is false), then we will attempt to delete any associated login object, as well.
                                     ) {
         if ($with_extreme_prejudice && $this->user_can_write()) {
             // We don't error-check this on purpose, as it's a given that there might be issues, here. This is a "due dilligence" thing.
@@ -299,7 +299,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
             }
         }
         
-        // Again, we won't return FALSE if this fails, but we will fetch the error.
+        // Again, we won't return false if this fails, but we will fetch the error.
         if ($delete_login_object_too) {
             $login_object = $this->get_login_instance();
         

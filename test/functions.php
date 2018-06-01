@@ -113,7 +113,7 @@ function display_raw_hierarchy($in_hierarchy_array, $modifier) {
     }
 }
         
-function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_parent_object = NULL, $shorty = FALSE) {
+function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_parent_object = NULL, $shorty = false) {
     $daddy = isset($in_parent_object) && $in_parent_object ? $in_parent_object->whosYourDaddy($in_record) : NULL;
 
     if ($in_hierarchy_level) {
@@ -138,7 +138,7 @@ function hierarchicalDisplayRecord($in_record, $in_hierarchy_level = 0, $in_pare
     echo('</div>');
 }
 
-function display_record($in_record_object, $in_hierarchy_level = 0, $shorty = FALSE) {
+function display_record($in_record_object, $in_hierarchy_level = 0, $shorty = false) {
     echo("<h5 style=\"margin-top:0.5em\">ITEM ".$in_record_object->id().":</h5>");
     if (isset($in_record_object) && $in_record_object) {
         echo('<div class="inner_div">');
@@ -205,12 +205,12 @@ function display_record($in_record_object, $in_hierarchy_level = 0, $shorty = FA
                 if ( $in_record_object instanceof CO_Security_Login) {
                     if (method_exists($in_record_object, 'ids')) {
                         echo("<p>IDs: ");
-                            $first = TRUE;
+                            $first = true;
                             foreach ( $in_record_object->ids() as $id ) {
                                 if (!$first) {
                                     echo(", ");
                                 } else {
-                                    $first = FALSE;
+                                    $first = false;
                                 }
                                 echo($id);
                             }

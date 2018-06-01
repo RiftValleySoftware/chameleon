@@ -80,13 +80,13 @@ trait tCO_Collection {
     The logged-in user must have write access to the collection object (not the data object) in order to add the item.
     You can opt out of the automatic database update.
     
-    \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
+    \returns true, if the data was successfully added. If a DB update was done, then the response is the one from the update.
      */
     public function insertElement(  $in_element,            ///< The database record to add.
                                     $in_before_index = -1,  ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
-                                    $dont_update = FALSE    ///< TRUE, if we are to skip the DB update (default is FALSE).
+                                    $dont_update = false    ///< true, if we are to skip the DB update (default is false).
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
             if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
@@ -102,14 +102,14 @@ trait tCO_Collection {
                 $before_array = Array();
                 
                 if ($in_before_index) {
-                    $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                    $before_array = array_slice($this->_container, 0, $in_before_index, false);
                 }
                 
                 $after_array = Array();
                 
                 if ($in_before_index < count($this->_container)) {
                     $end_count = count($this->_container) - $in_before_index;
-                    $after_array = array_slice($this->_container, $end_count, FALSE);
+                    $after_array = array_slice($this->_container, $end_count, false);
                 }
                 
                 $element_array = Array($in_element);
@@ -126,7 +126,7 @@ trait tCO_Collection {
                 
                 $this->_container = $unique;
                 
-                $ret = TRUE;
+                $ret = true;
                 if (!isset($this->context['children_ids'])) {
                     $this->context['children_ids'] = Array();
                 }
@@ -160,20 +160,20 @@ trait tCO_Collection {
     The logged-in user must have write access to the collection object (not the data objects) in order to add the items.
     You can opt out of the automatic database update.
     
-    \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
+    \returns true, if the data was successfully updated in the DB. false, if none of the items were added.
      */
     public function insertElements( $in_element_array,      ///< An array of database element instances to be inserted.
                                     $in_before_index = -1   ///< The index of the element (in the current list) BEFORE which the insertion will be made. Default is -1 (append).
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            $i_have_a_daddy = FALSE;
+            $i_have_a_daddy = false;
             
             foreach ($in_element_array as $element) {
                 // We can't insert nested collections.
                 if (method_exists($element, 'insertElement') && $this->areYouMyDaddy($element)) {
-                    $i_have_a_daddy = TRUE;
+                    $i_have_a_daddy = true;
                     break;
                 }
             }
@@ -190,14 +190,14 @@ trait tCO_Collection {
                 $before_array = Array();
                 
                 if ($in_before_index) {
-                    $before_array = array_slice($this->_container, 0, $in_before_index, FALSE);
+                    $before_array = array_slice($this->_container, 0, $in_before_index, false);
                 }
                 
                 $after_array = Array();
                 
                 if ($in_before_index < count($this->_container)) {
                     $end_count = count($this->_container) - $in_before_index;
-                    $after_array = array_slice($this->_container, $end_count, FALSE);
+                    $after_array = array_slice($this->_container, $end_count, false);
                 }
                 
                 $merged = array_merge($before_array, $in_element_array, $after_array);
@@ -212,7 +212,7 @@ trait tCO_Collection {
                 
                 $this->_container = $unique;
                 
-                $ret = TRUE;
+                $ret = true;
             
                 if (!isset($this->context['children_ids'])) {
                     $this->context['children_ids'] = Array();
@@ -249,12 +249,12 @@ trait tCO_Collection {
     This is an atomic operation. If any of the elements can't be removed, then non of the elements can be removed.
     The one exception is that the deletion length can extend past the boundaries of the collection. It will be truncated.
     
-    \returns TRUE, if the elements were successfully removed from the collection.
+    \returns true, if the elements were successfully removed from the collection.
      */
     public function deleteElements( $in_first_index,    ///< The starting 0-based index of the first element to be removed from the collection.
                                     $in_deletion_length ///< The number of elements to remove (including the first one). If this is negative, then elements will be removed from the index, backwards (-1 is the same as 1).
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
             $element_ids = Array(); // We will keep track of which IDs we delete, so we can delete them from our context variable.
@@ -317,7 +317,7 @@ trait tCO_Collection {
     Deletes a single element, by its 0-based index (not recursive).
     It should be noted that this does not delete the element from the database, and it is not recursive.
     
-    \returns TRUE, if the element was successfully removed from the collection.
+    \returns true, if the element was successfully removed from the collection.
      */
     public function deleteElement(  $in_index   ///< The 0-based index of the element we want to delete.
                                 ) {
@@ -329,14 +329,14 @@ trait tCO_Collection {
     Deletes a single element, by its actual object reference (not recursive).
     It should be noted that this does not delete the element from the database, and it is not recursive.
     
-    \returns TRUE, if the element was successfully removed from the collection.
+    \returns true, if the element was successfully removed from the collection.
      */
     public function deleteThisElement(  $in_element ///< The element we want to delete.
                                     ) {
-        $ret = FALSE;
+        $ret = false;
         $index = $this->indexOfThisElement($in_element);
         
-        if (FALSE !== $index) {
+        if (false !== $index) {
             $ret = $this->deleteElement(intval($index));
         }
         
@@ -352,7 +352,7 @@ trait tCO_Collection {
     in order to add the item.
     You can opt out of the automatic database update.
     
-    \returns TRUE, if the data was successfully added. If a DB update was done, then the response is the one from the update.
+    \returns true, if the data was successfully added. If a DB update was done, then the response is the one from the update.
      */
     public function appendElement(  $in_element             ///< The database record to add.
                                 ) {
@@ -365,7 +365,7 @@ trait tCO_Collection {
     The logged-in user must have write access to the collection object (not the data object)
     in order to add the items.
     
-    \returns TRUE, if the data was successfully updated in the DB. FALSE, if none of the items were added.
+    \returns true, if the data was successfully updated in the DB. false, if none of the items were added.
      */
     public function appendElements( $in_element_array       ///< An array of database element instances to be appended.
                                 ) {
@@ -376,7 +376,7 @@ trait tCO_Collection {
     /**
     This deletes all children of the container.
     
-    \returns TRUE, if the new configuration was successfully updated in the DB.
+    \returns true, if the new configuration was successfully updated in the DB.
      */
     public function deleteAllChildren() {
         $this->_children = Array();
@@ -386,7 +386,7 @@ trait tCO_Collection {
     
     /***********************/
     /**
-    \returns the 0-based index of the given element, or FALSE, if the element is not in the collection (This is not recursive).
+    \returns the 0-based index of the given element, or false, if the element is not in the collection (This is not recursive).
      */
     public function indexOfThisElement(  $in_element    ///< The element we're looking for.
                                         ) {
@@ -426,18 +426,18 @@ trait tCO_Collection {
     /**
     This takes an element, and checks to see if it already exists in our hierarchy (anywhere).
     
-    \returns TRUE, if this instance already has the presented object.
+    \returns true, if this instance already has the presented object.
      */    
     public function areYouMyDaddy(  $in_element,            ///< The element to check. This can be an array, in which case, each element is checked.
-                                    $full_hierachy = TRUE   ///< If FALSE, then only this level (not the full hierarchy) will be searched. Default is TRUE.
+                                    $full_hierachy = true   ///< If false, then only this level (not the full hierarchy) will be searched. Default is true.
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         $children = $this->children();
 
         foreach ($children as $object) {
             if ($object == $in_element) {
-                $ret = TRUE;
+                $ret = true;
                 break;
             } else {
                 if ($full_hierachy && method_exists($object, 'areYouMyDaddy')) {
@@ -517,7 +517,7 @@ trait tCO_Collection {
         
     \returns the number of direct children.
      */
-    public function count(  $is_recursive = FALSE   ///< If TRUE, then this will also count all "child" collections. Default is FALSE.
+    public function count(  $is_recursive = false   ///< If true, then this will also count all "child" collections. Default is false.
                         ) {
         $children = $this->children();
         $my_count = count($children);

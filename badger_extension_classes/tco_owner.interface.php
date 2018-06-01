@@ -29,11 +29,11 @@ trait tCO_Owner {
     /**
     This method will change a given object to have this as its owner.
     
-    \returns TRUE, if the object's owner changed successfully.
+    \returns true, if the object's owner changed successfully.
      */
     public function adopt_child(    $in_object_to_own   ///< The instance that will be "owned" by this instance. The user must have write privileges on the onject.
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
         if ($in_object_to_own->owner_id() != $my_owner_id) {
@@ -69,7 +69,7 @@ trait tCO_Owner {
     public function children_ids() {
         if (!((isset($this->_cached_ids) && is_array($this->_cached_ids) && count($this->_cached_ids)))) {
             $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
-            $this->_cached_ids = $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), FALSE, 0, 0, FALSE, FALSE, TRUE);
+            $this->_cached_ids = $this->get_access_object()->generic_search(Array('owner' => $my_owner_id), false, 0, 0, false, false, true);
         }
         
         return $this->_cached_ids;
@@ -95,7 +95,7 @@ trait tCO_Owner {
     
     It is "security-safe."
     
-    \returns an array of instances that match the search parameters. If $count_only is TRUE, then it will be a single integer, with the count of responses to the search (if a page, then only the number of items on that page).
+    \returns an array of instances that match the search parameters. If $count_only is true, then it will be a single integer, with the count of responses to the search (if a page, then only the number of items on that page).
      */
     public function generic_search( $in_search_parameters = NULL,   /**< This is an associative array of terms to define the search. The keys should be:
                                                                         - 'id'
@@ -117,13 +117,13 @@ trait tCO_Owner {
                                                                     */
                                     $page_size = 0,                 ///< If specified with a 1-based integer, this denotes the size of a "page" of results. NOTE: This is only applicable to MySQL or Postgres, and will be ignored if the DB is not MySQL or Postgres.
                                     $initial_page = 0,              ///< This is ignored unless $page_size is greater than 0. If so, then this 0-based index will specify which page of results to return.
-                                    $and_writeable = FALSE,         ///< If TRUE, then we only want records we can modify.
-                                    $count_only = FALSE,            ///< If TRUE (default is FALSE), then only a single integer will be returned, with the count of items that fit the search.
-                                    $ids_only = FALSE               ///< If TRUE (default is FALSE), then the return array will consist only of integers (the object IDs). If $count_only is TRUE, this is ignored.
+                                    $and_writeable = false,         ///< If true, then we only want records we can modify.
+                                    $count_only = false,            ///< If true (default is false), then only a single integer will be returned, with the count of items that fit the search.
+                                    $ids_only = false               ///< If true (default is false), then the return array will consist only of integers (the object IDs). If $count_only is true, this is ignored.
                                     ) {
         $my_owner_id = intval($this->my_owner_id) ? intval($this->my_owner_id) : $this->id();
         $in_search_parameters['owner'] = $my_owner_id;
-        return $this->get_access_object()->generic_search($in_search_parameters, FALSE, $page_size, $initial_page, $and_writeable, $count_only, $ids_only);
+        return $this->get_access_object()->generic_search($in_search_parameters, false, $page_size, $initial_page, $and_writeable, $count_only, $ids_only);
         
         return $ret;
     }

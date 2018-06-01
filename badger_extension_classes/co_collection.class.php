@@ -44,7 +44,7 @@ class CO_Collection extends CO_Main_DB_Record {
     /**
     This function sets up this instance, according to the DB-formatted associative array passed in.
     
-    \returns TRUE, if the instance was able to set itself up to the provided array.
+    \returns true, if the instance was able to set itself up to the provided array.
      */
     public function load_from_db(   $in_db_result   ///< This is an associative array, formatted as a database row response.
                                     ) {
@@ -62,9 +62,9 @@ class CO_Collection extends CO_Main_DB_Record {
     /***********************/
     /**
     We override this, because we want to see if we can possibly delete children objects.  
-    \returns TRUE, if the deletion was successful.
+    \returns true, if the deletion was successful.
      */
-    public function delete_from_db( $with_extreme_prejudice = FALSE ///< If TRUE (Default is FALSE), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
+    public function delete_from_db( $with_extreme_prejudice = false ///< If true (Default is false), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
                                     ) {
         if ($with_extreme_prejudice && $this->user_can_write()) {
             // We don't error-check this on purpose, as it's a given that there might be issues, here. This is a "due dilligence" thing.

@@ -50,7 +50,7 @@ class CO_KeyValue extends CO_Main_DB_Record {
     /**
     This function sets up this instance, according to the DB-formatted associative array passed in.
     
-    \returns TRUE, if the instance was able to set itself up to the provided array.
+    \returns true, if the instance was able to set itself up to the provided array.
      */
     public function load_from_db(   $in_db_result   ///< This is an associative array, formatted as a database row response.
                                     ) {
@@ -65,12 +65,12 @@ class CO_KeyValue extends CO_Main_DB_Record {
     This method will set the key for this instance.
     It checks the database, as the key needs to be unique for the access class and tag 0.
     
-    \returns TRUE, if the key was successfully set and updated in the database.
+    \returns true, if the key was successfully set and updated in the database.
      */
     function set_key(   $in_key,            ///< The key to be applied to this object.
                         $in_value = NULL    ///< We can associate a value.
                     ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->user_can_write()) { //< Must have write access
             // We need to make sure that the key doesn't already exist, or if it does, that the object associated with it is us. Must be writeable.
@@ -131,11 +131,11 @@ class CO_KeyValue extends CO_Main_DB_Record {
     
     /***********************/
     /**
-    \returns TRUE, if the value was successfully set and updated in the database.
+    \returns true, if the value was successfully set and updated in the database.
      */
     function set_value( $in_value
                         ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->user_can_write()) { //< Must have write access
             $ret = $this->set_payload($in_value);

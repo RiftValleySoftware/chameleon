@@ -39,7 +39,7 @@ function kvp_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password 
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
         
         if (isset($test_subject) && $test_subject ) {
@@ -84,7 +84,7 @@ function kvp_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password 
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
         }
         
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
@@ -104,7 +104,7 @@ function kvp_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password 
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
         
         if (isset($test_subject) && $test_subject ) {
@@ -150,7 +150,7 @@ function kvp_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password 
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
         }
         
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
@@ -170,7 +170,7 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
         
         if (isset($test_subject) && $test_subject ) {
@@ -234,7 +234,7 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
             }
         }
         
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
     } else {
         echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");

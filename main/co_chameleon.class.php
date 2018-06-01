@@ -74,11 +74,11 @@ class CO_Chameleon extends CO_Access {
         $ret = NULL;
         
         if (isset($in_element) && $in_element && ($in_element->get_access_object() == $this)) {
-            $collection_objects = $this->generic_search(Array('access_class' => Array('%_collection', 'use_like' => TRUE)));
+            $collection_objects = $this->generic_search(Array('access_class' => Array('%_collection', 'use_like' => true)));
 
             if (isset($collection_objects) && is_array($collection_objects) && count($collection_objects)) {
                 foreach ($collection_objects as $parent_object) {
-                    if ($parent_object->areYouMyDaddy($in_element, FALSE)) {
+                    if ($parent_object->areYouMyDaddy($in_element, false)) {
                         if (!$ret) {
                             $ret = Array();
                         }
@@ -123,11 +123,11 @@ class CO_Chameleon extends CO_Access {
     /**
     This tests a login ID for the special "Heisenberg" one-time test.
     
-    \returns TRUE, if the item was a login, and had the flag set.
+    \returns true, if the item was a login, and had the flag set.
      */
     public function test_access(    $in_login_id    ///< The ID of the instance to test.
                                 ) {
-        $ret = FALSE;
+        $ret = false;
         
         // Yeah, this will crash if we're not in COBRA. Good.
         if ($this->security_db_available() && ($this->get_login_item() instanceof CO_Login_Manager)) {
@@ -185,13 +185,13 @@ class CO_Chameleon extends CO_Access {
     This sets a value to a key, creating the record, if need be. Passing in NULL will delete the key (if we have write access).
     We need to have a login for it to work at all. If the value already exists, then we need to have write access to it, or we will fail.
     
-    \returns TRUE, if successful.
+    \returns true, if successful.
      */
     public function set_value_for_key(  $in_key,                        ///< This is the key that we are setting. It must be a string.
                                         $in_value,                      ///< The value to set. If NULL, then we will delete the key.
                                         $in_classname = 'CO_KeyValue'   ///< This is the class to use for the key. The default is the base class.
                                     ) {
-        $ret = FALSE;
+        $ret = false;
         
         if ($this->security_db_available()) {
             // First, we look for the object.
@@ -274,7 +274,7 @@ class CO_Chameleon extends CO_Access {
         
         $tag0 = strval($login_id);
         
-        $ret_temp = $this->generic_search(Array('access_class' => Array('%_user_collection', 'use_like' => TRUE), 'tags' => Array($tag0)));
+        $ret_temp = $this->generic_search(Array('access_class' => Array('%_user_collection', 'use_like' => true), 'tags' => Array($tag0)));
         
         if (isset($ret_temp) && is_array($ret_temp) && count($ret_temp)) {
             $ret = $ret_temp[0];    // We only get the first one. Multiple responses mean the DB is not so healthy.

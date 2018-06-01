@@ -32,9 +32,9 @@ function dc_area_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passw
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->get_all_security_readable_records();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo("<h3>See what security items we have access to.</h2>");
             if ( isset($test_item) ) {
@@ -49,9 +49,9 @@ function dc_area_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passw
                 }
             }
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->generic_search();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo("<h3>See what data items we have access to.</h2>");
             if ( isset($test_item) ) {
@@ -85,9 +85,9 @@ function dc_area_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passw
     
     if ($access_instance->valid) {
         echo("<h2>The access instance is valid!</h2>");
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->get_all_security_writeable_records();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo("<h3>See what security items we have access to.</h2>");
             if ( isset($test_item) ) {
@@ -102,9 +102,9 @@ function dc_area_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passw
                 }
             }
         echo('</div>');
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $test_item = $access_instance->get_all_data_writeable_records();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<div class="inner_div">');
             echo("<h3>See what data items we have access to.</h2>");
             if ( isset($test_item) ) {
@@ -145,8 +145,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(1, 'MDAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -159,8 +159,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(2, 'MDAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -173,8 +173,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(1, 'VAAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -187,8 +187,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(2, 'VAAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -201,8 +201,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(1, 'DCAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -215,8 +215,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(2, 'DCAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -229,8 +229,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(1, 'WVAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -243,8 +243,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(2, 'WVAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -257,8 +257,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(1, 'DEAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
             
@@ -271,8 +271,8 @@ ob_start();
                             <?php
                         echo('</div>');
                         dc_area_test_relay(2, 'DEAdmin', 'CodYOzPtwxb4A');
-                        $start = microtime(TRUE);
-                        echo('<h5>The test took '. sprintf('%01.3f', microtime(TRUE) - $start) . ' seconds.</h5>');
+                        $start = microtime(true);
+                        echo('<h5>The test took '. sprintf('%01.3f', microtime(true) - $start) . ' seconds.</h5>');
                     echo('</div>');
                 echo('</div>');
                 

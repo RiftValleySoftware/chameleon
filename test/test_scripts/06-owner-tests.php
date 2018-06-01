@@ -39,12 +39,12 @@ function owner_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $owner_object = $access_instance->get_single_data_record_by_id(2061608);
         
         if (isset($owner_object) && $owner_object) {
             $count = $owner_object->count();
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p>We "own" '.$count.' records!</p>');
             echo('</div>');
@@ -68,12 +68,12 @@ function owner_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $owner_object = $access_instance->get_single_data_record_by_id(2061608);
         
         if (isset($owner_object) && $owner_object) {
-            $count = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, FALSE, TRUE);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $count = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, false, true);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">This test looks at the Chesapeake Bay, and grabs a bunch of records within a 100-Km radius of the bay.</p>');
                 echo('<p class="explain">Since this is a US border dataset, we\'ll get quite a few hits.</p>');
@@ -81,18 +81,18 @@ function owner_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo('</div>');
             echo('<p>The test took '.$fetchTime.' seconds.</p>');
             
-            $st1 = microtime(TRUE);
-            $count = intval($owner_object->generic_search(Array('location' => Array('longitude' => -118.4695, 'latitude' => 38.2336562, 'radius' => 200.0)), 0, 0, FALSE, TRUE));
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $st1 = microtime(true);
+            $count = intval($owner_object->generic_search(Array('location' => Array('longitude' => -118.4695, 'latitude' => 38.2336562, 'radius' => 200.0)), 0, 0, false, true));
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">Now, we try Venice Beach (CA), with a radius of 200Km. We expect to find zero records, even though there are plenty in the dataset.</p>');
                 echo('<p>We found '.$count.' records!</p>');
             echo('</div>');
             echo('<p>The test took '.$fetchTime.' seconds.</p>');
             
-            $st1 = microtime(TRUE);
-            $data_points = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, FALSE, FALSE, TRUE);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $st1 = microtime(true);
+            $data_points = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)), 0, 0, false, false, true);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">Now, we try the Chesapeake Bay test again, but this time, we get the IDs of the datapoints involved.</p>');
                 echo('<div id="owner_test_02-03" class="inner_closed">');
@@ -104,9 +104,9 @@ function owner_test_02($in_login = NULL, $in_hashed_password = NULL, $in_passwor
             echo('</div>');
             echo('<p style="clear:both">The test took '.$fetchTime.' seconds.</p>');
             
-            $st1 = microtime(TRUE);
+            $st1 = microtime(true);
             $data_points = $owner_object->generic_search(Array('location' => Array('longitude' => -77.2189556, 'latitude' => 33.9850, 'radius' => 100.0)));
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">Now, we try the Chesapeake Bay test again, but this time, we get the full objects, and display the names.</p>');
                 echo('<div id="owner_test_02-04" class="inner_closed">');
@@ -136,20 +136,20 @@ function owner_test_03($in_login = NULL, $in_hashed_password = NULL, $in_passwor
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
-        $st1 = microtime(TRUE);
+        $st1 = microtime(true);
         $owner_object = $access_instance->get_single_data_record_by_id(2061608);
         
         if (isset($owner_object) && $owner_object) {
-            $count = $access_instance->generic_search(Array('location' => Array('longitude' => -81.4980687, 'latitude' => 25.8296825, 'radius' => 100.0)), FALSE, 0, 0, FALSE, TRUE);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $count = $access_instance->generic_search(Array('location' => Array('longitude' => -81.4980687, 'latitude' => 25.8296825, 'radius' => 100.0)), false, 0, 0, false, true);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">We go to a spot on the West Coast of Florida, where the dataset ends. We first check the access instance, where we\'ll get a whole bunch of hits:</p>');
                 echo('<p>We found '.$count.' records!</p>');
             echo('</div>');
             echo('<p>The test took '.$fetchTime.' seconds.</p>');
             
-            $count = $owner_object->generic_search(Array('location' => Array('longitude' => -81.4980687, 'latitude' => 25.8296825, 'radius' => 100.0)), 0, 0, FALSE, TRUE);
-            $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+            $count = $owner_object->generic_search(Array('location' => Array('longitude' => -81.4980687, 'latitude' => 25.8296825, 'radius' => 100.0)), 0, 0, false, true);
+            $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
             echo('<div class="inner_div">');
                 echo('<p class="explain">Next, we query the owner object, where only those items that are "owned" are returned:</p>');
                 echo('<p>We found '.$count.' records!</p>');
@@ -171,7 +171,7 @@ ob_start();
             echo('<h2 class="header"><a href="javascript:toggle_main_state(\'owner-tests\')">MASSIVE DATASET TESTS</a></h2>');
             echo('<div class="container">');
             
-            if (FALSE !== strpos('localhost', $_SERVER['SERVER_NAME'])) {
+            if (false !== strpos('localhost', $_SERVER['SERVER_NAME'])) {
                 echo('<div id="test-038" class="inner_closed">');
                     echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-038\')">TEST 38: Look at a YUGE Dataset</a></h3>');
                     echo('<div class="main_div inner_container">');

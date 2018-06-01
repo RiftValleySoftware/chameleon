@@ -26,7 +26,7 @@ class CO_Chameleon_Utils {
         \returns a string, containing the response. Null if the call fails to get any data.
     */
     static function call_curl (	$in_uri,				        ///< A string. The URI to call.
-                                $in_post = FALSE,		        ///< If TRUE, the transaction is a POST, not a GET. Default is FALSE.
+                                $in_post = false,		        ///< If true, the transaction is a POST, not a GET. Default is false.
                                 &$http_status = NULL,           ///< Optional reference to a string. Returns the HTTP call status.
                                 &$content_failure_note = NULL   ///< If there's a content failure, instead of throwing an exception, we will put it in here (if provided).
                                 ) {
@@ -63,7 +63,7 @@ class CO_Chameleon_Utils {
                     // thus giving them and empty value.
                     $in_params = http_build_query($temp);
             
-                    curl_setopt($resource, CURLOPT_POST, TRUE);
+                    curl_setopt($resource, CURLOPT_POST, true);
                     curl_setopt($resource, CURLOPT_POSTFIELDS, $in_params);
                 }
             }
@@ -72,13 +72,13 @@ class CO_Chameleon_Utils {
             curl_setopt($resource, CURLOPT_URL, $in_uri);
         
             // Make curl_exec() function (see below) return requested content as a string (unless call fails).
-            curl_setopt($resource, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($resource, CURLOPT_RETURNTRANSFER, true);
         
             // By default, cURL prepends response headers to string returned from call to curl_exec().
             // You can control this with the below setting.
             // Setting it to false will remove headers from beginning of string.
             // If you WANT the headers, see the Yahoo documentation on how to parse with them from the string.
-            curl_setopt($resource, CURLOPT_HEADER, FALSE);
+            curl_setopt($resource, CURLOPT_HEADER, false);
         
             // Set maximum times to allow redirection (use only if needed as per above setting. 3 is sort of arbitrary here).
             curl_setopt($resource, CURLOPT_MAXREDIRS, 3);
@@ -93,13 +93,13 @@ class CO_Chameleon_Utils {
             curl_setopt($resource, CURLOPT_USERAGENT, "cURL Mozilla/5.0 (Windows NT 5.1; rv:21.0) Gecko/20130401 Firefox/21.0 CHAMELEON/BADGER"); 
 
             // Trust meeeee...
-            curl_setopt($resource, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($resource, CURLOPT_SSL_VERIFYPEER, false);
     
             // Execute cURL call and return results in $content variable.
             $content = curl_exec($resource);
         
             // Check if curl_exec() call failed (returns false on failure) and handle failure.
-            if (FALSE === $content) {
+            if (false === $content) {
                 // Cram as much info into the content note as possible.
                 $content_failure_note = "curl failure calling $in_uri, ".curl_error($resource).", ".curl_errno ($resource);
             } else {
@@ -114,7 +114,7 @@ class CO_Chameleon_Utils {
             curl_close ($resource);
         
             // Maybe echo $contents of $content variable here.
-            if (FALSE !== $content) {
+            if (false !== $content) {
                 $ret = $content;
             }
         }

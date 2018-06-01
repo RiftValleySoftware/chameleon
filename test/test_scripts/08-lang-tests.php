@@ -36,7 +36,7 @@ function lang_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     
-    $st1 = microtime(TRUE);
+    $st1 = microtime(true);
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
@@ -44,7 +44,7 @@ function lang_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password
         $access_lang = $access_instance->get_lang();
         $login_lang = $access_instance->get_login_item()->get_lang();
         $user_lang = $access_instance->get_user_from_login()->get_lang();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p><strong>Access Object (main) Language: </strong>'.$access_lang.'</p>');
         echo('<p><strong>Server Language: </strong>'.$server_lang.'</p>');
         echo('<p><strong>Login Object Language: </strong>'.$login_lang.'</p>');
@@ -65,7 +65,7 @@ function lang_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     
-    $st1 = microtime(TRUE);
+    $st1 = microtime(true);
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
@@ -75,7 +75,7 @@ function lang_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password
         $access_lang = $access_instance->get_lang();
         $login_lang = $access_instance->get_login_item()->get_lang();
         $user_lang = $access_instance->get_user_from_login()->get_lang();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p><strong>Place Object Language: </strong>'.$place_lang.'</p>');
         echo('<p><strong>Access Object Language: </strong>'.$access_lang.'</p>');
         echo('<p><strong>Server Language: </strong>'.$server_lang.'<em> (It should use this one)</em></p>');
@@ -97,7 +97,7 @@ function lang_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     
-    $st1 = microtime(TRUE);
+    $st1 = microtime(true);
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
@@ -107,7 +107,7 @@ function lang_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password
         $access_lang = $access_instance->get_lang();
         $login_lang = $access_instance->get_login_item()->get_lang();
         $user_lang = $access_instance->get_user_from_login()->get_lang();
-        $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
         echo('<p><strong>Place Object Language: </strong>'.$place_lang.'</p>');
         echo('<p><strong>Access Object Language: </strong>'.$access_lang.'</p>');
         echo('<p><strong>Server Language: </strong>'.$server_lang.'</p>');
@@ -129,7 +129,7 @@ function lang_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password
     
     require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
     
-    $st1 = microtime(TRUE);
+    $st1 = microtime(true);
     $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
     
     if ($access_instance->valid) {
@@ -149,7 +149,7 @@ function lang_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password
                     if ($access_instance->get_login_item()->set_lang('')) {
                         if ($place_instance->set_lang(NULL)) {
                             if ($user_instance->set_lang(NULL)) {
-                                $fetchTime = sprintf('%01.3f', microtime(TRUE) - $st1);
+                                $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
                                 $last_user_lang = $user_instance->get_lang();
                                 $last_place_lang = $place_instance->get_lang();
                                 $last_login_lang = $access_instance->get_login_item()->get_lang();
