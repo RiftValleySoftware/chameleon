@@ -1,3 +1,5 @@
+**1.0.0.2027** *(TBD)*
+
 **1.0.0.2026** *(May 31, 2018)*
 
 - Updated to the latest BADGER.
