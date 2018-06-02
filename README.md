@@ -40,6 +40,11 @@ KEY/VALUE PAIR STORAGE
 
 CHAMELEON introduces the KEY/VALUE (sometimes known as DICTIONARY) pattern for storing arbitrary data (the CO_KeyValue class). The data can be quite large, as its stored in the payload column. The key needs to be unique within the database, but the access_class of the row is also figured into the calculation, so you have a bit of flexibility.
 
+IMPLEMENTATION
+==============
+
+You implement CHAMELEON by setting up a pair of databases, and reference them via the CO_Config static class, then instantiate CO_Chameleon.
+
 EXTENDING CHAMELEON
 ===================
 
