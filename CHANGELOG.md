@@ -1,3 +1,9 @@
+**1.0.0.2028** *(TBD)*
+
+- Updated to the latest BADGER.
+- Removed some redundant files from spec.
+- Added support for Doxygen.
+
 **1.0.0.2027** *(June 2, 2018)*
 
 - Updated to the latest BADGER.
