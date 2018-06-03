@@ -550,6 +550,25 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    This is an accessor that returns a list of IDs for the direct children of this instance.
+    This is "security vetted," so only IDs of children visible to the logged-in user are returned.
+    
+    \returns the child ids array (array of integer).
+     */
+    public function children_ids() {
+        $ret = Array();
+        
+        foreach ($this->$this->context['children_ids'] as $child_id) {
+            if ($this->get_access_object()->item_exists($child_id, true)) {
+                $ret[] = intval($child_id);
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     \returns an instance "map" of the collection. It returns an array of associative arrays.
     Each associative array has the following elements:
         - 'object' (Required). This is the actual instance that maps to this object.
