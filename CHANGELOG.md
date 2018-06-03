@@ -1,8 +1,9 @@
-**1.0.0.2028** *(TBD)*
+**1.0.0.2028** *(June 3, 2018)*
 
 - Updated to the latest BADGER.
 - Removed some redundant files from spec.
 - Added support for Doxygen.
+- Added support for a new collection method that returns visible IDs of children.
 
 **1.0.0.2027** *(June 2, 2018)*
 
