@@ -558,9 +558,12 @@ trait tCO_Collection {
     public function children_ids() {
         $ret = Array();
         
-        foreach ($this->$this->context['children_ids'] as $child_id) {
-            if ($this->get_access_object()->item_exists($child_id, true)) {
-                $ret[] = intval($child_id);
+        $this->_scrub();
+        $ids = $this->context['children_ids'];
+        
+        foreach ($ids as $id) {
+            if ($this->get_access_object()->item_exists($id, true)) {
+                $ret[] = intval($id);
             }
         }
         
@@ -581,6 +584,8 @@ trait tCO_Collection {
                                                                      There can only be one...
                                                                 */
                                     ) {
+        $this->_scrub();
+        
         $instance = Array('object' => $this);
         
         if (method_exists($this, 'children') && count($this->children())) {
