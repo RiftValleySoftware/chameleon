@@ -36,9 +36,10 @@ class CO_Chameleon extends CO_Access {
      */
 	public function __construct(    $in_login_id = NULL,        ///< The login ID
                                     $in_hashed_password = NULL, ///< The password, crypt-hashed
-                                    $in_raw_password = NULL     ///< The password, cleartext.
+                                    $in_raw_password = NULL,    ///< The password, cleartext.
+                                    $in_api_key = NULL          ///< An API key, for REST.
 	                            ) {
-        parent::__construct($in_login_id, $in_hashed_password, $in_raw_password);
+        parent::__construct($in_login_id, $in_hashed_password, $in_raw_password, $in_api_key);
 	    $this->version = __CHAMELEON_VERSION__;
     }
     
