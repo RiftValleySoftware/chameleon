@@ -1,6 +1,7 @@
-**1.0.0.2030** *(TBD)*
+**1.0.0.2030** *(June 11, 2018)*
 
 - Improved documentation.
+- Updated to the latest BADGER.
 
 **1.0.0.2029** *(June 8, 2018)*
 
