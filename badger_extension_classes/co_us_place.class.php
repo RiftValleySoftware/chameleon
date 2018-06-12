@@ -29,13 +29,13 @@ class CO_US_Place extends CO_Place {
      */
 	protected function _get_address_element_labels() {
 	    return Array(
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_0,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_1,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_2,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_3,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_4,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_5,
-                        CO_CHAMELEON_Lang::$chameleon_co_us_place_tag_6
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_0,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_1,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_2,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_3,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_4,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_5,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_6
                     );
 	}
     
@@ -68,4 +68,15 @@ class CO_US_Place extends CO_Place {
         
         $this->class_description = "This is a 'Place' Class for US Addresses.";
     }
+    
+    /***********************/
+    /**
+    \returns the address elements, in an associative array.
+     */
+	public function get_address_elements() {
+	    $ret = parent::get_address_elements();
+        $ret[CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_7] = 'us';   // Fixed, for USA.
+        
+        return $ret;
+	}
 };

@@ -41,14 +41,14 @@ class CO_Place extends CO_LL_Location {
      */
 	protected function _get_address_element_labels() {
 	    return Array(
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_0,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_1,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_2,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_3,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_4,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_5,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_6,
-                        CO_CHAMELEON_Lang::$chameleon_co_place_tag_7
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_0,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_1,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_2,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_3,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_4,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_5,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_6,
+                        CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_7
                     );
 	}
 	
@@ -403,5 +403,21 @@ class CO_Place extends CO_LL_Location {
         }
         
         return $this->set_tags($new_tags);
+	}
+    
+    /***********************/
+    /**
+    \returns the address elements, in an associative array.
+     */
+	public function get_address_elements() {
+	    $ret = [];
+        $labels = $this->_get_address_element_labels();
+	    
+        for ($i = 0; $i < count($labels); $i++) {
+            $key = $labels[$i];
+            $ret[$key] = $this->address_elements[$key];
+        }
+        
+        return $ret;
 	}
 };

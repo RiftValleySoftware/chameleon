@@ -32,6 +32,16 @@ require_once($lang_common_file);
 /**
  */
 class CO_CHAMELEON_Lang_Common {
+    /// These apply to the CO_Place class. Only the first seven tags are used for US location information.
+    static  $chameleon_co_place_tag_0 = 'venue';
+    static  $chameleon_co_place_tag_1 = 'street_address';
+    static  $chameleon_co_place_tag_2 = 'extra_information';
+    static  $chameleon_co_place_tag_3 = 'town';
+    static  $chameleon_co_place_tag_4 = 'county';
+    static  $chameleon_co_place_tag_5 = 'state';
+    static  $chameleon_co_place_tag_6 = 'postal_code';
+    static  $chameleon_co_place_tag_7 = 'nation';
+
     static  $co_place_error_code_failed_to_geocode = 1000;
     static  $co_place_error_code_failed_to_lookup = 1001;
     static  $co_collection_error_code_item_not_valid = 1100;
