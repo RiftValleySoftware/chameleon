@@ -75,7 +75,7 @@ class CO_US_Place extends CO_Place {
      */
 	public function get_address_elements() {
 	    $ret = parent::get_address_elements();
-        $ret[CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_7] = 'us';   // Fixed, for USA.
+        $ret[CO_CHAMELEON_Lang_Common::$chameleon_co_place_tag_7] = 'USA';   // Fixed, for USA.
         
         return $ret;
 	}
