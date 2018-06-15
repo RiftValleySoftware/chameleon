@@ -40,6 +40,15 @@ This is a container, meant to define a user.
 
 A user is a collection, with various data items attached to it.
 
+The first seven tags are reserved for the class:
+    - Tag 0, which is the ID of an associated login. This can only be changed if the logged-in user has write permissions on this object, and at least read permissions on the login.
+    - Tag 1, the user's surname (family name).
+    - Tag 2, the user's middle name.
+    - Tag 3, the user's given (first) name.
+    - Tag 4, the user's prefix (Mr., Mrs., Dr., etc.).
+    - Tag 5, the user's suffix (Ph.D., LCSW, Jr., III, etc.).
+    - Tag 6, the user's nickname.
+
 It also has a single link to a login (which can be NULL, if the user is not one that can log into the system).
 
 As with other login-related classes, only login managers that have access to security tokens (which are also IDs of login and other security DB items) can set certain IDs as tokens.
@@ -220,6 +229,132 @@ class CO_User_Collection extends CO_Main_DB_Record {
         }
         
         return $ret;
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the surname tag (tag 1).
+    
+    \returns a string, with the surname.
+     */
+    public function get_surname() {
+        return $this->_tags[1];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the surname tag (tag 1).
+    
+    \returns true, if successful.
+     */
+    public function set_surname(    $in_surname ///< A string, containing the user surname.
+                                ) {
+        return $this->set_tag(1, $in_surname);
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the middle name tag (tag 2).
+    
+    \returns a string, with the middle name.
+     */
+    public function get_middle_name() {
+        return $this->_tags[2];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the surname tag (tag 2).
+    
+    \returns true, if successful.
+     */
+    public function set_middle_name(    $in_middle_name ///< A string, containing the user middle name.
+                                ) {
+        return $this->set_tag(2, $in_middle_name);
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the given (first) name tag (tag 3).
+    
+    \returns a string, with the given name.
+     */
+    public function get_given_name() {
+        return $this->_tags[3];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the given (first) tag (tag 3).
+    
+    \returns true, if successful.
+     */
+    public function set_given_name( $in_given_name ///< A string, containing the user middle name.
+                                    ) {
+        return $this->set_tag(3, $in_given_name);
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the prefix tag (tag 4).
+    
+    \returns a string, with the prefix.
+     */
+    public function get_prefix() {
+        return $this->_tags[4];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the prefix tag (tag 4).
+    
+    \returns true, if successful.
+     */
+    public function set_prefix( $in_prefix  ///< A string, containing the user prefix.
+                                ) {
+        return $this->set_tag(4, $in_prefix);
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the suffix tag (tag 5).
+    
+    \returns a string, with the suffix.
+     */
+    public function get_suffix() {
+        return $this->_tags[5];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the suffix tag (tag 5).
+    
+    \returns true, if successful.
+     */
+    public function set_suffix( $in_suffix  ///< A string, containing the user suffix.
+                                ) {
+        return $this->set_tag(5, $in_suffix);
+    }
+    
+    /***********************/
+    /**
+    Simple getter for the nickname tag (tag 6).
+    
+    \returns a string, with the nickname.
+     */
+    public function get_nickname() {
+        return $this->_tags[6];
+    }
+    
+    /***********************/
+    /**
+    Simple setter for the nickname tag (tag 6).
+    
+    \returns true, if successful.
+     */
+    public function set_nickname(   $in_nickname    ///< A string, containing the user nickname.
+                                ) {
+        return $this->set_tag(6, $in_nickname);
     }
     
     /***********************/
