@@ -238,7 +238,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the surname.
      */
     public function get_surname() {
-        return $this->_tags[1];
+        return isset($this->_tags[1]) ? $this->_tags[1] : '';
     }
     
     /***********************/
@@ -259,7 +259,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the middle name.
      */
     public function get_middle_name() {
-        return $this->_tags[2];
+        return isset($this->_tags[2]) ? $this->_tags[2] : '';
     }
     
     /***********************/
@@ -280,7 +280,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the given name.
      */
     public function get_given_name() {
-        return $this->_tags[3];
+        return isset($this->_tags[3]) ? $this->_tags[3] : '';
     }
     
     /***********************/
@@ -301,7 +301,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the prefix.
      */
     public function get_prefix() {
-        return $this->_tags[4];
+        return isset($this->_tags[4]) ? $this->_tags[4] : '';
     }
     
     /***********************/
@@ -322,7 +322,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the suffix.
      */
     public function get_suffix() {
-        return $this->_tags[5];
+        return isset($this->_tags[5]) ? $this->_tags[5] : '';
     }
     
     /***********************/
@@ -343,7 +343,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns a string, with the nickname.
      */
     public function get_nickname() {
-        return $this->_tags[6];
+        return isset($this->_tags[6]) ? $this->_tags[6] : '';
     }
     
     /***********************/

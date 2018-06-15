@@ -3,7 +3,7 @@
 - Changed the way the address elements were indexed. The old way did not work well for XML.
 - Updated the images used for the README.
 - Added the ability to get all the address elements in an associative array.
-- Added provision for names to the user class.
+- Added provision for names and other data to the user class.
 
 **1.0.0.2030** *(June 11, 2018)*
 
