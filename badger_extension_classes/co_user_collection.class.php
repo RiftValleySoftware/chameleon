@@ -232,7 +232,7 @@ class CO_User_Collection extends CO_Main_DB_Record {
     \returns true, if the operation suceeded.
      */
     public function set_login(  $in_login_id_integer    ///< The integer ID of the login object to be associated with this instance.
-                            ) {
+                                ) {
         $ret = parent::user_can_write();
         $in_login_id_integer = intval($in_login_id_integer);
         // Further check to make sure that the current login is a manager.
@@ -282,7 +282,8 @@ class CO_User_Collection extends CO_Main_DB_Record {
     
     /***********************/
     /**
-    We override this, because we want to see if     
+    We override this, because we want to see if they want us to delete associated objects.
+    
     \returns true, if the deletion was successful.
      */
     public function delete_from_db( $with_extreme_prejudice = false,    ///< If true (Default is false), then we will attempt to delete all contained children. Remember that this could cause problems if other collections can see the children!
