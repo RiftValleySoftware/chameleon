@@ -44,6 +44,8 @@ trait tCO_Collection {
                 $this->context['children_ids'] = $new_ids;
                 $this->update_db();
             }
+        } else {
+            $this->_container = Array();
         }
     }
 	
@@ -88,65 +90,73 @@ trait tCO_Collection {
                                 ) {
         $ret = false;
         
-        if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-            if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
-                $id = intval($in_element->id());
-                if (!isset($this->_container) || !is_array($this->_container)) {
-                    $this->_container = Array();
-                }
+        if ($in_element instanceof A_CO_DB_Table_Base) {
+            if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
+                if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
+                    $id = intval($in_element->id());
+                    if (!isset($this->_container) || !is_array($this->_container)) {
+                        $this->_container = Array();
+                    }
                 
-                if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
-                    $in_before_index = count($this->_container);
-                }
+                    $contains = false;
                 
-                $before_array = Array();
+                    // This is because PHP seems to get confused when I use in_array().
+                    if (count($this->_container)) {
+                        foreach ($this->_container as $test) {
+                            if ($test->id() == $in_element->id()) {
+                                $contains = true;
+                                break;
+                            }
+                        }
+                    }
                 
-                if ($in_before_index) {
-                    $before_array = array_slice($this->_container, 0, $in_before_index, false);
-                }
+                    if (!$contains) {
+                        if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
+                            $in_before_index = count($this->_container);
+                        }
                 
-                $after_array = Array();
+                        $before_array = Array();
                 
-                if ($in_before_index < count($this->_container)) {
-                    $end_count = count($this->_container) - $in_before_index;
-                    $after_array = array_slice($this->_container, $end_count, false);
-                }
+                        if ($in_before_index) {
+                            $before_array = array_slice($this->_container, 0, $in_before_index, false);
+                        }
                 
-                $element_array = Array($in_element);
+                        $after_array = Array();
                 
-                $merged = array_merge($before_array, $element_array, $after_array);
+                        if ($in_before_index < count($this->_container)) {
+                            $end_count = count($this->_container) - $in_before_index;
+                            $after_array = array_slice($this->_container, $end_count, false);
+                        }
                 
-                $unique  = array();
-
-                foreach ($merged as $current) {
-                    if (!in_array($current, $unique)) {
-                        $unique[] = $current;
+                        $element_array = Array($in_element);
+                
+                        $merged = array_merge($before_array, $element_array, $after_array);
+                
+                        $this->_container = $merged;
+                
+                        $ret = true;
+                        if (!isset($this->context['children_ids'])) {
+                            $this->context['children_ids'] = Array();
+                        }
+                
+                        $ids = array_map('intval', $this->context['children_ids']);
+                        if (!in_array($id, $ids)) {
+                            $ids[] = $id;
+                            $ids = array_unique($ids);
+                            sort($ids);
+                            $this->context['children_ids'] = $ids;
+                        }
                     }
                 }
-                
-                $this->_container = $unique;
-                
-                $ret = true;
-                if (!isset($this->context['children_ids'])) {
-                    $this->context['children_ids'] = Array();
-                }
-                
-                $ids = array_map('intval', $this->context['children_ids']);
-                if (!in_array($id, $ids)) {
-                    $ids[] = $id;
-                    $ids = array_unique($ids);
-                    sort($ids);
-                    $this->context['children_ids'] = $ids;
-                }
-            }
         
-            if ($ret && !$dont_update) {
-                $ret = $this->update_db();
+                if ($ret && !$dont_update) {
+                    $ret = $this->update_db();
+                }
+            } else {
+                $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$co_collection_error_name_user_not_authorized,
+                                                CO_CHAMELEON_Lang::$co_collection_error_desc_user_not_authorized);
             }
-        } else {
-            $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
-                                            CO_CHAMELEON_Lang::$co_collection_error_name_user_not_authorized,
-                                            CO_CHAMELEON_Lang::$co_collection_error_desc_user_not_authorized);
         }
         
         return $ret;
@@ -286,12 +296,10 @@ trait tCO_Collection {
                     }
                 }
                 
-                $this->_container = $new_container;
-                
                 $new_list = Array();
                 
                 // We build a new list that doesn't have the deleted element IDs.
-                while ($element_id = array_unshift($this->context['children_ids'])) {
+                while ($element_id = array_shift($this->context['children_ids'])) {
                     if (!in_array($element_id, $element_ids)) {
                         $new_list[] = $element_id;
                     }
@@ -302,6 +310,8 @@ trait tCO_Collection {
                 $this->context['children_ids'] = $new_list;
                 
                 $ret = $this->update_db();
+                
+                $this->_scrub();
             }
         } else {
             $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
