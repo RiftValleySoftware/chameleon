@@ -124,7 +124,7 @@ function collection_test_display($row_id, $tag, $in_login = NULL, $in_hashed_pas
     if ($access_instance->valid) {
         $st1 = microtime(true);
         $collection_item = $access_instance->get_single_data_record_by_id($row_id);
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', $tag)));
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array(NULL, NULL, NULL, NULL, NULL, $tag)));
         $fetchTime = sprintf('%01.4f', microtime(true) - $st1);
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             $count = count($item_list);

@@ -5,6 +5,8 @@
 - Added the ability to get all the address elements in an associative array.
 - Added provision for names and other data to the user class.
 - Fixed a couple of bugs in the container trait.
+- Fixed the tests to account for the new issue with the way we filter tags.
+- Fixed an issue with the hiearchy display, where we could lose track of disclosure links.
 
 **1.0.0.2030** *(June 11, 2018)*
 
