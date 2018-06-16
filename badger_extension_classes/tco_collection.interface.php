@@ -266,11 +266,11 @@ trait tCO_Collection {
                 $in_first_index = max(0, $in_first_index);  // Make sure we stay within the lane markers.
             }
             
-            $last_index_plus_one = min(count($self->_container), $in_first_index + $in_deletion_length);
+            $last_index_plus_one = min(count($this->_container), $in_first_index + $in_deletion_length);
         
             // We simply record the IDs of each of the elements we'll be deleting.
             for ($i = $in_first_index; $i < $last_index_plus_one; $i++) {
-                $element = $self->_container[$i];
+                $element = $this->_container[$i];
                 $element_ids[] = $element->id();
             }
             

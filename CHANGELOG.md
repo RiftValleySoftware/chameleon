@@ -4,6 +4,7 @@
 - Updated the images used for the README.
 - Added the ability to get all the address elements in an associative array.
 - Added provision for names and other data to the user class.
+- Fixed a couple of bugs in the container trait.
 
 **1.0.0.2030** *(June 11, 2018)*
 
