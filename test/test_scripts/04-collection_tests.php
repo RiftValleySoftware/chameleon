@@ -132,6 +132,7 @@ function collection_test_display($row_id, $tag, $in_login = NULL, $in_hashed_pas
             $fail_count = 0;
             echo ("<p><em>We got $count items in $fetchTime seconds.</em></p>");
             foreach ($item_list as $item) {
+
                 if ($collection_item->appendElement($item)) {
                     $success_count++;
                 } else {
@@ -242,7 +243,7 @@ function collection_test_10($in_login = NULL, $in_hashed_password = NULL, $in_pa
 
         $de_collection_item->appendElement($wv_collection_item);
         
-        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array('', '', '', '', '', 'DC')));
+        $item_list = $access_instance->generic_search(Array('access_class' => 'CO_US_Place', 'tags' => Array(NULL, NULL, NULL, NULL, NULL, 'DC')));
         if (isset($item_list) && is_array($item_list) && count($item_list)) {
             if (!$dc_collection_item->appendElements($item_list)) {
                 echo("<h3 style=\"color:red;font-weight:bold\">Unable to add items!</h3>");
@@ -339,7 +340,7 @@ function collection_test_12($in_login = NULL, $in_hashed_password = NULL, $in_pa
         } else {
             echo("<h3>That worked.</h3>");
             echo("<h3>Now, let's make sure we can add regular items that are already in the hierarchy.</h3>");
-            if (!$dc_area_collection->appendElements(Array($va_1, $va_2))) {
+            if (!$dc_area_collection->appendElements(Array($va_2, $va_3))) {
                 echo("<h3 style=\"color:red;font-weight:bold\">THIS SHOULD NOT HAVE FAILED!</h3>");
             } else {
                 echo("<h3>That worked.</h3>");

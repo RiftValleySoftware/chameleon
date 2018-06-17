@@ -18,6 +18,9 @@ require_once(CO_Config::db_classes_class_dir().'/co_ll_location.class.php');
 /***************************************************************************************************************************/
 /**
 This is a trait for the basic "collection" aggregator functionality.
+
+Yes, I know that a lot of the code could do with some refactoring, and we should do that, but what we have here does work, and
+having pretty code is less important than having effective, tested, working code. We have a lot on our plate.
  */
 trait tCO_Collection {
     protected $_container;      ///< This contains instances of the records referenced by the IDs stored in the object.
@@ -92,25 +95,17 @@ trait tCO_Collection {
         
         if ($in_element instanceof A_CO_DB_Table_Base) {
             if ($this->user_can_write() ) { // You cannot add to a collection if you don't have write privileges.
-                if (!(method_exists($in_element->name, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
+                if (!(method_exists($in_element, 'insertElement') && $this->areYouMyDaddy($in_element))) {   // Make sure that a collection isn't already in the woodpile somewhere.
                     $id = intval($in_element->id());
                     if (!isset($this->_container) || !is_array($this->_container)) {
-                        $this->_container = Array();
+                        $this->_container = [];
                     }
                 
-                    $contains = false;
-                
-                    // This is because PHP seems to get confused when I use in_array().
-                    if (count($this->_container)) {
-                        foreach ($this->_container as $test) {
-                            if ($test->id() == $in_element->id()) {
-                                $contains = true;
-                                break;
-                            }
-                        }
+                    if (!isset($this->context['children_ids']) || !is_array($this->context['children_ids'])) {
+                        $this->context['children_ids'] = [];
                     }
-                
-                    if (!$contains) {
+                    
+                    if (!in_array($id, $this->context['children_ids'])) {
                         if ((-1 == $in_before_index) || (NULL == $in_before_index) || !isset($in_before_index)) {
                             $in_before_index = count($this->_container);
                         }
