@@ -7,6 +7,7 @@
 - Fixed a couple of bugs in the container trait.
 - Fixed the tests to account for the new issue with the way we filter tags.
 - Fixed an issue with the hiearchy display, where we could lose track of disclosure links.
+- Fixed an ugly issue with the address setter, where the elements weren't actually being saved.
 
 **1.0.0.2030** *(June 11, 2018)*
 

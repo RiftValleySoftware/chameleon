@@ -148,7 +148,7 @@ class CO_Place extends CO_LL_Location {
             $in_value = strval($in_value);
         
             $this->address_elements[$key] = $in_value;
-            $this->tags[$in_index] = $in_value;
+            $this->_tags[$in_index] = $in_value;
             
             if (!$dont_save) {
                 $ret = $this->update_db();
