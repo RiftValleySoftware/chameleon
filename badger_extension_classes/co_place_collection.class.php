@@ -50,7 +50,14 @@ class CO_Place_Collection extends CO_Place {
         $this->_container = Array();
 
         parent::__construct($in_db_object, $in_db_result, $in_owner_id, $in_tags_array, $in_longitude, $in_latitude);
-        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
+        $this->class_description = "This is a 'Place Collection' Class for Addresses.";
+        
+        $count = 0;
+        if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {
+            $count = count($this->context['children_ids']);
+        }
+        
+        $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude - $count children objects)" : "($this->_longitude, $this->_latitude - $count children objects)";
     }
 
     /***********************/
@@ -68,7 +75,7 @@ class CO_Place_Collection extends CO_Place {
             $count = count($this->context['children_ids']);
         }
         
-        $this->class_description = "This is a 'Place Collection' Class for US Addresses.";
+        $this->class_description = "This is a 'Place Collection' Class for Addresses.";
         $this->instance_description = isset($this->name) && $this->name ? "$this->name ($this->_longitude, $this->_latitude - $count children objects)" : "($this->_longitude, $this->_latitude - $count children objects)";
     }
     

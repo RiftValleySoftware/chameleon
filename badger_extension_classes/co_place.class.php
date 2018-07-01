@@ -415,7 +415,9 @@ class CO_Place extends CO_LL_Location {
 	    
         for ($i = 0; $i < count($labels); $i++) {
             $key = $labels[$i];
-            $ret[$key] = $this->address_elements[$key];
+            if (isset($this->address_elements[$key]) && trim($this->address_elements[$key])) {
+                $ret[$key] = trim($this->address_elements[$key]);
+            }
         }
         
         return $ret;
