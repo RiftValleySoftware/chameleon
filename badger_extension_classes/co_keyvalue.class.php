@@ -13,7 +13,7 @@
 */
 defined( 'LGV_DBF_CATCHER' ) or die ( 'Cannot Execute Directly' );	// Makes sure that this file is in the correct context.
 
-require_once(CO_Config::db_class_dir().'/co_main_db_record.class.php');
+require_once(dirname(__FILE__).'/co_collection.class.php');
 
 /***************************************************************************************************************************/
 /**
@@ -25,7 +25,8 @@ require_once(CO_Config::db_class_dir().'/co_main_db_record.class.php');
     The uniqueness is determined by a combination of the access_class and tag0 fields. That means that a subclass of this class
     could have the same key as a parent, but two instances of the same class cannot have duplicate keys.
  */
-class CO_KeyValue extends CO_Main_DB_Record {
+class CO_KeyValue extends CO_Collection {
+    
     /***********************************************************************************************************************/
     /***********************/
     /**

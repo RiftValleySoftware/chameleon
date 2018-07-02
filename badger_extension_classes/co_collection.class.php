@@ -20,7 +20,7 @@ CO_Config::require_extension_class('tco_collection.interface.php');
 /**
 This is a generic collection class.
  */
-class CO_Collection extends CO_Main_DB_Record {
+class CO_Collection extends CO_LL_Location {
     use tCO_Collection; // These are the built-in collection methods.
     
     /***********************************************************************************************************************/

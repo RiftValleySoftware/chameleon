@@ -8,6 +8,8 @@
 - Fixed the tests to account for the new issue with the way we filter tags.
 - Fixed an issue with the hiearchy display, where we could lose track of disclosure links.
 - Fixed an ugly issue with the address setter, where the elements weren't actually being saved.
+- The user collection class, the key/value class and the collection class are now based on the location class.
+- The key/value class is now based on the collection class.
 
 **1.0.0.2030** *(June 11, 2018)*
 
