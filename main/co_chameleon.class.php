@@ -172,7 +172,7 @@ class CO_Chameleon extends CO_Access {
     public function get_object_for_key( $in_key ///< This is the key that we are searching for. It must be a string.
                                         ) {
         $ret = NULL;
-        $value_object_array = $this->generic_search(Array('access_class' => Array('%_KeyValue', 'use_like' => 1), 'tags' => Array(strval($in_key))));
+        $value_object_array = $this->generic_search(Array('access_class' => Array('%_KeyValue%', 'use_like' => 1), 'tags' => Array(strval($in_key))));
         
         if (isset($value_object_array) && is_array($value_object_array) && count($value_object_array)) {
             $ret = $value_object_array[0]; // If the DB is messed up, we could get more than one. In that case, we only take the first one.
