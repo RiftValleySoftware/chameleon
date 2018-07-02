@@ -25,7 +25,7 @@ require_once(dirname(__FILE__).'/co_collection.class.php');
     The uniqueness is determined by a combination of the access_class and tag0 fields. That means that a subclass of this class
     could have the same key as a parent, but two instances of the same class cannot have duplicate keys.
  */
-class CO_KeyValue extends CO_Collection {
+class CO_KeyValue_Collection extends CO_Collection {
     
     /***********************************************************************************************************************/
     /***********************/

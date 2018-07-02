@@ -150,14 +150,14 @@ class CO_Chameleon extends CO_Access {
     \returns the value for a given key. It is dependent on the class passed in. NULL, if no value or instance for the key.
      */
     public function get_value_for_key(  $in_key,                        ///< This is the key that we are searching for. It must be a string.
-                                        $in_classname = 'CO_KeyValue'   ///< This is the class to search for the key. The default is the base class.
+                                        $in_classname = 'CO_KeyValue_Collection'   ///< This is the class to search for the key. The default is the base class.
                                     ) {
         $ret = NULL;
         $value_object_array = $this->generic_search(Array('access_class' => $in_classname, 'tags' => Array(strval($in_key))));
         
         if (isset($value_object_array) && is_array($value_object_array) && count($value_object_array)) {
             $value_object = $value_object_array[0]; // If the DB is messed up, we could get more than one. In that case, we only take the first one.
-            if (isset($value_object) && ($value_object instanceof CO_KeyValue)) {
+            if (isset($value_object) && ($value_object instanceof CO_KeyValue_Collection)) {
                 $ret = $value_object->get_value();
             }
         }
@@ -190,7 +190,7 @@ class CO_Chameleon extends CO_Access {
      */
     public function set_value_for_key(  $in_key,                        ///< This is the key that we are setting. It must be a string.
                                         $in_value,                      ///< The value to set. If NULL, then we will delete the key.
-                                        $in_classname = 'CO_KeyValue'   ///< This is the class to use for the key. The default is the base class.
+                                        $in_classname = 'CO_KeyValue_Collection'   ///< This is the class to use for the key. The default is the base class.
                                     ) {
         $ret = false;
         
@@ -200,7 +200,7 @@ class CO_Chameleon extends CO_Access {
         
             if ((NULL != $in_value) && (!isset($value_object) || !$value_object)) {
                 $value_object = $this->make_new_blank_record($in_classname);
-                if (isset($value_object) && ($value_object instanceof CO_KeyValue) && $value_object->user_can_write()) {
+                if (isset($value_object) && ($value_object instanceof CO_KeyValue_Collection) && $value_object->user_can_write()) {
                     $ret = $value_object->set_key($in_key);
                     if (!$ret) {
                         $this->error = $value_object->error;
@@ -222,7 +222,7 @@ class CO_Chameleon extends CO_Access {
                                                 CO_CHAMELEON_Lang::$co_key_value_error_desc_instance_failed_to_initialize);
             }
 
-            if (isset($value_object) && ($value_object instanceof CO_KeyValue) && $value_object->user_can_write()) {
+            if (isset($value_object) && ($value_object instanceof CO_KeyValue_Collection) && $value_object->user_can_write()) {
                 if (NULL == $in_value) {    // If we are deleting, we ask the object to go quietly into the great beyond.
                     $ret = $value_object->delete_from_db();
                 } else {                    // Otherwise, we just set the value.
@@ -240,7 +240,7 @@ class CO_Chameleon extends CO_Access {
                     }
                 }
             } else {
-                if (isset($value_object) && ($value_object instanceof CO_KeyValue) && !$value_object->user_can_write()) {
+                if (isset($value_object) && ($value_object instanceof CO_KeyValue_Collection) && !$value_object->user_can_write()) {
                     $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_key_value_error_code_user_not_authorized,
                                                     CO_CHAMELEON_Lang::$co_key_value_error_name_user_not_authorized,
                                                     CO_CHAMELEON_Lang::$co_key_value_error_desc_user_not_authorized);

@@ -40,7 +40,7 @@ function kvp_test_01($in_login = NULL, $in_hashed_password = NULL, $in_password 
     
     if ($access_instance->valid) {
         $st1 = microtime(true);
-        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
+        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue_Collection');
         
         if (isset($test_subject) && $test_subject ) {
             $success = $test_subject->set_key('Rick Moranis', 'Sigorney Weaver');
@@ -105,7 +105,7 @@ function kvp_test_02($in_login = NULL, $in_hashed_password = NULL, $in_password 
     
     if ($access_instance->valid) {
         $st1 = microtime(true);
-        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
+        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue_Collection');
         
         if (isset($test_subject) && $test_subject ) {
             $the_text_payload = file_get_contents(dirname(dirname(__FILE__)).'/config/TheGreatShadow.txt');
@@ -171,7 +171,7 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
     
     if ($access_instance->valid) {
         $st1 = microtime(true);
-        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue');
+        $test_subject = $access_instance->make_new_blank_record('CO_KeyValue_Collection');
         
         if (isset($test_subject) && $test_subject ) {
             $the_image_payload = file_get_contents(dirname(dirname(__FILE__)).'/config/Yosemite.jpg');
