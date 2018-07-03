@@ -577,6 +577,28 @@ trait tCO_Collection {
     
     /***********************/
     /**
+    \returns an array of any direct parents of the current object. The returned objects will be collection instances. An empty array will be returned if no parents found.
+     */
+    public function who_are_my_parents() {
+        $ret = [];
+        
+        $result = $this->get_access_object()->generic_search(Array('access_class' => Array('%_Collection%', 'use_like' => 1)));
+        
+        if (isset($result) && is_array($result) && count($result)) {
+            foreach ($result as $object) {
+                if (($object instanceof CO_Main_DB_Record) && method_exists($object, 'areYouMyDaddy')) {
+                    if ($object->areYouMyDaddy($this, false)) {
+                        $ret[] = $object;
+                    }
+                }
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     \returns an instance "map" of the collection. It returns an array of associative arrays.
     Each associative array has the following elements:
         - 'object' (Required). This is the actual instance that maps to this object.

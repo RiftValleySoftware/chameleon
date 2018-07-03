@@ -10,6 +10,7 @@
 - Fixed an ugly issue with the address setter, where the elements weren't actually being saved.
 - The user collection class, the key/value class and the collection class are now based on the location class.
 - The key/value class is now based on the collection class.
+- Added a method for returning the direct parents of a collection object.
 
 **1.0.0.2030** *(June 11, 2018)*
 
