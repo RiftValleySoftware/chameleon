@@ -12,6 +12,7 @@
 - The key/value class is now based on the collection class.
 - Added a method for returning the direct parents of a collection object.
 - Added another test for stored KVP data.
+- Upped the timeout on a couple of the tests.
 
 **1.0.0.2030** *(June 11, 2018)*
 

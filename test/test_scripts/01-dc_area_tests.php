@@ -13,6 +13,8 @@
 */
 require_once(dirname(dirname(__FILE__)).'/functions.php');
 
+set_time_limit(3600);
+
 function dc_area_test_relay($in_test_number, $in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
     $function_name = sprintf('dc_area_test_%02d', $in_test_number);
     

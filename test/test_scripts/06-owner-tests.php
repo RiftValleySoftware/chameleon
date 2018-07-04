@@ -16,6 +16,8 @@ if ( !defined('LGV_CONFIG_CATCHER') ) {
     define('LGV_CONFIG_CATCHER', 1);
 }
 
+set_time_limit(3600);
+
 $config_file_path = dirname(__FILE__).'/../config/omfgwtfdude_config.class.php';
 
 require_once($config_file_path);
