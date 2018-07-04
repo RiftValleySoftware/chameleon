@@ -243,6 +243,47 @@ function kvp_test_03($in_login = NULL, $in_hashed_password = NULL, $in_password 
         }
     }
 }
+    
+function kvp_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password = NULL) {
+    $access_instance = NULL;
+    
+    if ( !defined('LGV_ACCESS_CATCHER') ) {
+        define('LGV_ACCESS_CATCHER', 1);
+    }
+    
+    require_once(CO_Config::chameleon_main_class_dir().'/co_chameleon.class.php');
+    
+    $access_instance = new CO_Chameleon($in_login, $in_hashed_password, $in_password);
+    
+    if ($access_instance->valid) {
+        $st1 = microtime(true);
+
+        $retrieved_payload = $access_instance->get_value_for_key('Worth Enough');
+        
+        if (isset($retrieved_payload)) {
+            echo('<div id="worth-enough" class="inner_closed">');
+                echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'worth-enough\')">Check Out the View</a></h3>');
+                echo('<div class="main_div inner_container">');
+                    $image_base64_data = base64_encode ($retrieved_payload);
+                    echo('<img src="data:image/jpeg;base64,'.$image_base64_data.'" alt="Nice View" />');
+                echo('</div>');
+            echo('</div>');
+        } else {
+            echo("<h2 style=\"color:red;font-weight:bold\">The user was not allowed to save the value!</h2>");
+            if ($access_instance->error) {
+                echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+            }
+        }
+        
+        $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
+        echo('<p>The test took '.$fetchTime.' seconds.</p>');
+    } else {
+        echo("<h2 style=\"color:red;font-weight:bold\">The access instance is not valid!</h2>");
+        if ($access_instance->error) {
+            echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
+        }
+    }
+}
 
 ob_start();
 
@@ -292,6 +333,16 @@ ob_start();
                             echo('<p class="explain">We save and retrieve a 1279 X 835 JPEG image of Yosemite Park.</p>');
                         echo('</div>');
                         kvp_test_relay(3, 'admin', '', CO_Config::god_mode_password());
+                    echo('</div>');
+                echo('</div>');
+            
+                echo('<div id="test-044B" class="inner_closed">');
+                    echo('<h3 class="inner_header"><a href="javascript:toggle_inner_state(\'test-044B\')">TEST 44B: retrieve large image data from the database -God Login</a></h3>');
+                    echo('<div class="main_div inner_container">');
+                        echo('<div class="main_div" style="margin-right:2em">');
+                            echo('<p class="explain">We save and retrieve a large JPEG image of a 3D render.</p>');
+                        echo('</div>');
+                        kvp_test_relay(4, 'admin', '', CO_Config::god_mode_password());
                     echo('</div>');
                 echo('</div>');
 

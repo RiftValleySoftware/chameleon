@@ -50,13 +50,17 @@ class CO_Collection extends CO_LL_Location {
                                     ) {
         $ret = parent::load_from_db($in_db_result);
         
-        $count = 0;
-        if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {
-            $count = count($this->context['children_ids']);
-        }
+        if ($ret) {
+            $count = 0;
+            if (isset($this->context['children_ids']) && is_array($this->context['children_ids'])) {
+                $count = count($this->context['children_ids']);
+            }
         
-        $this->class_description = "This is a 'Generic Collection' Class.";
-        $this->instance_description = isset($this->name) && $this->name ? "$this->name" : "Generic Collection Object";
+            $this->class_description = "This is a 'Generic Collection' Class.";
+            $this->instance_description = isset($this->name) && $this->name ? "$this->name" : "Generic Collection Object";
+        }
+    
+        return $ret;
     }
     
     /***********************/

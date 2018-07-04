@@ -38,7 +38,7 @@ class CO_KeyValue_CO_Collection extends CO_Collection {
 	                                $in_value = NULL        ///< The value to be used for this instance (overrides anything in the DB record).
                                 ) {
         parent::__construct($in_db_object, $in_db_result);
-        $this->class_description = "This is an class for doing \"key/value\" storage.";
+        $this->class_description = "This is a class for doing \"key/value\" storage.";
         
         if (NULL != $in_key) {
             $this->set_key($in_key, $value);
@@ -57,8 +57,12 @@ class CO_KeyValue_CO_Collection extends CO_Collection {
                                     ) {
         $ret = parent::load_from_db($in_db_result);
         
-        $this->class_description = "This is an class for doing \"key/value\" storage.";
-        $this->instance_description = $this->name;
+        if ($ret) {
+            $this->class_description = "This is a class for doing \"key/value\" storage.";
+            $this->instance_description = $this->name;
+        }
+        
+        return $ret;
     }
     
     /***********************/
