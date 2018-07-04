@@ -194,13 +194,14 @@ class CO_Chameleon extends CO_Access {
                                     ) {
         $ret = false;
         
-        if ($this->security_db_available()) {
+        if ($this->security_db_available()) {   // Must be logged in.
             // First, we look for the object.
             $value_object = $this->generic_search(Array('access_class' => $in_classname, 'tags' => Array(strval($in_key))));
         
             if ((NULL != $in_value) && (!isset($value_object) || !$value_object)) {
                 $value_object = $this->make_new_blank_record($in_classname);
                 if (isset($value_object) && ($value_object instanceof CO_KeyValue_CO_Collection) && $value_object->user_can_write()) {
+                    $ret = $value_object->set_name($in_key);
                     $ret = $value_object->set_key($in_key);
                     if (!$ret) {
                         $this->error = $value_object->error;
