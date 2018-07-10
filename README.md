@@ -11,12 +11,11 @@ Part of the BAOBAB Server, which is part of the Rift Valley Platform
 
 INTRODUCTION
 ============
-
 CHAMELEON is a "first-layer" extension of \ref BADGER.
 
-While BADGER provides a low-level interface and abstraction to the databases, CHAMELEON starts to put these abtractions to work.
-
 ![CHAMELEON Diagram](images/CHAMELEONLayers.png)
+
+While BADGER provides a low-level interface and abstraction to the databases, CHAMELEON starts to put these abtractions to work.
 
 \ref BADGER is the "First Layer Connection" to the data storage subsystem. It uses [PHP PDO](http://php.net/manual/en/book.pdo.php) to abstract from the databases, and provide SQL-injection protection through the use of [PHP PDO Prepared Statements](http://php.net/manual/en/pdo.prepared-statements.php).
 
