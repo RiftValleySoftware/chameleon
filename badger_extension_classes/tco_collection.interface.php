@@ -525,12 +525,16 @@ trait tCO_Collection {
     public function count(  $is_recursive = false   ///< If true, then this will also count all "child" collections. Default is false.
                         ) {
         $children = $this->children();
-        $my_count = count($children);
+        $my_count = 0;
         
-        if ($is_recursive) {
-            foreach ($children as $child) {
-                if (method_exists($child, 'count')) {
-                    $my_count += $child->count($is_recursive);
+        if (isset($children) && is_array($children)) {
+            $my_count = count($children);
+        
+            if ($is_recursive) {
+                foreach ($children as $child) {
+                    if (method_exists($child, 'count')) {
+                        $my_count += $child->count($is_recursive);
+                    }
                 }
             }
         }
