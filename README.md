@@ -1,4 +1,4 @@
-[]: # \page CHAMELEON CHAMELEON
+\page CHAMELEON CHAMELEON
 
 ![CHAMELEON](images/CHAMELEON.png)
 
