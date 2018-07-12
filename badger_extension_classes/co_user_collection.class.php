@@ -68,7 +68,6 @@ class CO_User_Collection extends CO_LL_Location {
         $login_id = isset($this->tags()[0]) ? intval($this->tags()[0]) : 0;
         
         if (0 < $login_id) {
-
             $my_login_object = $this->get_access_object()->get_single_security_record_by_id($login_id);
             
             if (isset($my_login_object) && ($my_login_object instanceof CO_Security_Login)) {
@@ -178,11 +177,25 @@ class CO_User_Collection extends CO_LL_Location {
     /***********************/
     /**
     This is a "security-safe" way of testing for a God login ID. The user may have permission to view the user, but not the login, and they should not know what the login ID is, so this masks the ID.
-    
-     \returns true, if the object is for the "God" user.
+
+    \returns true, if the "God" user.
      */
-    public function is_god_user() {
-        return (intval($this->tags()[0]) == CO_Config::god_mode_id());
+    public function is_god() {
+        $tags = $this->tags();
+        
+        return isset($tags) && is_array($tags) && count($tags) && (0 < intval($tags[0])) && (intval($tags[0]) == CO_Config::god_mode_id());
+    }
+    
+    /***********************/
+    /**
+    \returns true, if we are a manager.
+     */
+    public function is_manager() {
+        if (!$this->is_god() && !isset($this->_login_object)) {
+            $this->_load_login();
+        }
+
+        return $this->is_god() || (isset($this->_login_object) && ($this->_login_object instanceof CO_Login_Manager));
     }
     
     /***********************/

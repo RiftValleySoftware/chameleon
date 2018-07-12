@@ -1,5 +1,7 @@
 **1.0.0.2032** *(TBD)*
 
+- Added a quick "manager check" to login objects.
+
 **1.0.0.2031** *(July 6, 2018)*
 
 - Changed the way the address elements were indexed. The old way did not work well for XML.
