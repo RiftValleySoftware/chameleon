@@ -305,8 +305,9 @@ trait tCO_Collection {
                 $this->context['children_ids'] = $new_list;
                 
                 $ret = $this->update_db();
-                
-                $this->_scrub();
+                if (!$this->_batch_mode) {
+                    $this->_scrub();
+                }
             }
         } else {
             $this->error = new LGV_Error(   CO_CHAMELEON_Lang_Common::$co_collection_error_code_user_not_authorized,
@@ -565,14 +566,16 @@ trait tCO_Collection {
     \returns the child ids array (array of integer).
      */
     public function children_ids() {
-        $ret = Array();
+        $ret = [];
         
         $this->_scrub();
-        $ids = $this->context['children_ids'];
+        if (isset($this->context['children_ids']) && is_array($this->context['children_ids']) && count ($this->context['children_ids'])) {
+            $ids = $this->context['children_ids'];
         
-        foreach ($ids as $id) {
-            if ($this->get_access_object()->item_exists($id, true)) {
-                $ret[] = intval($id);
+            foreach ($ids as $id) {
+                if ($this->get_access_object()->item_exists($id, true)) {
+                    $ret[] = intval($id);
+                }
             }
         }
         

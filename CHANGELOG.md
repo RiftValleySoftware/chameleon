@@ -1,7 +1,8 @@
 **1.0.0.2032** *(TBD)*
 
 - Added a quick "manager check" to login objects.
-- Added a function to test tokens.
+- Fixed a bug in the collection trait, where removing all children could output a warning.
+- Greatly speeded up deleting children (collections), in batch mode.
 
 **1.0.0.2031** *(July 6, 2018)*
 
