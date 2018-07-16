@@ -65,6 +65,31 @@ class CO_Chameleon extends CO_Access {
     
     /***********************/
     /**
+    Tests a token, to see if the current user has it.
+    
+    \returns true, if the current user has the given token.
+     */
+    public function i_have_this_token(  $in_token_to_test   ///< The token we are checking out
+                                    ) {
+        $ret = false;
+        
+        if (isset($in_token_to_test) && ctype_digit(strval($in_token_to_test))) {
+            if (1 == intval($in_token_to_test)) {
+                $ret = $this->security_db_available();
+            } else {
+                $tokens = $this->get_security_ids();
+        
+                if (isset($tokens) && is_array($tokens) && count($tokens)) {
+                    $ret = in_array(intval($in_token_to_test), $tokens);
+                }
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /***********************/
+    /**
     This method chacks all the collections for the presence of the given element.
     If the collection is a direct parent of the element, it is returned.
     

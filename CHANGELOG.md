@@ -1,6 +1,7 @@
 **1.0.0.2032** *(TBD)*
 
 - Added a quick "manager check" to login objects.
+- Added a function to test tokens.
 
 **1.0.0.2031** *(July 6, 2018)*
 
