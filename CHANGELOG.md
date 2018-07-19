@@ -3,6 +3,7 @@
 - Added a quick "manager check" to login objects.
 - Fixed a bug in the collection trait, where removing all children could output a warning.
 - Greatly speeded up deleting children (collections), in batch mode.
+- Added the ability to parse associative arrays to the set address elements handler.
 
 **1.0.0.2031** *(July 6, 2018)*
 

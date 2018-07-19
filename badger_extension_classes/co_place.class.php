@@ -22,6 +22,11 @@ if ( !defined('LGV_CHAMELEON_UTILS_CATCHER') ) {
 $utils_file = CO_Config::chameleon_main_class_dir().'/co_chameleon_utils.class.php';
 require_once($utils_file);
 
+function test_is_assoc(array $arr) {
+    if (array() === $arr) return false;
+    return array_keys($arr) !== range(0, count($arr) - 1);
+}
+
 /***************************************************************************************************************************/
 /**
 This is a specialization of the location class. It adds support for US addresses, and uses the first eight tags for this.
@@ -110,12 +115,18 @@ class CO_Place extends CO_LL_Location {
 	                                        $dont_save = false  ///< If true, then the DB update will not be called.
                                 ) {
         $ret = false;
-
+        
         $this->address_elements = Array();
         $labels = $this->_get_address_element_labels();
         
         for ($i = 0; $i < count($labels); $i++) {
-            $tag_value = isset($in_tags[$i]) ? $in_tags[$i] : '';
+            $tag_value = '';
+            
+            if (test_is_assoc($in_tags)) {
+                $tag_value = isset($in_tags[$labels[$i]]) ? $in_tags[$labels[$i]] : '';
+            } else {
+                $tag_value = isset($in_tags[$i]) ? $in_tags[$i] : '';
+            }
             
             $this->set_address_element($i, $tag_value, true);
         }
