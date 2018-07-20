@@ -381,13 +381,29 @@ trait tCO_Collection {
     /***********************/
     /**
     This deletes all children of the container.
+    However, the container may have children we can't see, so we don't delete those. We only delete the ones we know about (which could be all of them).
     
     \returns true, if the new configuration was successfully updated in the DB.
      */
     public function deleteAllChildren() {
-        $this->_children = Array();
-        unset($this->context['children_ids']);
-        return $this->update_db();
+        if ($this->user_can_write() ) { // You cannot delete from a collection if you don't have write privileges.
+            $new_list = [];
+        
+            if (isset($this->context['children_ids']) && is_array($this->context['children_ids']) && count($this->context['children_ids'])) {
+                foreach ($this->context['children_ids'] as $child_id) {
+                    // We save items in the list that we can't see.
+                    if ($this->get_access_object()->item_exists($child_id) && !$this->get_access_object()->can_i_see_this_data_record($child_id)) {
+                        $new_list[] = $child_id;
+                    }
+                }
+            }
+        
+            $this->_children = Array();
+            $this->context['children_ids'] = $new_list;
+            return $this->update_db();
+        }
+        
+        return false;
     }
     
     /***********************/
