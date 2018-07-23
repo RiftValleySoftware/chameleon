@@ -1,4 +1,4 @@
-**1.0.0.2032** *(TBD)*
+**1.0.0.2032** *(July 22, 2018)*
 
 - Added a quick "manager check" to login objects.
 - Fixed a bug in the collection trait, where removing all children could output a warning.
