@@ -1,3 +1,7 @@
+**1.0.0.2033** *(TBD)*
+
+- Updated BADGER.
+
 **1.0.0.2032** *(July 22, 2018)*
 
 - Added a quick "manager check" to login objects.
