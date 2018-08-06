@@ -581,23 +581,54 @@ trait tCO_Collection {
     
     \returns the child ids array (array of integer).
      */
-    public function children_ids() {
+    public function children_ids(   $in_raw = false    ///< This is only valid for "God Mode." If true, then the array is returned with no scrub, and no checks.
+                                ) {
         $ret = [];
+        if ($in_raw && $this->get_access_object()->god_mode()) {   // God gets it all.
+            if (isset($this->context['children'])) {
+                return (array_map('intval', explode(',', $this->context['children'])));
+            } else {
+                return [];
+            }
+        }
         
         $this->_scrub();
         if (isset($this->context['children_ids']) && is_array($this->context['children_ids']) && count ($this->context['children_ids'])) {
             $ids = $this->context['children_ids'];
-        
-            foreach ($ids as $id) {
-                if ($this->get_access_object()->item_exists($id, true)) {
-                    $ret[] = intval($id);
+            if ($this->get_access_object()->god_mode()) {   // God gets it all.
+                $ret = $ids;
+            } else {
+                foreach ($ids as $id) {
+                    if ($this->get_access_object()->item_exists($id, true)) {
+                        $ret[] = intval($id);
+                    }
                 }
             }
         }
         
         return $ret;
     }
+        
+    /***********************/
+    /**
+    This is a "God Mode-only" method that is used to wholesale replace the entire children array.
     
+    \returns true, if the operation was allowed and successful.
+     */
+    public function set_children_ids(   $in_new_ids ///< This is an array of integers, with the IDs of new children. This entirely replaces the current array.
+                                    ) {
+        $ret = false;
+        
+        if ($this->get_access_object()->god_mode()) {
+            $this->_children = Array();
+            $this->context['children'] = implode(',', $in_new_ids);
+            unset($this->context['children_ids']);
+            $ret = $this->update_db();
+        }
+        
+        return $ret;
+    }
+
     /***********************/
     /**
     \returns an array of any direct parents of the current object. The returned objects will be collection instances. An empty array will be returned if no parents found.
