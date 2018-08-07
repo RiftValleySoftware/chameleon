@@ -45,6 +45,26 @@ class CO_Chameleon extends CO_Access {
     
     /***********************/
     /**
+    This is a special "God Mode-Only" method that dumps everything in both databases. It is used to generate a CSV backup file.
+    
+    The user must be logged in as "God."
+    
+    \returns an associative array ('security' => array, 'data' => array') of two sets of associative arrays, with the dump. NULL if the user is not authorized.
+     */
+    public function fetch_backup() {
+        // Have to be "God," and the variable in the config needs to be set.
+        if ($this->god_mode()) {
+            $security_db_backup = $this->_security_db_object->get_db_backup();
+            $data_db_backup = $this->_data_db_object->get_db_backup();
+            
+            return ['security' => $security_db_backup, 'data' => $data_db_backup];
+        }
+        
+        return NULL;
+    }
+    
+    /***********************/
+    /**
     This fetches the list of security tokens the currently logged-in user has available.
     This will reload any non-God Mode IDs before fetching the IDs, in order to spike privilege escalation.
     If they have God Mode, then you're pretty much screwed, anyway.

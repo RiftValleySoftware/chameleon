@@ -1,6 +1,7 @@
 **1.0.0.2033** *(TBD)*
 
 - Updated BADGER.
+- Added support for a "God Mode" backup.
 
 **1.0.0.2032** *(July 22, 2018)*
 
