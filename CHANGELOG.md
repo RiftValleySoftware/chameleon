@@ -2,6 +2,7 @@
 
 - Updated BADGER.
 - Added support for a "God Mode" backup.
+- Addressed a PHP warning.
 
 **1.0.0.2032** *(July 22, 2018)*
 
