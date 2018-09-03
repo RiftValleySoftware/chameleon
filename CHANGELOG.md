@@ -1,4 +1,4 @@
-**1.0.0.2033** *(TBD)*
+**1.0.0.3000** *(September 3, 2018)*
 
 - Updated BADGER.
 - Added support for a "God Mode" backup.
