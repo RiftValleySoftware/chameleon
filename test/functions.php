@@ -3,13 +3,13 @@
 /**
 CHAMELEON Object Abstraction Layer
 
-© Copyright 2018, Little Green Viper Software Development LLC.
+© Copyright 2018, The Great Rift Valley Software Company LLC.
 
 This code is proprietary and confidential code, 
 It is NOT to be reused or combined into any application,
-unless done so, specifically under written license from Little Green Viper Software Development LLC.
+unless done so, specifically under written license from The Great Rift Valley Software Company LLC.
 
-Little Green Viper Software Development: https://littlegreenviper.com
+The Great Rift Valley Software Company: https://riftvalleysoftware.com
 */
 date_default_timezone_set ( 'UTC' );
 
