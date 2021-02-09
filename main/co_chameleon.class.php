@@ -83,8 +83,9 @@ class CO_Chameleon extends CO_Access {
     
     \returns an array of integers, with each one representing a security token. The first element will always be the ID of the user.
      */
-    public function get_security_ids() {
-        $ret = parent::get_security_ids();
+    public function get_security_ids(   $no_personal = false    ///< This is optional. If we DO NOT want personal tokens included, this should be set to true. Default is false (include personal tokens).
+                                    ) {
+        $ret = parent::get_security_ids($no_personal);
         
         if (isset($this->_special_access_id)) {
             $id = $this->_special_access_id;
@@ -151,9 +152,10 @@ class CO_Chameleon extends CO_Access {
        
     \returns an array, with the login objects that have that token in their list (or are of that ID).
      */
-    public function get_all_login_objects_with_access($in_security_token  ///< An integer, with the requested security token.
+    public function get_all_login_objects_with_access(  $in_security_token, ///< An integer, with the requested security token.
+                                                        $and_write = false  ///< If true, then we only want ones we have write access to.
                                                         ) {
-        return $this->_security_db_object->get_all_login_objects_with_access($in_security_token);
+        return $this->_security_db_object->get_all_login_objects_with_access($in_security_token, $and_write);
     }
     
     /***********************/
