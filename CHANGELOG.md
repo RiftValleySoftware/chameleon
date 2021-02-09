@@ -1,4 +1,7 @@
-**1.1.0.3000** *TBD*
+**1.1.0.3000** *(February 9, 2021)*
+
+- Added support for personal tokens.
+- Cleaned up a few PHP warnings.
 
 **1.0.7.3000** *(December 15, 2020)*
 

@@ -54,9 +54,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');
@@ -74,9 +76,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');
@@ -94,9 +98,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');
@@ -114,9 +120,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');
@@ -134,9 +142,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');
@@ -154,9 +164,11 @@ function basic_test_01($in_login = NULL, $in_hashed_password = NULL, $in_passwor
                 echo ('<h4>Address:</h4>');
                     echo('<div class="inner_div">');
                     $address = $item->geocode_long_lat();
-                    foreach ($address as $key => $value) {
-                        if (trim($value)) {
-                            echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                    if (isset($address) && is_array($address) && count($address)) {
+                        foreach ($address as $key => $value) {
+                            if (trim($value)) {
+                                echo("<p><strong>$key:</strong> <em>$value</em></p>");
+                            }
                         }
                     }
                 echo('</div>');

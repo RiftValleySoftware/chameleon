@@ -46,11 +46,12 @@ ALTER TABLE `co_data_nodes`
   
 INSERT INTO `co_data_nodes` (`id`, `access_class`, `last_access`, `read_security_id`, `write_security_id`, `object_name`, `access_class_context`, `owner`, `longitude`, `latitude`, `tag0`, `tag1`, `tag2`, `tag3`, `tag4`, `tag5`, `tag6`, `tag7`, `tag8`, `tag9`, `payload`) VALUES
 (1, 'CO_Main_DB_Record', '1970-01-02 00:00:00', -1, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 3, 'Norm User', 'a:1:{s:4:"lang";s:2:"sv";}', NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 4, 'Bob User', NULL, NULL, NULL, NULL, '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 5, 'Cobra User', NULL, NULL, NULL, NULL, '5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'CO_US_Place', '1970-01-02 00:00:00', 0, 3, 'New Start', NULL, 7, -76.87700701, 39.05928327, 'Queens Chapel United Methodist Church', '7410 Old Muirkirk Road', '', 'Beltsville', '', 'MD', '20705', NULL, '6', '20:00:00', NULL),
-(6, 'CO_US_Place', '1970-01-02 00:00:00', 0, 3, 'Italian Test', 'a:1:{s:4:"lang";s:2:"it";}', 7, -76.87700701, 39.05928327, 'Queens Chapel United Methodist Church', '7410 Old Muirkirk Road', '', 'Beltsville', '', 'MD', '20705', NULL, '6', '20:00:00', NULL);
+(2, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 2, 'Admin User', 'a:1:{s:4:"lang";s:2:"sv";}', NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 3, 'Norm User', 'a:1:{s:4:"lang";s:2:"sv";}', NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 4, 'Bob User', NULL, NULL, NULL, NULL, '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'CO_User_Collection', '1970-01-02 00:00:00', 0, 5, 'Cobra User', NULL, NULL, NULL, NULL, '5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 'CO_US_Place', '1970-01-02 00:00:00', 0, 3, 'New Start', NULL, 7, -76.87700701, 39.05928327, 'Queens Chapel United Methodist Church', '7410 Old Muirkirk Road', '', 'Beltsville', '', 'MD', '20705', NULL, '6', '20:00:00', NULL),
+(7, 'CO_US_Place', '1970-01-02 00:00:00', 0, 3, 'Italian Test', 'a:1:{s:4:"lang";s:2:"it";}', 7, -76.87700701, 39.05928327, 'Queens Chapel United Methodist Church', '7410 Old Muirkirk Road', '', 'Beltsville', '', 'MD', '20705', NULL, '6', '20:00:00', NULL);
 
 ALTER TABLE `co_data_nodes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;

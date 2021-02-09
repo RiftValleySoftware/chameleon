@@ -152,19 +152,22 @@ function lang_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password
         $access_lang = $access_instance->get_lang();
         $old_login_lang = $access_instance->get_login_item()->get_lang();
         $old_user_lang = $user_instance->get_lang();
-        if ($access_instance->get_login_item()->set_lang('pt')) {
+        $login_item = $access_instance->get_login_item();
+        if ($login_item->set_lang('pt')) {
             if ($place_instance->set_lang('es')) {
                 if ($user_instance->set_lang('de')) {
                     $user_lang = $user_instance->get_lang();
                     $place_lang = $place_instance->get_lang();
-                    $login_lang = $access_instance->get_login_item()->get_lang();
-                    if ($access_instance->get_login_item()->set_lang('')) {
+                    $login_item = $access_instance->get_login_item();
+                    $login_lang = $login_item->get_lang();
+                    if ($login_item->set_lang('')) {
                         if ($place_instance->set_lang(NULL)) {
                             if ($user_instance->set_lang(NULL)) {
                                 $fetchTime = sprintf('%01.3f', microtime(true) - $st1);
                                 $last_user_lang = $user_instance->get_lang();
                                 $last_place_lang = $place_instance->get_lang();
-                                $last_login_lang = $access_instance->get_login_item()->get_lang();
+                                $login_item = $access_instance->get_login_item();
+                                $last_login_lang = $login_item->get_lang();
                                 echo('<p><strong>Original Place Object Language: </strong>'.$original_place_lang.'</p>');
                                 echo('<p><strong>New Place Object Language: </strong>'.$place_lang.'</p>');
                                 echo('<p><strong>Final Place Object Language: </strong>'.$last_place_lang.'</p>');
@@ -177,27 +180,27 @@ function lang_test_04($in_login = NULL, $in_hashed_password = NULL, $in_password
                                 echo('<p><strong>New User Object Language: </strong>'.$user_lang.'</p>');
                                 echo('<p><strong>Final User Object Language: </strong>'.$last_user_lang.'</p>');
                             } else {
-                                echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                                echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (5)!</h3>");
                                 echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
                             }
                         } else {
-                            echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                            echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (4)!</h3>");
                             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
                         }
                     } else {
-                        echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                        echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (3)!</h3>");
                         echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
                     }
                 } else {
-                    echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                    echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (2)!</h3>");
                     echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
                 }
             } else {
-                echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+                echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (1)!</h3>");
                 echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$place_instance->error->error_code.') '.$place_instance->error->error_name.' ('.$place_instance->error->error_description.')</p>');
             }
         } else {
-            echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed!</h3>");
+            echo("<h3 style=\"color:red;font-weight:bold\">The Language Set Failed (0)!</h3>");
             echo('<p style="margin-left:1em;color:red;font-weight:bold">Error: ('.$access_instance->error->error_code.') '.$access_instance->error->error_name.' ('.$access_instance->error->error_description.')</p>');
         }
         echo('<p>The test took '.$fetchTime.' seconds.</p>');
