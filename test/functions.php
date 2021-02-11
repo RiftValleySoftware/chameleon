@@ -206,19 +206,19 @@ function display_record($in_record_object, $in_hierarchy_level = 0, $shorty = fa
         
                 if ( $in_record_object instanceof CO_Security_Login) {
                     if (method_exists($in_record_object, 'ids')) {
-                        echo("<p>IDs: ");
-                            $first = true;
-                            foreach ( $in_record_object->ids() as $id ) {
-                                if (!$first) {
-                                    echo(", ");
-                                } else {
-                                    $first = false;
-                                }
-                                echo($id);
-                            }
-                        echo("</p>");
-                    } else {
-                        echo("<h4>NO IDS!</h4>");
+                        $ids = $in_record_object->ids();
+                        if (is_array($ids) && count($ids)) {
+                            $ids_string = implode (", ", $ids);
+                            echo("<p>IDs: $ids_string</p>");
+                        }
+                    }
+                    
+                    if (method_exists($in_record_object, 'personal_ids')) {
+                        $ids = $in_record_object->personal_ids();
+                        if (is_array($ids) && count($ids)) {
+                            $ids_string = implode (", ", $ids);
+                            echo("<p>Personal IDs: $ids_string</p>");
+                        }
                     }
                 }
                     
