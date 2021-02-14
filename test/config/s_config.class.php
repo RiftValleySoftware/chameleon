@@ -56,11 +56,11 @@ class CO_Config {
     This is the Google API key. It's required for CHAMELEON to do address lookups and other geocoding tasks.
     CHAMELEON requires this to have at least the Google Geocoding API enabled.
     */
-    static $google_api_key = 'AIzaSyAPCtPBLI24J6qSpkpjngXAJtp8bhzKzK8';
+    static $google_api_key = 'AIzaSyC5meofXldluts0UPGp6Zg234-U989u1pY';
     
-    static private $_god_mode_id = 2;                           // Default is 2 (First security item created).
-    static private $_god_mode_password = 'BWU-HA-HAAAA-HA!'; ///< Plaintext password for the God Mode ID login. This overrides anything in the ID row.
-    static private $_use_personal_tokens = true;             ///< If TRUE, then we can use "personal IDs."
+    static private $_god_mode_id = 2;                           ///< Default is 2 (First security item created).
+    static private $_god_mode_password = 'BWU-HA-HAAAA-HA!';    ///< Plaintext password for the God Mode ID login. This overrides anything in the ID row.
+    static private $_use_personal_tokens = true;                ///< If TRUE, then we can use "personal IDs."
 
     /***********************/
     /**
